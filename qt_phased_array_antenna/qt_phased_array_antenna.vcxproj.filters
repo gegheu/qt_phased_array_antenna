@@ -21,24 +21,46 @@
       <UniqueIdentifier>{639EADAA-A684-42e4-A9AD-28FC9BCB8F7C}</UniqueIdentifier>
       <Extensions>ts</Extensions>
     </Filter>
+    <Filter Include="Source Files\communication">
+      <UniqueIdentifier>{2cbdb7f6-a7ee-494e-95dd-6d5a693c4a1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\communication">
+      <UniqueIdentifier>{e38dfbfb-04aa-4854-991a-1ad433c519a1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <QtRcc Include="communication.qrc">
+    <QtRcc Include="qt_phased_array_antenna.qrc">
       <Filter>Resource Files</Filter>
     </QtRcc>
-    <QtUic Include="communication_module.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtMoc Include="communication.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <ClCompile Include="communication.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="communication.cpp">
+      <Filter>Source Files\communication</Filter>
+    </ClCompile>
+    <ClCompile Include="SerialPort.cpp">
+      <Filter>Source Files\communication</Filter>
+    </ClCompile>
+    <ClCompile Include="Tcp.cpp">
+      <Filter>Source Files\communication</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="SerialPort.h">
+      <Filter>Header Files\communication</Filter>
+    </QtMoc>
+    <QtMoc Include="communication.h">
+      <Filter>Header Files\communication</Filter>
+    </QtMoc>
+    <QtMoc Include="Tcp.h">
+      <Filter>Header Files\communication</Filter>
+    </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="communication_module.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
   </ItemGroup>
 </Project>
