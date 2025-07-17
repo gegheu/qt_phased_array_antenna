@@ -43,6 +43,9 @@ void Tcp::write(const QByteArray& data)
 void Tcp::onReadyRead()
 {
     QByteArray data = socket->readAll();
+    while (socket->waitForReadyRead(10)) {
+        data += socket->readAll();
+    }
     emit dataReceived(data);
 }
 

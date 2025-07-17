@@ -51,8 +51,6 @@ private slots:
     void onDisconnected();
     void onDataReceived(const QByteArray& data);
     void onErrorOccurred(const QString& errorInfo);
-    void handleTcpClearLog();
-    void handleTcpClearTxData();
 
 private:
     Ui::CommunicationClass* ui;
