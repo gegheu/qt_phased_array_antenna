@@ -45,12 +45,15 @@ communication::communication(QWidget* parent)
 	connect(ui->pushButtonConnect, &QPushButton::clicked, this, &communication::onConnectClicked);
 	connect(ui->pushButtonSend, &QPushButton::clicked, this, &communication::onSendClicked);
 	connect(ui->pushButtonDisConnect, &QPushButton::clicked, this, &communication::onDisconnectClicked);
-	
 	connect(tcp, &Tcp::dataReceived, this, &communication::onDataReceived);
 	connect(tcp, &Tcp::connectError, this, &communication::onErrorOccurred);
+	connect(tcp, &Tcp::connected, this, &communication::onConnected);
+	connect(tcp, &Tcp::disconnected, this, &communication::onDisconnected);
+	connect(ui->log_clear_tcp, &QPushButton::clicked, this, &communication::handleTcpClearLog);//清空日志区
+	connect(ui->tx_data_clear_tcp, &QPushButton::clicked, this, &communication::handleTcpClearTxData);//清空发送数据区
 }
 
-
+//网口
 communication::~communication()
 {
 	saveINI();
@@ -88,14 +91,27 @@ void communication::onSendClicked()
 {
 	if (tcp->isConnected()) {
 		QString data = ui->lineEditTextToSend->text();
-		if (!data.isEmpty()) {
-			// 发送数据到STM32
-			QByteArray byteArray = data.toUtf8();
-			tcp->write(byteArray);
-
-			// 显示发送日志
-			ui->textEditLog->append(QStringLiteral("[发送] 文本: ") + data);
-			ui->textEditLog->append(QStringLiteral("[发送] 十六进制: ") + byteArray.toHex(' ').toUpper());
+		if (!data.isEmpty()) { // 这里不能去掉
+			QByteArray byteArray;
+			if (ui->tcp_hex_Button->isChecked()) {
+				// 十六进制发送
+				QStringList hexList = data.split(' ', Qt::SkipEmptyParts);
+				for (const QString& hexStr : hexList) {
+					bool ok;
+					quint8 byte = hexStr.toUInt(&ok, 16);
+					if (ok) {
+						byteArray.append(byte);
+					}
+				}
+				tcp->write(byteArray);
+				ui->textEditLog->append(QStringLiteral("[发送] 十六进制: ") + byteArray.toHex(' ').toUpper());
+			}
+			else {
+				// ASCII发送
+				byteArray = data.toUtf8();
+				tcp->write(byteArray);
+				ui->textEditLog->append(QStringLiteral("[发送] 文本: ") + data);
+			}
 		}
 	}
 	else {
@@ -145,13 +161,17 @@ void communication::onDisconnected()
 // 接收数据
 void communication::onDataReceived(const QByteArray& data)
 {
-	// 显示十六进制格式
-	QString hexData = data.toHex(' ').toUpper();
-	ui->textEditLog->append(QStringLiteral("[接收] 十六进制: ") + hexData);
-
-	// 尝试显示文本（如果是文本数据）
-	QString textData = QString::fromUtf8(data);
-	if (!textData.isEmpty() && textData.toUtf8() == data) {
+	
+	if (ui->tcp_hex_Button->isChecked())
+	{
+		// 显示十六进制格式
+		QString hexData = data.toHex(' ').toUpper();
+		ui->textEditLog->append(QStringLiteral("[接收] 十六进制: ") + hexData);
+	}
+	else
+	{
+		// 尝试显示文本（如果是文本数据）
+		QString textData = QString::fromUtf8(data);
 		ui->textEditLog->append(QStringLiteral("[接收] 文本: ") + textData);
 	}
 }
@@ -176,7 +196,16 @@ void communication::initNetwork()
 	ui->lineEditPort->setText("8080");
 }
 
+void communication::handleTcpClearLog()
+{
+	ui->textEditLog->clear();
+}
+void communication::handleTcpClearTxData()
+{
+	ui->lineEditTextToSend->clear();
+}
 
+//串口
 void communication::handleLoadINI()
 {
 	QStringList defaultRates = { "1200" , "2400" , "4800" , "9600" , "19200" , "38400" , "57600" , "115200" , "230400" , "345600" , "460800" , "576000" , "921600" , "1382400" };
@@ -440,4 +469,6 @@ void communication::initSerial()
 	ui->log_display->clear();
 
 	ui->hex_Button->setChecked(true);//设置默认是16进制显示
+	ui->tcp_hex_Button->setChecked(true);//设置默认是16进制显示
+
 }
