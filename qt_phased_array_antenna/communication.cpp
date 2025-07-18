@@ -18,17 +18,6 @@ communication::communication(QWidget* parent)
 {
     ui->setupUi(this);
 
-	serialPort = new SerialPort(this);
-	tcp = new Tcp(this);
-
-	m_timer = new QTimer(this);
-	m_settings = new QSettings("config.ini", QSettings::IniFormat, this);
-
-
-	m_tx_num = 0;
-	m_rx_num = 0;
-
-
     initSerial();
 	initNetwork();
 
@@ -45,7 +34,8 @@ communication::communication(QWidget* parent)
 	connect(ui->pushButtonConnect, &QPushButton::clicked, this, &communication::onConnectClicked);
 	connect(ui->pushButtonSend, &QPushButton::clicked, this, &communication::onSendClicked);
 	connect(ui->pushButtonDisConnect, &QPushButton::clicked, this, &communication::onDisconnectClicked);
-	
+	connect(tcp, &Tcp::connected, this, &communication::onConnected);
+	connect(tcp, &Tcp::disconnected, this, &communication::onDisconnected);
 	connect(tcp, &Tcp::dataReceived, this, &communication::onDataReceived);
 	connect(tcp, &Tcp::connectError, this, &communication::onErrorOccurred);
 }
@@ -172,6 +162,8 @@ void communication::onErrorOccurred(const QString& errorInfo)
 
 void communication::initNetwork() 
 {
+	tcp = new Tcp(this);
+
 	ui->lineEditIP->setText("192.168.1.100");
 	ui->lineEditPort->setText("8080");
 }
@@ -410,6 +402,11 @@ void communication::isBaudRateExist()
 
 void communication::initSerial()
 {
+	serialPort = new SerialPort(this);
+	m_settings = new QSettings("config.ini", QSettings::IniFormat, this);
+	m_tx_num = 0;
+	m_rx_num = 0;
+
     //初始化定时器，每秒扫描一次串口设备
     m_timer = new QTimer(this);
     m_timer->start(1000);
