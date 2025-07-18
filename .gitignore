@@ -1,0 +1,119 @@
+## Visual Studio 2019 特定文件 ##
+# 用户特定文件
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.VC.db
+
+# 生成文件
+x64/
+x86/
+arm/
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+[Oo]bj/
+[Bb]in/
+bld/
+[Oo]ut/
+
+# VS 缓存文件
+.vs/
+.vscode/
+
+# 自动生成的文件
+ipch/
+*.aps
+*.ncb
+*.opendb
+*.opensdf
+*.sdf
+*.cachefile
+*.VC.VC.opendb
+
+# 编译结果
+*.ilk
+*.meta
+*.obj
+*.pch
+*.pdb
+*.pgc
+*.pgd
+*.rsp
+*.sbr
+*.tlb
+*.tli
+*.tlh
+*.tmp
+*.tmp_proj
+*_wpftmp.csproj
+*.log
+*.vspscc
+*.vssscc
+.builds
+*.pidb
+*.svclog
+*.scc
+
+# 预编译头文件
+*.pch
+
+# Qt 相关文件 ##
+# Qt 构建目录
+build-*/
+
+# Qt Creator 文件
+*.autosave
+*.pro.user
+*.pro.user.*
+
+# Qt 生成的 moc 文件
+moc_*.cpp
+moc_*.h
+
+# Qt UI 生成的代码
+ui_*.h
+
+# Qt 资源系统生成的代码
+qrc_*.cpp
+
+# Qt 翻译文件
+*.qm
+
+# Qt 临时文件
+Makefile*
+*.qmake.stash
+
+# 其他 ##
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 日志和临时文件
+*.log
+*.tmp
+
+# 本地项目设置文件
+*.local
+
+# 打包文件
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# 文档
+*.chm
+*.pdf
+*.doc
+*.docx
+*.xls
+*.xlsx
+*.ppt
+*.pptx
