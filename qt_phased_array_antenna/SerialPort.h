@@ -1,26 +1,22 @@
 #pragma once
-#include <QObject>
 #include <QSerialPort>
+#include "icommunication.h"
 
-class SerialPort : public QObject
+class SerialPort : public ICommunication
 {
     Q_OBJECT
 public:
     SerialPort(QObject* parent = nullptr);
-    ~SerialPort();
+    ~SerialPort() override;
 
-    bool open(const QString& portName, int baudRate, const QSerialPort::Parity& parity, const QSerialPort::DataBits& dataBits, const QSerialPort::StopBits& stopBits);
-    void close();
-    void clear();
-    bool isOpen();
-    qint64 write(const QByteArray& data);
+    void portConnect(const QVariantList& params) override;
+    bool isConnected() const override;
 
-signals:
-    void dataReceived(const QByteArray& data);
-
-private slots:
-    void onReadyRead();
+protected:
+    qint64 writeData(const QByteArray& data) override;
+    QIODevice* getDevice() override;
+    void doDisconnect() override;
 
 private:
-    QSerialPort* serial;
+    QSerialPort* serial = nullptr;;
 };

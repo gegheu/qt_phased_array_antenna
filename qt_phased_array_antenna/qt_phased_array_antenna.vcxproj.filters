@@ -37,13 +37,13 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="communication.cpp">
-      <Filter>Source Files\communication</Filter>
-    </ClCompile>
-    <ClCompile Include="SerialPort.cpp">
+    <ClCompile Include="communication_ui.cpp">
       <Filter>Source Files\communication</Filter>
     </ClCompile>
     <ClCompile Include="Tcp.cpp">
+      <Filter>Source Files\communication</Filter>
+    </ClCompile>
+    <ClCompile Include="SerialPort.cpp">
       <Filter>Source Files\communication</Filter>
     </ClCompile>
   </ItemGroup>
@@ -51,10 +51,13 @@
     <QtMoc Include="SerialPort.h">
       <Filter>Header Files\communication</Filter>
     </QtMoc>
-    <QtMoc Include="communication.h">
+    <QtMoc Include="communication_ui.h">
       <Filter>Header Files\communication</Filter>
     </QtMoc>
     <QtMoc Include="Tcp.h">
+      <Filter>Header Files\communication</Filter>
+    </QtMoc>
+    <QtMoc Include="icommunication.h">
       <Filter>Header Files\communication</Filter>
     </QtMoc>
   </ItemGroup>
