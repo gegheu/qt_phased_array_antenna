@@ -1,9 +1,14 @@
 #include "SerialPort.h"
 
-SerialPort::SerialPort(QObject* parent) : QObject(parent)
+SerialPort::SerialPort(QObject* parent) : ICommunication(parent)
 {
     serial = new QSerialPort(this);
-    connect(serial, &QSerialPort::readyRead, this, &SerialPort::onReadyRead);
+    connect(serial, &QSerialPort::readyRead, this, &ICommunication::readData);
+    connect(serial, &QSerialPort::errorOccurred, this, [this](QSerialPort::SerialPortError error) {
+        if (error == QSerialPort::ResourceError) {
+            emit connectStatus(false, serial->errorString());
+        }
+        });
 }
 
 SerialPort::~SerialPort()
@@ -11,55 +16,41 @@ SerialPort::~SerialPort()
     if (serial->isOpen()) {
         serial->close();
     }
-    delete serial;
 }
 
-bool SerialPort::open(const QString &portName, int baudRate, const QSerialPort::Parity &parity, const QSerialPort::DataBits &dataBits, const QSerialPort::StopBits &stopBits)
+void SerialPort::portConnect(const QVariantList& params)
 {
-    serial->setPortName(portName);
-    serial->setBaudRate(baudRate);
-    serial->setDataBits(dataBits);
-    serial->setParity(parity);
-    serial->setStopBits(stopBits);
+    serial->setPortName(params.at(0).toString());
+    serial->setBaudRate(params.at(1).toInt());
+    serial->setDataBits(static_cast<QSerialPort::DataBits>(params.at(2).toInt()));
+    serial->setParity(static_cast<QSerialPort::Parity>(params.at(3).toInt()));
+    serial->setStopBits(static_cast<QSerialPort::StopBits>(params.at(4).toInt()));
 
     if (!serial->open(QSerialPort::ReadWrite)) {
-        return false;
+        emit connectStatus(false, serial->errorString());
     }
-    return true;
+    else {
+        emit connectStatus(true, "no error");
+    }
 }
 
-void SerialPort::close()
+void SerialPort::doDisconnect()
 {
-    if (serial->isOpen()) {
-        serial->close();
-    }
+    serial->close();
 }
 
-bool SerialPort::isOpen()
+bool SerialPort::isConnected() const
 {
     return serial->isOpen();
 }
 
-void SerialPort::clear()
+
+qint64 SerialPort::writeData(const QByteArray& data)
 {
-    if (serial->isOpen()) {
-        serial->clear();
-    }
+    return serial->write(data);
 }
 
-
-qint64 SerialPort::write(const QByteArray& data)
+QIODevice* SerialPort::getDevice()
 {
-    if (serial->isOpen()) {
-        return serial->write(data);
-    }
-}
-
-void SerialPort::onReadyRead()
-{
-    QByteArray data = serial->readAll();
-    while (serial->waitForReadyRead(10)) {
-        data += serial->readAll();
-    }
-    emit dataReceived(data);
+    return serial;
 }

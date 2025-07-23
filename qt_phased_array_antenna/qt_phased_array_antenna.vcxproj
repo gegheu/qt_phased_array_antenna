@@ -96,17 +96,20 @@
     <ClCompile Include="Tcp.cpp" />
     <QtRcc Include="qt_phased_array_antenna.qrc" />
     <QtUic Include="communication_module.ui" />
-    <ClCompile Include="communication.cpp" />
+    <ClCompile Include="communication_ui.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="communication.h" />
+    <QtMoc Include="communication_ui.h" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="SerialPort.h" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="Tcp.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="icommunication.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

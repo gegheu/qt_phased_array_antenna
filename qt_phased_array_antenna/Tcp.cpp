@@ -1,13 +1,21 @@
 #include "Tcp.h"
 
-Tcp::Tcp(QObject* parent) : QObject(parent)
+Tcp::Tcp(QObject* parent) : ICommunication(parent)
 {
     socket = new QTcpSocket(this);
-    connect(socket, &QTcpSocket::readyRead, this, &Tcp::onReadyRead);
-    connect(socket, &QTcpSocket::connected, this, &Tcp::onConnected);
-    connect(socket, &QTcpSocket::disconnected, this, &Tcp::onDisconnected);
+    connect(socket, &QTcpSocket::readyRead, this, &ICommunication::readData);
+    connect(socket, &QTcpSocket::connected, this, [this]() {
+        emit connectStatus(true, "no error");
+        });
+
+    connect(socket, &QTcpSocket::disconnected, this, [this]() {
+        emit connectStatus(false, "disconnected");
+        });
+
     connect(socket, QOverload<QAbstractSocket::SocketError>::of(&QAbstractSocket::errorOccurred),
-        this, &Tcp::onErrorOccurred);
+        [this](QAbstractSocket::SocketError) {
+            emit connectStatus(false, socket->errorString());
+        });
 }
 
 Tcp::~Tcp()
@@ -15,53 +23,29 @@ Tcp::~Tcp()
     if (socket->state() == QAbstractSocket::ConnectedState) {
         socket->disconnectFromHost();
     }
-    delete socket;
 }
 
-void Tcp::connectToHost(const QString& host, int port)
+void Tcp::portConnect(const QVariantList& params)
 {
-    socket->connectToHost(host, port);
+    socket->connectToHost(params.at(0).toString(), params.at(1).toInt());
 }
 
-void Tcp::disconnect()
+void Tcp::doDisconnect()
 {
     socket->disconnectFromHost();
 }
 
-bool Tcp::isConnected()
+bool Tcp::isConnected() const
 {
     return socket->state() == QAbstractSocket::ConnectedState;
 }
 
-void Tcp::write(const QByteArray& data)
+qint64 Tcp::writeData(const QByteArray& data)
 {
-    if (isConnected()) {
-        socket->write(data);
-    }
+    return socket->write(data);
 }
 
-void Tcp::onReadyRead()
+QIODevice* Tcp::getDevice()
 {
-    QByteArray data = socket->readAll();
-    while (socket->waitForReadyRead(10)) {
-        data += socket->readAll();
-    }
-    emit dataReceived(data);
-}
-
-void Tcp::onConnected()
-{
-    emit connected();
-}
-
-void Tcp::onDisconnected()
-{
-    emit disconnected();
-}
-
-
-void Tcp::onErrorOccurred(QAbstractSocket::SocketError error)
-{
-    Q_UNUSED(error);
-    emit connectError(socket->errorString());
+    return socket;
 }

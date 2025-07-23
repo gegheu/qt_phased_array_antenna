@@ -1,31 +1,23 @@
 #pragma once
-#include <QObject>
+#include "icommunication.h"
 #include <QTcpSocket>
 
-class Tcp : public QObject
+class Tcp : public ICommunication
 {
     Q_OBJECT
 public:
     Tcp(QObject* parent = nullptr);
-    ~Tcp();
+    ~Tcp() override;
 
-    void connectToHost(const QString& host, int port);
-    void disconnect();
-    bool isConnected();
-    void write(const QByteArray& data);
+    void portConnect(const QVariantList& params) override;
 
-signals:
-    void dataReceived(const QByteArray& data);
-    void connected();
-    void disconnected();
-    void connectError(const QString& errorInfo);
+    bool isConnected() const override;
 
-private slots:
-    void onReadyRead();
-    void onConnected();
-    void onDisconnected();
-    void onErrorOccurred(QAbstractSocket::SocketError error);
+protected:
+    qint64 writeData(const QByteArray& data) override;
+    QIODevice* getDevice() override;
+    void doDisconnect() override;
 
 private:
-    QTcpSocket* socket;
+    QTcpSocket* socket = nullptr;
 };
