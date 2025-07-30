@@ -1,5 +1,5 @@
 #pragma once
-#include "icommunication.h"
+#include "iCommunication.h"
 #include <QTcpSocket>
 
 class Tcp : public ICommunication

@@ -1,5 +1,4 @@
 #pragma once
-
 #include <QtWidgets/QMainWindow>
 #include "ui_communication_module.h"
 #include <iostream>
@@ -44,7 +43,6 @@ private slots:
     void handleLoadINI();
     void handleOpenSerialResult(bool result, const QString& errStr);
 
-    
     //TCP服务器相关的槽函数
     void onConnectClicked();
     void onSendClicked();
