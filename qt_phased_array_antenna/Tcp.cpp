@@ -20,8 +20,8 @@ Tcp::Tcp(QObject* parent) : ICommunication(parent)
 
 Tcp::~Tcp()
 {
-    if (socket->state() == QAbstractSocket::ConnectedState) {
-        socket->disconnectFromHost();
+    if (isConnected()) {
+        doDisconnect();
     }
 }
 

@@ -1,6 +1,6 @@
 #pragma once
 #include <QSerialPort>
-#include "icommunication.h"
+#include "iCommunication.h"
 
 class SerialPort : public ICommunication
 {

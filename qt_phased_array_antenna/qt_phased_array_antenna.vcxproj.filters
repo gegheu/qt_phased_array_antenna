@@ -27,6 +27,12 @@
     <Filter Include="Header Files\communication">
       <UniqueIdentifier>{e38dfbfb-04aa-4854-991a-1ad433c519a1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\protocol">
+      <UniqueIdentifier>{c84a8a79-62c7-412f-9ae4-c977ad22fda3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\protocol">
+      <UniqueIdentifier>{9d4e7c6a-768f-46c0-9d69-c5ccc01db236}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="qt_phased_array_antenna.qrc">
@@ -46,6 +52,18 @@
     <ClCompile Include="SerialPort.cpp">
       <Filter>Source Files\communication</Filter>
     </ClCompile>
+    <ClCompile Include="iProtocol.cpp">
+      <Filter>Source Files\protocol</Filter>
+    </ClCompile>
+    <ClCompile Include="VFProtocol.cpp">
+      <Filter>Source Files\protocol</Filter>
+    </ClCompile>
+    <ClCompile Include="CommManager.cpp">
+      <Filter>Source Files\communication</Filter>
+    </ClCompile>
+    <ClCompile Include="AntennaProtocol.cpp">
+      <Filter>Source Files\protocol</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="SerialPort.h">
@@ -57,7 +75,19 @@
     <QtMoc Include="Tcp.h">
       <Filter>Header Files\communication</Filter>
     </QtMoc>
-    <QtMoc Include="icommunication.h">
+    <QtMoc Include="iCommunication.h">
+      <Filter>Header Files\communication</Filter>
+    </QtMoc>
+    <QtMoc Include="AntennaProtocol.h">
+      <Filter>Header Files\protocol</Filter>
+    </QtMoc>
+    <QtMoc Include="VFProtocol.h">
+      <Filter>Header Files\protocol</Filter>
+    </QtMoc>
+    <QtMoc Include="iProtocol.h">
+      <Filter>Header Files\protocol</Filter>
+    </QtMoc>
+    <QtMoc Include="CommManager.h">
       <Filter>Header Files\communication</Filter>
     </QtMoc>
   </ItemGroup>
@@ -65,5 +95,10 @@
     <QtUic Include="communication_module.ui">
       <Filter>Form Files</Filter>
     </QtUic>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ProtocolFactory.h">
+      <Filter>Header Files\protocol</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

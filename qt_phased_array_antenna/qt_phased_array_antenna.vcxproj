@@ -92,8 +92,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AntennaProtocol.cpp" />
+    <ClCompile Include="CommManager.cpp" />
+    <ClCompile Include="iProtocol.cpp" />
     <ClCompile Include="SerialPort.cpp" />
     <ClCompile Include="Tcp.cpp" />
+    <ClCompile Include="VFProtocol.cpp" />
     <QtRcc Include="qt_phased_array_antenna.qrc" />
     <QtUic Include="communication_module.ui" />
     <ClCompile Include="communication_ui.cpp" />
@@ -109,7 +113,14 @@
     <QtMoc Include="Tcp.h" />
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="icommunication.h" />
+    <QtMoc Include="iCommunication.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="CommManager.h" />
+    <QtMoc Include="AntennaProtocol.h" />
+    <QtMoc Include="iProtocol.h" />
+    <ClInclude Include="ProtocolFactory.h" />
+    <QtMoc Include="VFProtocol.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

@@ -13,8 +13,8 @@ SerialPort::SerialPort(QObject* parent) : ICommunication(parent)
 
 SerialPort::~SerialPort()
 {
-    if (serial->isOpen()) {
-        serial->close();
+    if (isConnected()) {
+        doDisconnect();
     }
 }
 
