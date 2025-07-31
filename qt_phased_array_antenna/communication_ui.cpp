@@ -21,8 +21,11 @@ communication::communication(QWidget* parent)
     initSerial();
 	initNetwork();
 
+	m_manager = new CommunicationManager(this);
+	connect(m_serialPort, &ICommunication::dataReceived, m_manager, &CommunicationManager::onDataReceived);//接收数据
+	connect(m_manager, &CommunicationManager::VFRecieve,this,&communication::test);
 	//串口
-	connect(m_serialPort, &SerialPort::dataReceived, this, &communication::handleRecvData);//接收数据
+	//connect(m_serialPort, &SerialPort::dataReceived, this, &communication::handleRecvData);//接收数据
     connect(m_timer, &QTimer::timeout, this, &communication::refreshPorts);//定时刷新设备
 	connect(ui->serial_switch, &QPushButton::clicked, this, &communication::handleOpenSerial);//开关串口
 	connect(ui->send_button, &QPushButton::clicked, this, &communication::handleSendData);//发送数据
@@ -44,6 +47,16 @@ communication::~communication()
 {
 	saveINI();
 	delete ui;
+}
+
+
+void communication::test(VFProtocol::VFModuleFrame data) 
+{
+	ui->log_display->append("RECV:");
+	ui->log_display->append("VFStruct.frameHead=" + QString::number(data.frameHead,16));
+	ui->log_display->append("VFStruct.cmd=" + QString::number(data.cmd, 16));
+	ui->log_display->append("VFStruct.frameLength=" + QString::number(data.frameLength, 16));
+	ui->log_display->append("VFStruct.data=" + data.data.toHex());
 }
 
 // 连接服务器
@@ -224,7 +237,6 @@ void communication::appendLog(const QString& str, bool isSend)
 	QString append_str;
 
 	append_str += QDateTime::currentDateTime().toString("[yyyy-MM-dd HH:mm:ss]");
-
 
 	if (isSend == true) {
 		append_str += "  SEND" ;

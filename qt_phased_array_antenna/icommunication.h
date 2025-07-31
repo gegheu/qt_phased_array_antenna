@@ -32,6 +32,7 @@ public:
             while (device->waitForReadyRead(10)) {
                 data += device->readAll();
             }
+            int a = data.size();
             emit dataReceived(data);
         }
     }

@@ -10,6 +10,7 @@
 #include <QTcpSocket>
 #include "SerialPort.h"
 #include "Tcp.h"
+#include "CommManager.h"
 
 class communication : public QMainWindow
 {
@@ -32,6 +33,7 @@ public:
     QVariantList getParaList();
 
 private slots:
+    void test(VFProtocol::VFModuleFrame data);
     //串口相关槽函数
     void refreshPorts();
     void handleOpenSerial();
@@ -54,6 +56,7 @@ private:
     Ui::CommunicationClass* ui;
     ICommunication* m_serialPort = nullptr;
     ICommunication* m_tcp = nullptr;
+    CommunicationManager* m_manager = nullptr;
     //串口相关成员变量
     QTimer* m_timer = nullptr;
     QSettings* m_settings=nullptr;

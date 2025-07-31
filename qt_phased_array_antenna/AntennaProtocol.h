@@ -13,6 +13,16 @@ public:
     QByteArray buildCommand(const QByteArray& data, const QVariantMap& para) override;
     void parseResponse(const QByteArray& data) override;
 
+    struct AnteModuleFrame {
+        quint8 frameHead1 = ANTE_FRAMEHEAD1;
+        quint8 frameHead2 = ANTE_FRAMEHEAD2;
+        quint8 cmd;
+        quint8 frameLength;
+        QByteArray data;
+        qint8 check;
+        quint16 frameTail = ANTE_FRAMETAIL;
+    };
+
 private:
     enum AnteCmdType {
         SwitchCtrl = 0x01,
@@ -46,17 +56,8 @@ private:
         SysErrorRes = 0x32
     };
 
-
-    struct AnteModuleFrame {
-        quint8 frameHead1 = ANTE_FRAMEHEAD1;
-        quint8 frameHead2 = ANTE_FRAMEHEAD2;
-        quint8 cmd;
-        quint8 frameLength;
-        QByteArray data;
-        qint8 check;
-        quint16 frameTail = ANTE_FRAMETAIL;
-    };
-
     QByteArray revertFrame(const AnteModuleFrame& packet);
 
+signals:
+    void AnteEvent(const AnteModuleFrame& packet);
 };
