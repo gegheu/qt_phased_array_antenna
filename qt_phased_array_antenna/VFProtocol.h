@@ -11,6 +11,13 @@ public:
     QByteArray buildCommand(const QByteArray& data, const QVariantMap& para) override;
     void parseResponse(const QByteArray& data) override;
 
+    struct VFModuleFrame {
+        quint8 frameHead = VF_FRAMEHEAD;
+        quint8 cmd;
+        quint8 frameLength;
+        QByteArray data;
+    };
+
 private:
     enum VFCmdType {
         SwitchCtrl = 0x01,
@@ -43,12 +50,8 @@ private:
         ATTCtrl4Res = 0x8D,
     };
 
-    struct VFModuleFrame {
-        quint8 frameHead = VF_FRAMEHEAD;
-        quint8 cmd;
-        quint8 frameLength;
-        QByteArray data;
-    };
-
     QByteArray revertFrame(const VFModuleFrame& packet);
+
+signals:
+    void VFEvent(const VFModuleFrame& packet);
 };

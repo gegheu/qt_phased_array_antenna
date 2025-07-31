@@ -29,14 +29,15 @@ void AntennaProtocol::parseResponse(const QByteArray& data)
 {
 	quint8 offset = 0;
 	AnteModuleFrame frameStr;
-	frameStr.frameHead1 = data.mid(offset, sizeof(frameStr.frameHead1)).toUInt();		offset += sizeof(frameStr.frameHead1);
-	frameStr.frameHead2 = data.mid(offset, sizeof(frameStr.frameHead2)).toUInt();		offset += sizeof(frameStr.frameHead2);
-	frameStr.cmd = data.mid(offset, sizeof(frameStr.cmd)).toUInt();						offset += sizeof(frameStr.cmd);
-	frameStr.frameLength = data.mid(offset, sizeof(frameStr.frameLength)).toUInt();		offset += sizeof(frameStr.frameLength);
-	frameStr.data = data.mid(offset, frameStr.frameLength - DATA_INFO_LENGTH);			offset += frameStr.frameLength - DATA_INFO_LENGTH;
-	frameStr.check= data.mid(offset, sizeof(frameStr.check)).toUInt();					offset += sizeof(frameStr.check);
-	frameStr.frameTail = data.mid(offset, sizeof(frameStr.frameTail)).toUInt();			
-	if (frameStr.check != frameCheck(data.mid(2, frameStr.frameLength), Sum)) {
+	frameStr.frameHead1 = static_cast<quint8>(data[offset]);					offset += sizeof(frameStr.frameHead1);
+	frameStr.frameHead2 = static_cast<quint8>(data[offset]);					offset += sizeof(frameStr.frameHead2);
+	frameStr.cmd = static_cast<quint8>(data[offset]);							offset += sizeof(frameStr.cmd);
+	frameStr.frameLength = static_cast<quint8>(data[offset]);					offset += sizeof(frameStr.frameLength);
+	frameStr.data = data.mid(offset, frameStr.frameLength - DATA_INFO_LENGTH);	offset += frameStr.frameLength - DATA_INFO_LENGTH;
+	frameStr.check= static_cast<quint8>(data[offset]);							offset += sizeof(frameStr.check);
+	frameStr.frameTail = static_cast<quint8>(data[offset]);
+	if (frameStr.check != frameCheck(data.mid(2, frameStr.frameLength), CheckType::Sum)) {
 		//–£—È“Ï≥£
 	}
+	emit AnteEvent(frameStr);
 }

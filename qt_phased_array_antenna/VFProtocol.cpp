@@ -28,8 +28,9 @@ void VFProtocol::parseResponse(const QByteArray& data)
 {
 	quint8 offset = 0;
 	VFModuleFrame frameStr;
-	frameStr.frameHead = data.mid(offset, sizeof(frameStr.frameHead)).toUInt();		offset += frameStr.frameHead;
-	frameStr.cmd = data.mid(offset, sizeof(frameStr.cmd)).toUInt();					offset += frameStr.cmd;
-	frameStr.frameLength = data.mid(offset, sizeof(frameStr.frameLength)).toUInt();	offset += frameStr.frameLength;
+	frameStr.frameHead = static_cast<quint8>(data[offset]);		offset += sizeof(frameStr.frameHead);
+	frameStr.cmd = static_cast<quint8>(data[offset]);			offset += sizeof(frameStr.cmd);
+	frameStr.frameLength = static_cast<quint8>(data[offset]);	offset += sizeof(frameStr.frameLength);
 	frameStr.data = data.mid(offset, frameStr.frameLength);
+	emit VFEvent(frameStr);
 }
