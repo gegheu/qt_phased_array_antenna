@@ -1,6 +1,7 @@
 #pragma once
 #include "iCommunication.h"
 #include <QTcpSocket>
+#include <QTimer> 
 
 class Tcp : public ICommunication
 {
@@ -13,6 +14,14 @@ public:
 
     bool isConnected() const override;
 
+    bool isConnecting() const;
+
+private slots:
+    void handleTimeout();
+
+
+
+
 protected:
     qint64 writeData(const QByteArray& data) override;
     QIODevice* getDevice() override;
@@ -20,4 +29,7 @@ protected:
 
 private:
     QTcpSocket* socket = nullptr;
+    QTimer* m_timeoutTimer;
+
+
 };
