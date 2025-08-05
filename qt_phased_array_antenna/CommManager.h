@@ -15,7 +15,7 @@ public slots:
     void test();
 
 private:
-    QMap<qint64, IProtocol*> m_protocols; 
+    QMap<qint64, IProtocol*> m_protocols;
 
 signals:
     void VFRecieve(const VFProtocol::VFModuleFrame& packet);

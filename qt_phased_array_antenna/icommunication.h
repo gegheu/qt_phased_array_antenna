@@ -12,6 +12,8 @@ public:
     virtual void portConnect(const QVariantList& params) = 0;
     virtual bool isConnected() const = 0;
 
+
+
     qint64 write(const QByteArray& data) {
         if (isConnected()) {
             return writeData(data);
@@ -27,14 +29,10 @@ public:
 
     void readData() {
         QIODevice* device = getDevice();
-        if (device) {
-            QByteArray data = device->readAll();
-            while (device->waitForReadyRead(10)) {
-                data += device->readAll();
-            }
-            int a = data.size();
-            emit dataReceived(data);
-        }
+        if (!device) return;
+
+        QByteArray data = device->readAll();
+        emit dataReceived(data);
     }
 
 signals:

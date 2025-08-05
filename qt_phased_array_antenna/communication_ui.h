@@ -26,11 +26,12 @@ public:
     enum QSerialPort::StopBits getStopBits();
     enum QSerialPort::DataBits getDataBits();
     QString getName();
-    void appendLog(const QString &str, bool isSend);
+    void appendLog(const QString& str, bool isSend);
     void isBaudRateExist();
     void serialPortClocked(bool flag);
     void saveINI();
     QVariantList getParaList();
+
 
 private slots:
     void test(VFProtocol::VFModuleFrame data);
@@ -51,6 +52,8 @@ private slots:
     void onDisconnectClicked();
     void onDataReceived(const QByteArray& data);
     void onConnectedResult(bool result, const QString& errorInfo);
+    void handleTcpClearLog();
+    void handleTcpClearTxData();
 
 private:
     Ui::CommunicationClass* ui;
@@ -59,8 +62,9 @@ private:
     CommunicationManager* m_manager = nullptr;
     //串口相关成员变量
     QTimer* m_timer = nullptr;
-    QSettings* m_settings=nullptr;
+    QSettings* m_settings = nullptr;
     qint32 m_tx_num;
     qint32 m_rx_num;
+
 };
 
