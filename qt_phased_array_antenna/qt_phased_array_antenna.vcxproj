@@ -63,6 +63,11 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
   </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\CYK\Desktop\qt_phased_array_antenna\qt_phased_array_antenna\x64\Debug\qt\uic</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
     <ClCompile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -95,13 +100,17 @@
     <ClCompile Include="AntennaProtocol.cpp" />
     <ClCompile Include="CommManager.cpp" />
     <ClCompile Include="iProtocol.cpp" />
+    <ClCompile Include="SerialConfigDialog.cpp" />
     <ClCompile Include="SerialPort.cpp" />
     <ClCompile Include="Tcp.cpp" />
+    <ClCompile Include="TcpConfigDialog.cpp" />
     <ClCompile Include="VFProtocol.cpp" />
     <QtRcc Include="qt_phased_array_antenna.qrc" />
     <QtUic Include="communication_module.ui" />
     <ClCompile Include="communication_ui.cpp" />
     <ClCompile Include="main.cpp" />
+    <QtUic Include="SeialCongigDialog.ui" />
+    <QtUic Include="TcpConfigDialog.ui" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="communication_ui.h" />
@@ -116,6 +125,8 @@
     <QtMoc Include="iCommunication.h" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="SerialConfigDialog.h" />
+    <QtMoc Include="TcpConfigDialog.h" />
     <QtMoc Include="CommManager.h" />
     <QtMoc Include="AntennaProtocol.h" />
     <QtMoc Include="iProtocol.h" />
