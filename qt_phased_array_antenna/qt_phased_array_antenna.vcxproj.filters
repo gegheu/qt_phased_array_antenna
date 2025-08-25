@@ -64,6 +64,12 @@
     <ClCompile Include="AntennaProtocol.cpp">
       <Filter>Source Files\protocol</Filter>
     </ClCompile>
+    <ClCompile Include="SerialConfigDialog.cpp">
+      <Filter>Source Files\communication</Filter>
+    </ClCompile>
+    <ClCompile Include="TcpConfigDialog.cpp">
+      <Filter>Source Files\communication</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="SerialPort.h">
@@ -90,9 +96,21 @@
     <QtMoc Include="CommManager.h">
       <Filter>Header Files\communication</Filter>
     </QtMoc>
+    <QtMoc Include="TcpConfigDialog.h">
+      <Filter>Header Files\communication</Filter>
+    </QtMoc>
+    <QtMoc Include="SerialConfigDialog.h">
+      <Filter>Header Files\communication</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="communication_module.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="SeialCongigDialog.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="TcpConfigDialog.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>

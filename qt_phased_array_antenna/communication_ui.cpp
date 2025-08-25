@@ -1,5 +1,7 @@
 #include "communication_ui.h"
 #include "ui_communication_module.h"
+#include "SerialConfigDialog.h"
+#include "TcpConfigDialog.h"
 #include <QDebug>
 #include <QMessageBox>
 #include <QFile>
@@ -17,6 +19,20 @@ communication::communication(QWidget* parent)
 	: QMainWindow(parent), ui(new Ui::CommunicationClass)
 {
 	ui->setupUi(this);
+	// 初始化默认配置
+	m_serialBaudRate = 9600;
+	m_serialDataBits = QSerialPort::Data8;
+	m_serialParity = QSerialPort::NoParity;
+	m_serialStopBits = QSerialPort::OneStop;
+	m_serialHexDisplay = true;
+
+	m_tcpIp = "192.168.1.100";
+	m_tcpPort = 8080;
+	m_tcpHexDisplay = true;
+
+	// 创建配置对话框
+	m_serialConfigDialog = new SerialConfigDialog(this);
+	m_tcpConfigDialog = new TcpConfigDialog(this);
 
 	initSerial();
 	initNetwork();
@@ -25,9 +41,9 @@ communication::communication(QWidget* parent)
 	m_manager = new CommunicationManager(this);
 	connect(m_serialPort, &ICommunication::dataReceived, m_manager, &CommunicationManager::onDataReceived);//接收数据
 	connect(m_manager, &CommunicationManager::VFRecieve, this, &communication::test);
+
 	//串口
-	//connect(m_serialPort, &SerialPort::dataReceived, this, &communication::handleRecvData);//接收数据
-	connect(m_timer, &QTimer::timeout, this, &communication::refreshPorts);//定时刷新设备
+	//connect(m_timer, &QTimer::timeout, this, &communication::refreshPorts);//定时刷新设备
 	connect(ui->serial_switch, &QPushButton::clicked, this, &communication::handleOpenSerial);//开关串口
 	connect(ui->send_button, &QPushButton::clicked, this, &communication::handleSendData);//发送数据
 	connect(ui->rxtx_clear, &QPushButton::clicked, this, &communication::handleClearTxRx);//清空计数
@@ -39,16 +55,23 @@ communication::communication(QWidget* parent)
 	connect(ui->pushButtonConnect, &QPushButton::clicked, this, &communication::onConnectClicked);
 	connect(ui->pushButtonSend, &QPushButton::clicked, this, &communication::onSendClicked);
 	connect(ui->pushButtonDisConnect, &QPushButton::clicked, this, &communication::onDisconnectClicked);
-	connect(m_tcp, &Tcp::dataReceived, this, &communication::onDataReceived);
 	connect(m_tcp, &Tcp::connectStatus, this, &communication::onConnectedResult);
 	connect(ui->log_clear_tcp, &QPushButton::clicked, this, &communication::handleTcpClearLog);//清空日志区
 	connect(ui->tx_data_clear_tcp, &QPushButton::clicked, this, &communication::handleTcpClearTxData);//清空发送数据区
+
+	// 使用中间槽函数而不是lambda表达式
+	connect(m_serialPort, &ICommunication::dataReceived, this, &communication::handleSerialDataReceived);
+	connect(m_tcp, &Tcp::dataReceived, this, &communication::handleTcpDataReceived);
+
+	//配置按钮的连接
+	connect(ui->serialConfigButton, &QPushButton::clicked, this, &communication::onSerialConfigClicked);
+	connect(ui->tcpConfigButton, &QPushButton::clicked, this, &communication::onTcpConfigClicked);
 }
 
 
 communication::~communication()
 {
-	saveINI();
+	
 	delete ui;
 }
 
@@ -62,6 +85,33 @@ void communication::test(VFProtocol::VFModuleFrame data)
 	ui->log_display->append("VFStruct.data=" + data.data.toHex());
 }
 
+void communication::onSerialConfigClicked()
+{
+	m_serialConfigDialog->setCurrentConfig(m_serialPortName, m_serialBaudRate,
+		m_serialDataBits, m_serialParity,
+		m_serialStopBits, m_serialHexDisplay);
+
+	if (m_serialConfigDialog->exec() == QDialog::Accepted) {
+		m_serialPortName = m_serialConfigDialog->portName();
+		m_serialBaudRate = m_serialConfigDialog->baudRate();
+		m_serialDataBits = m_serialConfigDialog->dataBits();
+		m_serialParity = m_serialConfigDialog->parity();
+		m_serialStopBits = m_serialConfigDialog->stopBits();
+		m_serialHexDisplay = m_serialConfigDialog->hexDisplay();
+	}
+}
+
+void communication::onTcpConfigClicked()
+{
+	m_tcpConfigDialog->setCurrentConfig(m_tcpIp, m_tcpPort, m_tcpHexDisplay);
+
+	if (m_tcpConfigDialog->exec() == QDialog::Accepted) {
+		m_tcpIp = m_tcpConfigDialog->ipAddress();
+		m_tcpPort = m_tcpConfigDialog->port();
+		m_tcpHexDisplay = m_tcpConfigDialog->hexDisplay();
+	}
+}
+
 // 连接服务器
 void communication::onConnectClicked()
 {
@@ -70,25 +120,20 @@ void communication::onConnectClicked()
 		return;
 	}
 	if (!m_tcp->isConnected()) {
-		// 获取IP和端口
-		QVariantList paraList;
-		paraList.append(ui->lineEditIP->text());
-		paraList.append(ui->lineEditPort->text().toInt());
-
 		// 验证输入
-		if (ui->lineEditIP->text().isEmpty()) {
+		if (m_tcpIp.isEmpty()) {
 			QMessageBox::warning(this, QStringLiteral("输入错误"), QStringLiteral("请输入服务器IP地址"));
 			return;
 		}
 
-		if (ui->lineEditPort->text().toInt() < 1 || ui->lineEditPort->text().toInt() > 65535) {
+		if (m_tcpPort < 1 || m_tcpPort > 65535) {
 			QMessageBox::warning(this, QStringLiteral("端口错误"), QStringLiteral("端口号必须在1-65535之间"));
 			return;
 		}
 
 		// 尝试连接服务器
-		m_tcp->portConnect(paraList);
-		ui->textEditLog->append(QStringLiteral("正在连接服务器: ") + ui->lineEditIP->text() + ":" + QString::number(ui->lineEditPort->text().toInt()));
+		m_tcp->portConnect(getTcpParaList());
+		ui->textEditLog->append(QStringLiteral("正在连接服务器: ") + m_tcpIp + ":" + QString::number(m_tcpPort));
 		ui->pushButtonConnect->setEnabled(false); // 禁用连接按钮直到连接完成
 		ui->pushButtonDisConnect->setEnabled(true);
 		ui->pushButtonDisConnect->setText(QStringLiteral("断开连接"));
@@ -100,9 +145,9 @@ void communication::onSendClicked()
 {
 	if (m_tcp->isConnected()) {
 		QString data = ui->lineEditTextToSend->text();
-		if (!data.isEmpty()) { // 这里不能去掉
+		if (!data.isEmpty()) {
 			QByteArray byteArray;
-			if (ui->tcp_hex_Button->isChecked()) {
+			if (m_tcpHexDisplay) {
 				// 十六进制发送
 				QStringList hexList = data.split(' ', Qt::SkipEmptyParts);
 				for (const QString& hexStr : hexList) {
@@ -144,9 +189,9 @@ void communication::onDisconnectClicked()
 }
 
 // 接收数据
-void communication::onDataReceived(const QByteArray& data)
+void communication::onDataReceived(const QByteArray& data, bool hexDisplay)
 {
-	if (ui->tcp_hex_Button->isChecked())
+	if (hexDisplay)
 	{
 		// 显示十六进制格式
 		QString hexData = data.toHex(' ').toUpper();
@@ -189,17 +234,12 @@ void communication::onConnectedResult(bool result, const QString& errorInfo)
 	// 无论成功与否，连接按钮都应可用
 	ui->pushButtonConnect->setEnabled(true);
 
-	// 更新IP和端口字段状态
-	ui->lineEditIP->setEnabled(!result);
-	ui->lineEditPort->setEnabled(!result);
+
 }
 
 void communication::initNetwork()
 {
 	m_tcp = new Tcp(this);
-
-	ui->lineEditIP->setText("192.168.1.100");
-	ui->lineEditPort->setText("8080");
 }
 
 void communication::handleTcpClearLog()
@@ -211,28 +251,28 @@ void communication::handleTcpClearTxData()
 	ui->lineEditTextToSend->clear();
 }
 
+//0821注释将其移到配置对话框实现文件中
+//void communication::handleLoadINI()
+//{
+//	QStringList defaultRates = { "1200" , "2400" , "4800" , "9600" , "19200" , "38400" , "57600" , "115200" , "230400" , "345600" , "460800" , "576000" , "921600" , "1382400" };
+//	QStringList baudRates = m_settings->value("BaudRates/myBaud", defaultRates).toStringList();
+//
+//	ui->baudrate->addItems(baudRates);
+//}
 
-void communication::handleLoadINI()
-{
-	QStringList defaultRates = { "1200" , "2400" , "4800" , "9600" , "19200" , "38400" , "57600" , "115200" , "230400" , "345600" , "460800" , "576000" , "921600" , "1382400" };
-	QStringList baudRates = m_settings->value("BaudRates/myBaud", defaultRates).toStringList();
-
-	ui->baudrate->addItems(baudRates);
-}
-
-void communication::saveINI()
-{
-	QSettings settings("config.ini", QSettings::IniFormat);
-	QCollator collator;
-	QStringList ratesList;
-
-	for (int i = 0; i < ui->baudrate->count(); i++) {
-		ratesList << ui->baudrate->itemText(i);
-	}
-	collator.setNumericMode(true);
-	std::sort(ratesList.begin(), ratesList.end(), collator);
-	m_settings->setValue("BaudRates/myBaud", ratesList);
-}
+//void communication::saveINI()
+//{
+//	QSettings settings("config.ini", QSettings::IniFormat);
+//	QCollator collator;
+//	QStringList ratesList;
+//
+//	for (int i = 0; i < ui->baudrate->count(); i++) {
+//		ratesList << ui->baudrate->itemText(i);
+//	}
+//	collator.setNumericMode(true);
+//	std::sort(ratesList.begin(), ratesList.end(), collator);
+//	m_settings->setValue("BaudRates/myBaud", ratesList);
+//}
 
 void communication::handleClearTxRx()
 {
@@ -243,11 +283,11 @@ void communication::handleClearTxRx()
 }
 
 
-void communication::handleRecvData(const QByteArray& data)
+void communication::handleRecvData(const QByteArray& data, bool hexDisplay)
 {
 	if (!data.isEmpty()) {
 		QString result;
-		if (ui->hex_Button->isChecked()) {
+		if (hexDisplay) {
 			for (quint8 byte : data) {
 				result += QString("%1 ")
 					.arg(byte, 2, 16, QLatin1Char('0'))
@@ -296,7 +336,7 @@ void communication::handleSendData()
 		QMessageBox::information(this, (QString::fromLocal8Bit("提示")), (QString::fromLocal8Bit("请先打开串口")));
 	}
 	else {
-		if (ui->hex_Button->isChecked()) {
+		if (m_serialHexDisplay) {
 			QStringList hexBytes = data_buff.split(' ', Qt::SkipEmptyParts);
 
 			for (auto byteStr : hexBytes) {
@@ -331,42 +371,42 @@ void communication::handleClearTxData()
 }
 
 
-void communication::refreshPorts()
-{
-	QStringList newPorts;
-	static QStringList lastPorts;
-	static QString usedPort;
-
-	for (const auto& port : QSerialPortInfo::availablePorts()) {
-		newPorts << QString(port.portName() + " " + port.description());
-	}
-
-	// 仅当端口变化时更新UI
-	if (newPorts != lastPorts) {
-		lastPorts = newPorts;
-		ui->serial_name->clear();
-		ui->serial_name->addItems(lastPorts);
-	}
-
-	if (ui->serial_switch->text() == (QString::fromLocal8Bit("关闭串口")) && (ui->serial_name->currentText() != usedPort)) {
-		QMessageBox::warning(this, (QString::fromLocal8Bit("警告")), (QString::fromLocal8Bit("串口设备已断开")));
-		handleOpenSerial();
-	}
-	else {
-		usedPort = ui->serial_name->currentText();
-	}
-}
+//void communication::refreshPorts()
+//{
+//	QStringList newPorts;
+//	static QStringList lastPorts;
+//	static QString usedPort;
+//
+//	for (const auto& port : QSerialPortInfo::availablePorts()) {
+//		newPorts << QString(port.portName() + " " + port.description());
+//	}
+//
+//	// 仅当端口变化时更新UI
+//	if (newPorts != lastPorts) {
+//		lastPorts = newPorts;
+//		ui->serial_name->clear();
+//		ui->serial_name->addItems(lastPorts);
+//	}
+//
+//	if (ui->serial_switch->text() == (QString::fromLocal8Bit("关闭串口")) && (ui->serial_name->currentText() != usedPort)) {
+//		QMessageBox::warning(this, (QString::fromLocal8Bit("警告")), (QString::fromLocal8Bit("串口设备已断开")));
+//		handleOpenSerial();
+//	}
+//	else {
+//		usedPort = ui->serial_name->currentText();
+//	}
+//}
 
 
 void communication::handleOpenSerial()
 {
 	if (ui->serial_switch->text() == (QString::fromLocal8Bit("打开串口"))) {
-		m_serialPort->portConnect(getParaList());
+		ui->serialConfigButton->setEnabled(false);
+		m_serialPort->portConnect(getSerialParaList());
 	}
 	else {
 		m_serialPort->disconnect();
-		serialPortClocked(true);
-
+		ui->serialConfigButton->setEnabled(true);
 		ui->serial_switch->setText(QString::fromLocal8Bit("打开串口"));
 	}
 }
@@ -375,37 +415,37 @@ void communication::handleOpenSerialResult(bool result, const QString& errStr)
 {
 	if (!result) {
 		QMessageBox::warning(this, (QString::fromLocal8Bit("警告")), (QString::fromLocal8Bit("打开串口失败")));
+		ui->serialConfigButton->setEnabled(true);
 	}
 	else {
 		ui->serial_switch->setText(QString::fromLocal8Bit("关闭串口"));
-		serialPortClocked(false);
-		isBaudRateExist();
+		ui->serialConfigButton->setEnabled(false);
 	}
 }
 
-void communication::serialPortClocked(bool flag)
-{
-	ui->serial_name->setEnabled(flag);
-	ui->baudrate->setEnabled(flag);
-	ui->parity->setEnabled(flag);
-	ui->databits->setEnabled(flag);
-	ui->stopbits->setEnabled(flag);
-}
+//void communication::serialPortClocked(bool flag)
+//{
+//	ui->serial_name->setEnabled(flag);
+//	ui->baudrate->setEnabled(flag);
+//	ui->parity->setEnabled(flag);
+//	ui->databits->setEnabled(flag);
+//	ui->stopbits->setEnabled(flag);
+//}
 
-void communication::isBaudRateExist()
-{
-	bool isFound = false;
-	QString current_baud = ui->baudrate->currentText();
-	for (int i = 0; i < ui->baudrate->count(); i++) {
-		if (ui->baudrate->itemText(i) == current_baud) {
-			isFound = true;
-			break;
-		}
-	}
-	if (isFound == false) {
-		ui->baudrate->addItem(current_baud);
-	}
-}
+//void communication::isBaudRateExist()
+//{
+//	bool isFound = false;
+//	QString current_baud = ui->baudrate->currentText();
+//	for (int i = 0; i < ui->baudrate->count(); i++) {
+//		if (ui->baudrate->itemText(i) == current_baud) {
+//			isFound = true;
+//			break;
+//		}
+//	}
+//	if (isFound == false) {
+//		ui->baudrate->addItem(current_baud);
+//	}
+//}
 
 
 void communication::initSerial()
@@ -415,94 +455,88 @@ void communication::initSerial()
 	m_tx_num = 0;
 	m_rx_num = 0;
 
-	//初始化定时器，每秒扫描一次串口设备
-	m_timer = new QTimer(this);
-	m_timer->start(1000);
+	// 初始化定时器，每秒扫描一次串口设备
+	//m_timer = new QTimer(this);
+	//m_timer->start(1000);
 
-	//初始化波特率组件
-	handleLoadINI();
-	ui->baudrate->setCurrentText("9600");
-	//初始化停止位 默认1位
-	QStringList mystopBits;
-	mystopBits.clear();
-	mystopBits << "1" << "1.5" << "2";
-	ui->stopbits->addItems(mystopBits);
-	ui->stopbits->setCurrentText("1");
-	//初始化校验位 默认无校验
-	QStringList mycheckBits;
-	mycheckBits.clear();
-	mycheckBits << "None" << "Even" << "Odd";
-	ui->parity->addItems(mycheckBits);
-	ui->parity->setCurrentText("None");
-	//初始化数据位 默认8位
-	QStringList mydataBits;
-	mydataBits.clear();
-	mydataBits << "5" << "6" << "7" << "8";
-	ui->databits->addItems(mydataBits);
-	ui->databits->setCurrentText("8");
-	//清空显示区
+	// 清空显示区
 	ui->send_data_display->clear();
 	ui->log_display->clear();
-
-	ui->hex_Button->setChecked(true);//设置默认是16进制显示
-	ui->tcp_hex_Button->setChecked(true);//设置默认是16进制显示
 }
 
 
-enum QSerialPort::Parity communication::getParity() {
-	QString currentParityBit = ui->parity->currentText();
-	if (currentParityBit == "None")
-		return QSerialPort::NoParity;
-	else if (currentParityBit == "Odd")//奇数
-		return QSerialPort::OddParity;
-	else if (currentParityBit == "Even")//偶校验
-		return QSerialPort::EvenParity;
-}
+//enum QSerialPort::Parity communication::getParity() {
+//	QString currentParityBit = ui->parity->currentText();
+//	if (currentParityBit == "None")
+//		return QSerialPort::NoParity;
+//	else if (currentParityBit == "Odd")//奇数
+//		return QSerialPort::OddParity;
+//	else if (currentParityBit == "Even")//偶校验
+//		return QSerialPort::EvenParity;
+//}
 
-qint32 communication::getBaud()
-{
-	bool ok;
-	return ui->baudrate->currentText().toLong(&ok, 10);
-}
+//qint32 communication::getBaud()
+//{
+//	bool ok;
+//	return ui->baudrate->currentText().toLong(&ok, 10);
+//}
 
-enum QSerialPort::StopBits communication::getStopBits()
-{
-	QString currentStopBits = ui->stopbits->currentText();
-	if (currentStopBits == "1")
-		return QSerialPort::OneStop;
-	else if (currentStopBits == "1.5")
-		return QSerialPort::OneAndHalfStop;
-	else if (currentStopBits == "2")
-		return QSerialPort::TwoStop;
-}
+//enum QSerialPort::StopBits communication::getStopBits()
+//{
+//	QString currentStopBits = ui->stopbits->currentText();
+//	if (currentStopBits == "1")
+//		return QSerialPort::OneStop;
+//	else if (currentStopBits == "1.5")
+//		return QSerialPort::OneAndHalfStop;
+//	else if (currentStopBits == "2")
+//		return QSerialPort::TwoStop;
+//}
 
-enum QSerialPort::DataBits communication::getDataBits()
-{
-	QString currentDataBits = ui->databits->currentText();
-	if (currentDataBits == "5")
-		return QSerialPort::Data5;
-	else if (currentDataBits == "6")
-		return QSerialPort::Data6;
-	else if (currentDataBits == "7")
-		return QSerialPort::Data7;
-	else if (currentDataBits == "8")
-		return QSerialPort::Data8;
-}
+//enum QSerialPort::DataBits communication::getDataBits()
+//{
+//	QString currentDataBits = ui->databits->currentText();
+//	if (currentDataBits == "5")
+//		return QSerialPort::Data5;
+//	else if (currentDataBits == "6")
+//		return QSerialPort::Data6;
+//	else if (currentDataBits == "7")
+//		return QSerialPort::Data7;
+//	else if (currentDataBits == "8")
+//		return QSerialPort::Data8;
+//}
 
-QString communication::getName()
-{
-	int index = ui->serial_name->currentText().indexOf(' ');
-	QString com_num = ui->serial_name->currentText().left(index);
-	return com_num;
-}
+//QString communication::getName()
+//{
+//	int index = ui->serial_name->currentText().indexOf(' ');
+//	QString com_num = ui->serial_name->currentText().left(index);
+//	return com_num;
+//}
 
-QVariantList communication::getParaList()
+QVariantList communication::getSerialParaList()
 {
 	QVariantList paraList;
-	paraList.append(getName());
-	paraList.append(getBaud());
-	paraList.append(getDataBits());
-	paraList.append(getParity());
-	paraList.append(getStopBits());
+	paraList.append(m_serialPortName);
+	paraList.append(m_serialBaudRate);
+	paraList.append(m_serialDataBits);
+	paraList.append(m_serialParity);
+	paraList.append(m_serialStopBits);
 	return paraList;
+}
+
+QVariantList communication::getTcpParaList()
+{
+	QVariantList paraList;
+	paraList.append(m_tcpIp);
+	paraList.append(m_tcpPort);
+	return paraList;
+}
+
+void communication::handleSerialDataReceived(const QByteArray& data)
+{
+	handleRecvData(data, m_serialHexDisplay);
+}
+
+void communication::handleTcpDataReceived(const QByteArray& data)
+{
+	onDataReceived(data, m_tcpHexDisplay);
 }

@@ -18,7 +18,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>10</y>
+      <y>20</y>
       <width>201</width>
       <height>511</height>
      </rect>
@@ -26,83 +26,11 @@
     <property name="title">
      <string>串口设置</string>
     </property>
-    <widget class="QLabel" name="label">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>60</y>
-       <width>54</width>
-       <height>12</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>串口名</string>
-     </property>
-    </widget>
-    <widget class="QComboBox" name="serial_name">
-     <property name="geometry">
-      <rect>
-       <x>70</x>
-       <y>50</y>
-       <width>101</width>
-       <height>31</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_2">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>120</y>
-       <width>54</width>
-       <height>12</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>波特率</string>
-     </property>
-    </widget>
-    <widget class="QComboBox" name="baudrate">
-     <property name="geometry">
-      <rect>
-       <x>70</x>
-       <y>110</y>
-       <width>101</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="editable">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_9">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>180</y>
-       <width>54</width>
-       <height>12</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>奇偶校验</string>
-     </property>
-    </widget>
-    <widget class="QComboBox" name="parity">
-     <property name="geometry">
-      <rect>
-       <x>70</x>
-       <y>170</y>
-       <width>101</width>
-       <height>31</height>
-      </rect>
-     </property>
-    </widget>
     <widget class="QPushButton" name="serial_switch">
      <property name="geometry">
       <rect>
-       <x>20</x>
-       <y>430</y>
+       <x>10</x>
+       <y>420</y>
        <width>151</width>
        <height>31</height>
       </rect>
@@ -111,76 +39,17 @@
       <string>打开串口</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_4">
+    <widget class="QPushButton" name="serialConfigButton">
      <property name="geometry">
       <rect>
-       <x>20</x>
-       <y>240</y>
-       <width>54</width>
-       <height>12</height>
+       <x>40</x>
+       <y>330</y>
+       <width>93</width>
+       <height>28</height>
       </rect>
      </property>
      <property name="text">
-      <string>数据位</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_3">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>300</y>
-       <width>54</width>
-       <height>12</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>停止位</string>
-     </property>
-    </widget>
-    <widget class="QComboBox" name="databits">
-     <property name="geometry">
-      <rect>
-       <x>70</x>
-       <y>230</y>
-       <width>101</width>
-       <height>31</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QComboBox" name="stopbits">
-     <property name="geometry">
-      <rect>
-       <x>70</x>
-       <y>290</y>
-       <width>101</width>
-       <height>31</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QRadioButton" name="ascii_Button">
-     <property name="geometry">
-      <rect>
-       <x>120</x>
-       <y>370</y>
-       <width>91</width>
-       <height>18</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>ASCII</string>
-     </property>
-    </widget>
-    <widget class="QRadioButton" name="hex_Button">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>370</y>
-       <width>91</width>
-       <height>18</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>16进制</string>
+      <string>串口配置</string>
      </property>
     </widget>
    </widget>
@@ -196,32 +65,6 @@
     <property name="title">
      <string>网口设置</string>
     </property>
-    <widget class="QLabel" name="label_5">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>50</y>
-       <width>54</width>
-       <height>12</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>本机IP</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_6">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>90</y>
-       <width>54</width>
-       <height>12</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>端口号</string>
-     </property>
-    </widget>
     <widget class="QPushButton" name="pushButtonConnect">
      <property name="geometry">
       <rect>
@@ -233,19 +76,6 @@
      </property>
      <property name="text">
       <string>打开服务器</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="lineEditPort">
-     <property name="geometry">
-      <rect>
-       <x>50</x>
-       <y>80</y>
-       <width>141</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="maxLength">
-      <number>3273</number>
      </property>
     </widget>
     <widget class="QPushButton" name="pushButtonDisConnect">
@@ -261,14 +91,17 @@
       <string>关闭服务器</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="lineEditIP">
+    <widget class="QPushButton" name="tcpConfigButton">
      <property name="geometry">
       <rect>
        <x>50</x>
-       <y>40</y>
-       <width>141</width>
-       <height>31</height>
+       <y>120</y>
+       <width>93</width>
+       <height>28</height>
       </rect>
+     </property>
+     <property name="text">
+      <string>Tcp配置</string>
      </property>
     </widget>
    </widget>
@@ -487,32 +320,6 @@
       </rect>
      </property>
     </widget>
-   </widget>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>900</x>
-      <y>290</y>
-      <width>149</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QRadioButton" name="tcp_hex_Button">
-       <property name="text">
-        <string>16进制</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QRadioButton" name="tcp_ascii_Button">
-       <property name="text">
-        <string>ASCII</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
