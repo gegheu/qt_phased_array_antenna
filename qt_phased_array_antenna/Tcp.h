@@ -9,12 +9,10 @@ class Tcp : public ICommunication
 public:
     Tcp(QObject* parent = nullptr);
     ~Tcp() override;
-
     void portConnect(const QVariantList& params) override;
-
     bool isConnected() const override;
-
     bool isConnecting() const;
+    void abortConnection();
 
 private slots:
     void handleTimeout();

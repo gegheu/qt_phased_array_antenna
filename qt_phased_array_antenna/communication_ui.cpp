@@ -1,4 +1,4 @@
-#include "communication_ui.h"
+ï»¿#include "communication_ui.h"
 #include "ui_communication_module.h"
 #include "SerialConfigDialog.h"
 #include "TcpConfigDialog.h"
@@ -16,10 +16,10 @@
 
 
 communication::communication(QWidget* parent)
-	: QMainWindow(parent), ui(new Ui::CommunicationClass)
+	: QMainWindow(parent), ui(new Ui::CommunicationClass), m_tcpConnectionState(Disconnected) // åˆå§‹çŠ¶æ€ä¸ºæ–­å¼€
 {
 	ui->setupUi(this);
-	// ³õÊ¼»¯Ä¬ÈÏÅäÖÃ
+	// åˆå§‹åŒ–é»˜è®¤é…ç½®
 	m_serialBaudRate = 9600;
 	m_serialDataBits = QSerialPort::Data8;
 	m_serialParity = QSerialPort::NoParity;
@@ -30,7 +30,8 @@ communication::communication(QWidget* parent)
 	m_tcpPort = 8080;
 	m_tcpHexDisplay = true;
 
-	// ´´½¨ÅäÖÃ¶Ô»°¿ò
+
+	// åˆ›å»ºé…ç½®å¯¹è¯æ¡†
 	m_serialConfigDialog = new SerialConfigDialog(this);
 	m_tcpConfigDialog = new TcpConfigDialog(this);
 
@@ -38,40 +39,43 @@ communication::communication(QWidget* parent)
 	initNetwork();
 
 
+
 	m_manager = new CommunicationManager(this);
-	connect(m_serialPort, &ICommunication::dataReceived, m_manager, &CommunicationManager::onDataReceived);//½ÓÊÕÊı¾İ
+	connect(m_serialPort, &ICommunication::dataReceived, m_manager, &CommunicationManager::onDataReceived);//æ¥æ”¶æ•°æ®
 	connect(m_manager, &CommunicationManager::VFRecieve, this, &communication::test);
 
-	//´®¿Ú
-	//connect(m_timer, &QTimer::timeout, this, &communication::refreshPorts);//¶¨Ê±Ë¢ĞÂÉè±¸
-	connect(ui->serial_switch, &QPushButton::clicked, this, &communication::handleOpenSerial);//¿ª¹Ø´®¿Ú
-	connect(ui->send_button, &QPushButton::clicked, this, &communication::handleSendData);//·¢ËÍÊı¾İ
-	connect(ui->rxtx_clear, &QPushButton::clicked, this, &communication::handleClearTxRx);//Çå¿Õ¼ÆÊı
-	connect(ui->log_clear, &QPushButton::clicked, this, &communication::handleClearLog);//Çå¿ÕÈÕÖ¾Çø
-	connect(ui->tx_data_clear, &QPushButton::clicked, this, &communication::handleClearTxData);//Çå¿Õ·¢ËÍÊı¾İÇø
+	//ä¸²å£
+	//connect(m_timer, &QTimer::timeout, this, &communication::refreshPorts);//å®šæ—¶åˆ·æ–°è®¾å¤‡
+	connect(ui->serial_switch, &QPushButton::clicked, this, &communication::handleOpenSerial);//å¼€å…³ä¸²å£
+	connect(ui->send_button, &QPushButton::clicked, this, &communication::handleSendData);//å‘é€æ•°æ®
+	connect(ui->rxtx_clear, &QPushButton::clicked, this, &communication::handleClearTxRx);//æ¸…ç©ºè®¡æ•°
+	connect(ui->log_clear, &QPushButton::clicked, this, &communication::handleClearLog);//æ¸…ç©ºæ—¥å¿—åŒº
+	connect(ui->tx_data_clear, &QPushButton::clicked, this, &communication::handleClearTxData);//æ¸…ç©ºå‘é€æ•°æ®åŒº
 	connect(m_serialPort, &SerialPort::connectStatus, this, &communication::handleOpenSerialResult);
 
-	//Íø¿Ú
+	//ç½‘å£
 	connect(ui->pushButtonConnect, &QPushButton::clicked, this, &communication::onConnectClicked);
 	connect(ui->pushButtonSend, &QPushButton::clicked, this, &communication::onSendClicked);
 	connect(ui->pushButtonDisConnect, &QPushButton::clicked, this, &communication::onDisconnectClicked);
 	connect(m_tcp, &Tcp::connectStatus, this, &communication::onConnectedResult);
-	connect(ui->log_clear_tcp, &QPushButton::clicked, this, &communication::handleTcpClearLog);//Çå¿ÕÈÕÖ¾Çø
-	connect(ui->tx_data_clear_tcp, &QPushButton::clicked, this, &communication::handleTcpClearTxData);//Çå¿Õ·¢ËÍÊı¾İÇø
+	connect(ui->log_clear_tcp, &QPushButton::clicked, this, &communication::handleTcpClearLog);//æ¸…ç©ºæ—¥å¿—åŒº
+	connect(ui->tx_data_clear_tcp, &QPushButton::clicked, this, &communication::handleTcpClearTxData);//æ¸…ç©ºå‘é€æ•°æ®åŒº
 
-	// Ê¹ÓÃÖĞ¼ä²Ûº¯Êı¶ø²»ÊÇlambda±í´ïÊ½
+	// ä½¿ç”¨ä¸­é—´æ§½å‡½æ•°è€Œä¸æ˜¯lambdaè¡¨è¾¾å¼
 	connect(m_serialPort, &ICommunication::dataReceived, this, &communication::handleSerialDataReceived);
 	connect(m_tcp, &Tcp::dataReceived, this, &communication::handleTcpDataReceived);
 
-	//ÅäÖÃ°´Å¥µÄÁ¬½Ó
+	//é…ç½®æŒ‰é’®çš„è¿æ¥
 	connect(ui->serialConfigButton, &QPushButton::clicked, this, &communication::onSerialConfigClicked);
 	connect(ui->tcpConfigButton, &QPushButton::clicked, this, &communication::onTcpConfigClicked);
+
+	QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
 }
 
 
 communication::~communication()
 {
-	
+
 	delete ui;
 }
 
@@ -112,7 +116,7 @@ void communication::onTcpConfigClicked()
 	}
 }
 
-// Á¬½Ó·şÎñÆ÷
+// è¿æ¥æœåŠ¡å™¨
 void communication::onConnectClicked()
 {
 	Tcp* tcp = qobject_cast<Tcp*>(m_tcp);
@@ -120,27 +124,30 @@ void communication::onConnectClicked()
 		return;
 	}
 	if (!m_tcp->isConnected()) {
-		// ÑéÖ¤ÊäÈë
+		// éªŒè¯è¾“å…¥
 		if (m_tcpIp.isEmpty()) {
-			QMessageBox::warning(this, QStringLiteral("ÊäÈë´íÎó"), QStringLiteral("ÇëÊäÈë·şÎñÆ÷IPµØÖ·"));
+			QMessageBox::warning(this, QStringLiteral("è¾“å…¥é”™è¯¯"), QStringLiteral("è¯·è¾“å…¥æœåŠ¡å™¨IPåœ°å€"));
 			return;
 		}
 
 		if (m_tcpPort < 1 || m_tcpPort > 65535) {
-			QMessageBox::warning(this, QStringLiteral("¶Ë¿Ú´íÎó"), QStringLiteral("¶Ë¿ÚºÅ±ØĞëÔÚ1-65535Ö®¼ä"));
+			QMessageBox::warning(this, QStringLiteral("ç«¯å£é”™è¯¯"), QStringLiteral("ç«¯å£å·å¿…é¡»åœ¨1-65535ä¹‹é—´"));
 			return;
 		}
 
-		// ³¢ÊÔÁ¬½Ó·şÎñÆ÷
+		// æ›´æ–°è¿æ¥çŠ¶æ€
+		m_tcpConnectionState = Connecting;
+
+		// å°è¯•è¿æ¥æœåŠ¡å™¨
 		m_tcp->portConnect(getTcpParaList());
-		ui->textEditLog->append(QStringLiteral("ÕıÔÚÁ¬½Ó·şÎñÆ÷: ") + m_tcpIp + ":" + QString::number(m_tcpPort));
-		ui->pushButtonConnect->setEnabled(false); // ½ûÓÃÁ¬½Ó°´Å¥Ö±µ½Á¬½ÓÍê³É
+		ui->textEditLog->append(QStringLiteral("æ­£åœ¨è¿æ¥æœåŠ¡å™¨: ") + m_tcpIp + ":" + QString::number(m_tcpPort));
+		ui->pushButtonConnect->setEnabled(false); // ç¦ç”¨è¿æ¥æŒ‰é’®ç›´åˆ°è¿æ¥å®Œæˆ
 		ui->pushButtonDisConnect->setEnabled(true);
-		ui->pushButtonDisConnect->setText(QStringLiteral("¶Ï¿ªÁ¬½Ó"));
+		ui->pushButtonDisConnect->setText(QStringLiteral("å–æ¶ˆè¿æ¥"));
 	}
 }
 
-// ·¢ËÍÊı¾İ
+// å‘é€æ•°æ®
 void communication::onSendClicked()
 {
 	if (m_tcp->isConnected()) {
@@ -148,7 +155,7 @@ void communication::onSendClicked()
 		if (!data.isEmpty()) {
 			QByteArray byteArray;
 			if (m_tcpHexDisplay) {
-				// Ê®Áù½øÖÆ·¢ËÍ
+				// åå…­è¿›åˆ¶å‘é€
 				QStringList hexList = data.split(' ', Qt::SkipEmptyParts);
 				for (const QString& hexStr : hexList) {
 					bool ok;
@@ -158,84 +165,124 @@ void communication::onSendClicked()
 					}
 				}
 				m_tcp->write(byteArray);
-				ui->textEditLog->append(QStringLiteral("[·¢ËÍ] Ê®Áù½øÖÆ: ") + byteArray.toHex(' ').toUpper());
+				ui->textEditLog->append(QStringLiteral("[å‘é€] åå…­è¿›åˆ¶: ") + byteArray.toHex(' ').toUpper());
 			}
 			else {
-				// ASCII·¢ËÍ
+				// ASCIIå‘é€
 				byteArray = data.toUtf8();
 				m_tcp->write(byteArray);
-				ui->textEditLog->append(QStringLiteral("[·¢ËÍ] ÎÄ±¾: ") + data);
+				ui->textEditLog->append(QStringLiteral("[å‘é€] æ–‡æœ¬: ") + data);
 			}
 		}
 	}
 	else {
-		ui->textEditLog->append(QStringLiteral("Î´Á¬½Ó·şÎñÆ÷£¬ÎŞ·¨·¢ËÍÊı¾İ"));
+		ui->textEditLog->append(QStringLiteral("æœªè¿æ¥æœåŠ¡å™¨ï¼Œæ— æ³•å‘é€æ•°æ®"));
 	}
 }
 
-// ¶Ï¿ªÁ¬½Ó
+// æ–­å¼€è¿æ¥
 void communication::onDisconnectClicked()
 {
 	Tcp* tcp = qobject_cast<Tcp*>(m_tcp);
 	if (!tcp) return;
-	// Á¢¼´Í£Ö¹ËùÓĞÁ¬½Ó³¢ÊÔ
-	tcp->disconnect();
 
-	// ¸üĞÂUI×´Ì¬
-	ui->textEditLog->append(QStringLiteral("Á¬½ÓÒÑÈ¡Ïû"));
+	// æ ¹æ®å½“å‰è¿æ¥çŠ¶æ€æ‰§è¡Œä¸åŒçš„æ–­å¼€æ“ä½œ
+	if (m_tcpConnectionState == Connecting) {
+		// æ­£åœ¨è¿æ¥ä¸­ï¼Œä¸­æ­¢è¿æ¥å°è¯•
+		tcp->abortConnection();
+		ui->textEditLog->append(QStringLiteral("è¿æ¥å·²å–æ¶ˆ"));
+	}
+	else if (m_tcpConnectionState == Connected) {
+		// å·²è¿æ¥ï¼Œæ­£å¸¸æ–­å¼€
+		tcp->disconnect();
+		ui->textEditLog->append(QStringLiteral("è¿æ¥å·²æ–­å¼€"));
+	}
+
+	// æ›´æ–°UIçŠ¶æ€
 	ui->pushButtonConnect->setEnabled(true);
 	ui->pushButtonDisConnect->setEnabled(false);
-	ui->pushButtonDisConnect->setText(QStringLiteral("¶Ï¿ªÁ¬½Ó"));
+	ui->pushButtonDisConnect->setText(QStringLiteral("æ–­å¼€è¿æ¥"));
+
+	// æ›´æ–°è¿æ¥çŠ¶æ€
+	m_tcpConnectionState = Disconnected;
 }
 
-// ½ÓÊÕÊı¾İ
+// æ¥æ”¶æ•°æ®
 void communication::onDataReceived(const QByteArray& data, bool hexDisplay)
 {
 	if (hexDisplay)
 	{
-		// ÏÔÊ¾Ê®Áù½øÖÆ¸ñÊ½
+		// æ˜¾ç¤ºåå…­è¿›åˆ¶æ ¼å¼
 		QString hexData = data.toHex(' ').toUpper();
-		ui->textEditLog->append(QStringLiteral("[½ÓÊÕ] Ê®Áù½øÖÆ: ") + hexData);
+		ui->textEditLog->append(QStringLiteral("[æ¥æ”¶] åå…­è¿›åˆ¶: ") + hexData);
 	}
 	else
 	{
-		// ³¢ÊÔÏÔÊ¾ÎÄ±¾£¨Èç¹ûÊÇÎÄ±¾Êı¾İ£©
+		// å°è¯•æ˜¾ç¤ºæ–‡æœ¬ï¼ˆå¦‚æœæ˜¯æ–‡æœ¬æ•°æ®ï¼‰
 		QString textData = QString::fromUtf8(data);
-		ui->textEditLog->append(QStringLiteral("[½ÓÊÕ] ÎÄ±¾: ") + textData);
+		ui->textEditLog->append(QStringLiteral("[æ¥æ”¶] æ–‡æœ¬: ") + textData);
 	}
 }
 
-// ´íÎó´¦Àí
+// é”™è¯¯å¤„ç†
 void communication::onConnectedResult(bool result, const QString& errorInfo)
 {
 	if (result) {
-		ui->pushButtonConnect->setText(QStringLiteral("ÒÑÁ¬½Ó"));
+		m_tcpConnectionState = Connected;
+		ui->pushButtonConnect->setText(QStringLiteral("å·²è¿æ¥"));
 		ui->pushButtonSend->setEnabled(true);
-		ui->textEditLog->append(QStringLiteral("Á¬½Ó·şÎñÆ÷³É¹¦!"));
-
-		// Á¬½Ó³É¹¦Ê±£¬¶Ï¿ª°´Å¥Ó¦±£³Ö¿ÉÓÃ
+		ui->textEditLog->append(QStringLiteral("è¿æ¥æœåŠ¡å™¨æˆåŠŸ!"));
 		ui->pushButtonDisConnect->setEnabled(true);
-		ui->pushButtonDisConnect->setText(QStringLiteral("¶Ï¿ªÁ¬½Ó"));
+		ui->pushButtonDisConnect->setText(QStringLiteral("æ–­å¼€è¿æ¥"));
 	}
 	else {
-		// Ö»ÔÚÓĞ´íÎóĞÅÏ¢Ê±ÏÔÊ¾´íÎó
-		if (!errorInfo.isEmpty() && errorInfo != "disconnected") {
-			ui->textEditLog->append(QStringLiteral("Á¬½Ó´íÎó: ") + errorInfo);
+		m_tcpConnectionState = Disconnected;
+
+
+		if (!errorInfo.isEmpty()) {
+			QString displayError;
+
+
+			if (errorInfo == "disconnected" ||
+				errorInfo == "Connection timed out" ||
+				errorInfo == "è¿æ¥å·²å–æ¶ˆ" ||
+				errorInfo == "æ‰‹åŠ¨æ–­å¼€") {
+				if (errorInfo == "disconnected") {
+					displayError = QStringLiteral("è¿æ¥å·²æ–­å¼€");
+				}
+				else if (errorInfo == "Connection timed out") {
+					displayError = QStringLiteral("è¿æ¥è¶…æ—¶");
+				}
+				else {
+					displayError = errorInfo;
+				}
+			}
+			else {
+
+				displayError = errorInfo;
+				if (displayError.contains(QRegExp("[^\\x00-\\x7F]")) &&
+					(displayError.contains("?") || displayError.contains("ï¿½"))) {
+					QTextCodec* codec = QTextCodec::codecForLocale();
+					QByteArray encodedString = errorInfo.toLocal8Bit();
+					displayError = codec->toUnicode(encodedString);
+					if (displayError.isEmpty() || displayError.contains("?") || displayError.contains("ï¿½")) {
+						displayError = QStringLiteral("è¿æ¥é”™è¯¯");
+					}
+				}
+			}
+
+			ui->textEditLog->append(QStringLiteral("è¿æ¥é”™è¯¯: ") + displayError);
 		}
 
-		ui->pushButtonConnect->setText(QStringLiteral("Á¬½Ó·şÎñÆ÷"));
+		ui->pushButtonConnect->setText(QStringLiteral("è¿æ¥æœåŠ¡å™¨"));
 		ui->pushButtonSend->setEnabled(false);
-
-		// Á¬½ÓÊ§°ÜÊ±£¬¶Ï¿ª°´Å¥²»¿ÉÓÃ
 		ui->pushButtonDisConnect->setEnabled(false);
-		ui->pushButtonDisConnect->setText(QStringLiteral("¶Ï¿ªÁ¬½Ó"));
+		ui->pushButtonDisConnect->setText(QStringLiteral("æ–­å¼€è¿æ¥"));
 	}
 
-	// ÎŞÂÛ³É¹¦Óë·ñ£¬Á¬½Ó°´Å¥¶¼Ó¦¿ÉÓÃ
 	ui->pushButtonConnect->setEnabled(true);
-
-
 }
+
 
 void communication::initNetwork()
 {
@@ -251,7 +298,7 @@ void communication::handleTcpClearTxData()
 	ui->lineEditTextToSend->clear();
 }
 
-//0821×¢ÊÍ½«ÆäÒÆµ½ÅäÖÃ¶Ô»°¿òÊµÏÖÎÄ¼şÖĞ
+//0821æ³¨é‡Šå°†å…¶ç§»åˆ°é…ç½®å¯¹è¯æ¡†å®ç°æ–‡ä»¶ä¸­
 //void communication::handleLoadINI()
 //{
 //	QStringList defaultRates = { "1200" , "2400" , "4800" , "9600" , "19200" , "38400" , "57600" , "115200" , "230400" , "345600" , "460800" , "576000" , "921600" , "1382400" };
@@ -333,7 +380,7 @@ void communication::handleSendData()
 	QByteArray write_buff;
 	QString data_buff = ui->send_data_display->toPlainText();
 	if (!m_serialPort->isConnected()) {
-		QMessageBox::information(this, (QString::fromLocal8Bit("ÌáÊ¾")), (QString::fromLocal8Bit("ÇëÏÈ´ò¿ª´®¿Ú")));
+		QMessageBox::information(this, (QString::fromLocal8Bit("æç¤º")), (QString::fromLocal8Bit("è¯·å…ˆæ‰“å¼€ä¸²å£")));
 	}
 	else {
 		if (m_serialHexDisplay) {
@@ -381,15 +428,15 @@ void communication::handleClearTxData()
 //		newPorts << QString(port.portName() + " " + port.description());
 //	}
 //
-//	// ½öµ±¶Ë¿Ú±ä»¯Ê±¸üĞÂUI
+//	// ä»…å½“ç«¯å£å˜åŒ–æ—¶æ›´æ–°UI
 //	if (newPorts != lastPorts) {
 //		lastPorts = newPorts;
 //		ui->serial_name->clear();
 //		ui->serial_name->addItems(lastPorts);
 //	}
 //
-//	if (ui->serial_switch->text() == (QString::fromLocal8Bit("¹Ø±Õ´®¿Ú")) && (ui->serial_name->currentText() != usedPort)) {
-//		QMessageBox::warning(this, (QString::fromLocal8Bit("¾¯¸æ")), (QString::fromLocal8Bit("´®¿ÚÉè±¸ÒÑ¶Ï¿ª")));
+//	if (ui->serial_switch->text() == (QString::fromLocal8Bit("å…³é—­ä¸²å£")) && (ui->serial_name->currentText() != usedPort)) {
+//		QMessageBox::warning(this, (QString::fromLocal8Bit("è­¦å‘Š")), (QString::fromLocal8Bit("ä¸²å£è®¾å¤‡å·²æ–­å¼€")));
 //		handleOpenSerial();
 //	}
 //	else {
@@ -400,25 +447,25 @@ void communication::handleClearTxData()
 
 void communication::handleOpenSerial()
 {
-	if (ui->serial_switch->text() == (QString::fromLocal8Bit("´ò¿ª´®¿Ú"))) {
+	if (ui->serial_switch->text() == (QString::fromLocal8Bit("æ‰“å¼€ä¸²å£"))) {
 		ui->serialConfigButton->setEnabled(false);
 		m_serialPort->portConnect(getSerialParaList());
 	}
 	else {
 		m_serialPort->disconnect();
 		ui->serialConfigButton->setEnabled(true);
-		ui->serial_switch->setText(QString::fromLocal8Bit("´ò¿ª´®¿Ú"));
+		ui->serial_switch->setText(QString::fromLocal8Bit("æ‰“å¼€ä¸²å£"));
 	}
 }
 
 void communication::handleOpenSerialResult(bool result, const QString& errStr)
 {
 	if (!result) {
-		QMessageBox::warning(this, (QString::fromLocal8Bit("¾¯¸æ")), (QString::fromLocal8Bit("´ò¿ª´®¿ÚÊ§°Ü")));
+		QMessageBox::warning(this, (QString::fromLocal8Bit("è­¦å‘Š")), (QString::fromLocal8Bit("æ‰“å¼€ä¸²å£å¤±è´¥")));
 		ui->serialConfigButton->setEnabled(true);
 	}
 	else {
-		ui->serial_switch->setText(QString::fromLocal8Bit("¹Ø±Õ´®¿Ú"));
+		ui->serial_switch->setText(QString::fromLocal8Bit("å…³é—­ä¸²å£"));
 		ui->serialConfigButton->setEnabled(false);
 	}
 }
@@ -455,11 +502,11 @@ void communication::initSerial()
 	m_tx_num = 0;
 	m_rx_num = 0;
 
-	// ³õÊ¼»¯¶¨Ê±Æ÷£¬Ã¿ÃëÉ¨ÃèÒ»´Î´®¿ÚÉè±¸
+	// åˆå§‹åŒ–å®šæ—¶å™¨ï¼Œæ¯ç§’æ‰«æä¸€æ¬¡ä¸²å£è®¾å¤‡
 	//m_timer = new QTimer(this);
 	//m_timer->start(1000);
 
-	// Çå¿ÕÏÔÊ¾Çø
+	// æ¸…ç©ºæ˜¾ç¤ºåŒº
 	ui->send_data_display->clear();
 	ui->log_display->clear();
 }
@@ -469,9 +516,9 @@ void communication::initSerial()
 //	QString currentParityBit = ui->parity->currentText();
 //	if (currentParityBit == "None")
 //		return QSerialPort::NoParity;
-//	else if (currentParityBit == "Odd")//ÆæÊı
+//	else if (currentParityBit == "Odd")//å¥‡æ•°
 //		return QSerialPort::OddParity;
-//	else if (currentParityBit == "Even")//Å¼Ğ£Ñé
+//	else if (currentParityBit == "Even")//å¶æ ¡éªŒ
 //		return QSerialPort::EvenParity;
 //}
 

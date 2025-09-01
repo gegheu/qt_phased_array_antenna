@@ -14,13 +14,40 @@ Tcp::Tcp(QObject* parent) : ICommunication(parent)
 
     connect(socket, &QTcpSocket::disconnected, this, [this]() {
         m_timeoutTimer->stop();
-        emit connectStatus(false, "disconnected");
+        emit connectStatus(false, QStringLiteral("连接已断开"));
         });
 
     connect(socket, QOverload<QAbstractSocket::SocketError>::of(&QAbstractSocket::errorOccurred),
-        [this](QAbstractSocket::SocketError) {
+        [this](QAbstractSocket::SocketError error) {
             m_timeoutTimer->stop();
-            emit connectStatus(false, socket->errorString());
+            QString errorStr;
+            switch (error) {
+            case QAbstractSocket::ConnectionRefusedError:
+                errorStr = QStringLiteral("连接被拒绝");
+                break;
+            case QAbstractSocket::RemoteHostClosedError:
+                errorStr = QStringLiteral("远程主机关闭连接");
+                break;
+            case QAbstractSocket::HostNotFoundError:
+                errorStr = QStringLiteral("主机未找到");
+                break;
+            case QAbstractSocket::SocketAccessError:
+                errorStr = QStringLiteral("套接字访问错误");
+                break;
+            case QAbstractSocket::SocketResourceError:
+                errorStr = QStringLiteral("套接字资源错误");
+                break;
+            case QAbstractSocket::SocketTimeoutError:
+                errorStr = QStringLiteral("连接超时");
+                break;
+            case QAbstractSocket::NetworkError:
+                errorStr = QStringLiteral("网络错误");
+                break;
+            default:
+                errorStr = QStringLiteral("未知错误: %1").arg(error);
+                break;
+            }
+            emit connectStatus(false, errorStr);
         });
 }
 
@@ -47,11 +74,13 @@ void Tcp::doDisconnect()
     m_timeoutTimer->stop();
     if (isConnecting()) {
         socket->abort();
+
+        emit connectStatus(false, QStringLiteral("手动断开"));
     }
     else {
         socket->disconnectFromHost();
+        // 这里不立即发送状态信号，等待 disconnected 信号
     }
-    emit connectStatus(false, "手动断开");
 }
 
 bool Tcp::isConnected() const
@@ -78,6 +107,15 @@ void Tcp::handleTimeout()
 {
     if (isConnecting()) {
         socket->abort(); // 中止连接
-        emit connectStatus(false, "Connection timed out");
+        emit connectStatus(false, QStringLiteral("连接超时"));
+    }
+}
+
+void Tcp::abortConnection()
+{
+    m_timeoutTimer->stop();
+    if (isConnecting()) {
+        socket->abort();
+        emit connectStatus(false, QStringLiteral("连接已取消"));
     }
 }

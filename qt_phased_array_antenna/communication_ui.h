@@ -86,5 +86,12 @@ private:
     qint32 m_tx_num;
     qint32 m_rx_num;
 
+    enum ConnectionState {
+        Disconnected,
+        Connecting,
+        Connected
+    };
+    ConnectionState m_tcpConnectionState;
+
 };
 
