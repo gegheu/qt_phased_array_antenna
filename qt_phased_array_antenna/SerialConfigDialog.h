@@ -7,7 +7,7 @@
 #include <QSerialPortInfo>
 #include <QString> 
 
-// 使用前置声明
+
 namespace Ui {
     class SerialConfigDialog;
 }

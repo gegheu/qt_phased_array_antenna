@@ -43,7 +43,7 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="communication_ui.cpp">
+    <ClCompile Include="mainwindow.cpp">
       <Filter>Source Files\communication</Filter>
     </ClCompile>
     <ClCompile Include="Tcp.cpp">
@@ -70,12 +70,30 @@
     <ClCompile Include="TcpConfigDialog.cpp">
       <Filter>Source Files\communication</Filter>
     </ClCompile>
+    <ClCompile Include="Module1.cpp">
+      <Filter>Source Files\communication</Filter>
+    </ClCompile>
+    <ClCompile Include="Module2.cpp">
+      <Filter>Source Files\communication</Filter>
+    </ClCompile>
+    <ClCompile Include="Module3.cpp">
+      <Filter>Source Files\communication</Filter>
+    </ClCompile>
+    <ClCompile Include="Module4.cpp">
+      <Filter>Source Files\communication</Filter>
+    </ClCompile>
+    <ClCompile Include="Module5.cpp">
+      <Filter>Source Files\communication</Filter>
+    </ClCompile>
+    <ClCompile Include="iCommunication.cpp">
+      <Filter>Source Files\communication</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="SerialPort.h">
       <Filter>Header Files\communication</Filter>
     </QtMoc>
-    <QtMoc Include="communication_ui.h">
+    <QtMoc Include="mainwindow.h">
       <Filter>Header Files\communication</Filter>
     </QtMoc>
     <QtMoc Include="Tcp.h">
@@ -102,15 +120,45 @@
     <QtMoc Include="SerialConfigDialog.h">
       <Filter>Header Files\communication</Filter>
     </QtMoc>
+    <QtMoc Include="Module1.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="Module2.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="Module3.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="Module4.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="Module5.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
-    <QtUic Include="communication_module.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
     <QtUic Include="SeialCongigDialog.ui">
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="TcpConfigDialog.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="mainwindow.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="module1.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="module2.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="module3.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="module4.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="module5.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>

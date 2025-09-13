@@ -7,7 +7,7 @@ class Tcp : public ICommunication
 {
     Q_OBJECT
 public:
-    Tcp(QObject* parent = nullptr);
+    explicit Tcp(const QString& instanceId = "", QObject* parent = nullptr);
     ~Tcp() override;
     void portConnect(const QVariantList& params) override;
     bool isConnected() const override;
@@ -17,9 +17,6 @@ public:
 private slots:
     void handleTimeout();
 
-
-
-
 protected:
     qint64 writeData(const QByteArray& data) override;
     QIODevice* getDevice() override;
@@ -28,6 +25,4 @@ protected:
 private:
     QTcpSocket* socket = nullptr;
     QTimer* m_timeoutTimer;
-
-
 };

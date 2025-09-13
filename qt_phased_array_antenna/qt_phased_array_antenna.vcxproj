@@ -99,21 +99,32 @@
   <ItemGroup>
     <ClCompile Include="AntennaProtocol.cpp" />
     <ClCompile Include="CommManager.cpp" />
+    <ClCompile Include="iCommunication.cpp" />
     <ClCompile Include="iProtocol.cpp" />
+    <ClCompile Include="Module1.cpp" />
+    <ClCompile Include="Module2.cpp" />
+    <ClCompile Include="Module3.cpp" />
+    <ClCompile Include="Module4.cpp" />
+    <ClCompile Include="Module5.cpp" />
     <ClCompile Include="SerialConfigDialog.cpp" />
     <ClCompile Include="SerialPort.cpp" />
     <ClCompile Include="Tcp.cpp" />
     <ClCompile Include="TcpConfigDialog.cpp" />
     <ClCompile Include="VFProtocol.cpp" />
     <QtRcc Include="qt_phased_array_antenna.qrc" />
-    <QtUic Include="communication_module.ui" />
-    <ClCompile Include="communication_ui.cpp" />
+    <ClCompile Include="mainwindow.cpp" />
     <ClCompile Include="main.cpp" />
+    <QtUic Include="mainwindow.ui" />
+    <QtUic Include="module1.ui" />
+    <QtUic Include="module2.ui" />
+    <QtUic Include="module3.ui" />
+    <QtUic Include="module4.ui" />
+    <QtUic Include="module5.ui" />
     <QtUic Include="SeialCongigDialog.ui" />
     <QtUic Include="TcpConfigDialog.ui" />
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="communication_ui.h" />
+    <QtMoc Include="mainwindow.h" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="SerialPort.h" />
@@ -130,6 +141,11 @@
     <QtMoc Include="CommManager.h" />
     <QtMoc Include="AntennaProtocol.h" />
     <QtMoc Include="iProtocol.h" />
+    <QtMoc Include="Module1.h" />
+    <QtMoc Include="Module2.h" />
+    <QtMoc Include="Module3.h" />
+    <QtMoc Include="Module4.h" />
+    <QtMoc Include="Module5.h" />
     <ClInclude Include="ProtocolFactory.h" />
     <QtMoc Include="VFProtocol.h" />
   </ItemGroup>
