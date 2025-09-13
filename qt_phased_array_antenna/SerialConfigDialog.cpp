@@ -107,9 +107,10 @@ void SerialConfigDialog::refreshPorts()
 QString SerialConfigDialog::portName() const
 {
     int index = ui->serial_name->currentText().indexOf(' ');
-    QString portName = ui->serial_name->currentText().left(index);
-    m_lastUsedPort = ui->serial_name->currentText(); // 显式转换为 QString // 记录当前选择的端口
-    return portName;
+    if (index > 0) {
+        return ui->serial_name->currentText().left(index);
+    }
+    return ui->serial_name->currentText(); 
 }
 
 int SerialConfigDialog::baudRate() const

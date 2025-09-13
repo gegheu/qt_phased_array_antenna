@@ -1,12 +1,12 @@
 #include "SerialPort.h"
 
-SerialPort::SerialPort(QObject* parent) : ICommunication(parent)
+SerialPort::SerialPort(const QString& instanceId, QObject* parent)
+    : ICommunication(instanceId, parent), serial(new QSerialPort(this))
 {
-    serial = new QSerialPort(this);
     connect(serial, &QSerialPort::readyRead, this, &ICommunication::readData);
     connect(serial, &QSerialPort::errorOccurred, this, [this](QSerialPort::SerialPortError error) {
         if (error == QSerialPort::ResourceError) {
-            emit connectStatus(false, serial->errorString());
+            emit connectStatus(this->instanceId(), false, serial->errorString());
         }
         });
 }
@@ -27,10 +27,10 @@ void SerialPort::portConnect(const QVariantList& params)
     serial->setStopBits(static_cast<QSerialPort::StopBits>(params.at(4).toInt()));
 
     if (!serial->open(QSerialPort::ReadWrite)) {
-        emit connectStatus(false, serial->errorString());
+        emit connectStatus(this->instanceId(), false, serial->errorString());
     }
     else {
-        emit connectStatus(true, "no error");
+        emit connectStatus(this->instanceId(), true, "no error");
     }
 }
 

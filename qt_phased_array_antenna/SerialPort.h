@@ -6,7 +6,7 @@ class SerialPort : public ICommunication
 {
     Q_OBJECT
 public:
-    SerialPort(QObject* parent = nullptr);
+    explicit SerialPort(const QString& instanceId = "", QObject* parent = nullptr);
     ~SerialPort() override;
 
     void portConnect(const QVariantList& params) override;
@@ -18,5 +18,5 @@ protected:
     void doDisconnect() override;
 
 private:
-    QSerialPort* serial = nullptr;;
+    QSerialPort* serial = nullptr;
 };
