@@ -25,7 +25,7 @@ Module3::Module3(QWidget* parent) :
     m_tcpConnectionState(TcpDisconnected)
 {
     ui->setupUi(this);
-    setWindowTitle("模块1 - 串口和TCP通信");
+   
 
     initSerial();
     initTcp();
@@ -92,7 +92,7 @@ void Module3::on_serialSwitch_clicked()
     else {
         m_serialPort->disconnect();
         ui->serialConfigButton->setEnabled(true);
-        ui->serialSwitch->setText("打开串口");
+        ui->serialSwitch->setText(QStringLiteral("打开串口"));
     }
 }
 
@@ -100,12 +100,12 @@ void Module3::on_serialSwitch_clicked()
 void Module3::handleOpenSerialResult(const QString& instanceId, bool result, const QString& errStr)
 {
     if (result) {
-        ui->serialSwitch->setText("关闭串口");
+        ui->serialSwitch->setText(QStringLiteral("关闭串口"));
     }
     else {
         QMessageBox::warning(this, "警告", "打开串口失败: " + errStr);
         ui->serialConfigButton->setEnabled(true);
-        ui->serialSwitch->setText("打开串口");
+        ui->serialSwitch->setText(QStringLiteral("打开串口"));
     }
 }
 
@@ -245,10 +245,10 @@ void Module3::on_tcpConnectButton_clicked()
 
         // 尝试连接服务器
         m_tcp->portConnect(getTcpParaList());
-        ui->tcpLogDisplay->append("正在连接服务器: " + m_tcpIp + ":" + QString::number(m_tcpPort));
+        ui->tcpLogDisplay->append(QStringLiteral("正在连接服务器: ") + m_tcpIp + ":" + QString::number(m_tcpPort));
         ui->tcpConnectButton->setEnabled(false);
         ui->tcpDisconnectButton->setEnabled(true);
-        ui->tcpDisconnectButton->setText("取消连接");
+        ui->tcpDisconnectButton->setText(QStringLiteral("取消连接"));
     }
 }
 
@@ -262,18 +262,18 @@ void Module3::on_tcpDisconnectButton_clicked()
     if (m_tcpConnectionState == TcpConnecting) {
         // 正在连接中，中止连接尝试
         tcp->abortConnection();
-        ui->tcpLogDisplay->append("连接已取消");
+        ui->tcpLogDisplay->append(QStringLiteral("连接已取消"));
     }
     else if (m_tcpConnectionState == TcpConnected) {
         // 已连接，正常断开
         tcp->disconnect();
-        ui->tcpLogDisplay->append("连接已断开");
+        ui->tcpLogDisplay->append(QStringLiteral("连接已断开"));
     }
 
     // 更新UI状态
     ui->tcpConnectButton->setEnabled(true);
     ui->tcpDisconnectButton->setEnabled(false);
-    ui->tcpDisconnectButton->setText("断开连接");
+    ui->tcpDisconnectButton->setText(QStringLiteral("断开连接"));
 
     // 更新连接状态
     m_tcpConnectionState = TcpDisconnected;
@@ -297,18 +297,18 @@ void Module3::on_tcpSendButton_clicked()
                     }
                 }
                 m_tcp->write(byteArray);
-                ui->tcpLogDisplay->append("[发送] 十六进制: " + byteArray.toHex(' ').toUpper());
+                ui->tcpLogDisplay->append(QStringLiteral("[发送] 十六进制: ") + byteArray.toHex(' ').toUpper());
             }
             else {
                 // ASCII发送
                 byteArray = data.toUtf8();
                 m_tcp->write(byteArray);
-                ui->tcpLogDisplay->append("[发送] 文本: " + data);
+                ui->tcpLogDisplay->append(QStringLiteral("[发送] 文本: ") + data);
             }
         }
     }
     else {
-        ui->tcpLogDisplay->append("未连接服务器，无法发送数据");
+        ui->tcpLogDisplay->append(QStringLiteral("未连接服务器，无法发送数据"));
     }
 }
 
@@ -318,12 +318,12 @@ void Module3::handleTcpDataReceived(const QString& instanceId, const QByteArray&
     if (m_tcpHexDisplay) {
         // 显示十六进制格式
         QString hexData = data.toHex(' ').toUpper();
-        ui->tcpLogDisplay->append("[接收] 十六进制: " + hexData);
+        ui->tcpLogDisplay->append(QStringLiteral("[接收] 十六进制: ") + hexData);
     }
     else {
         // 尝试显示文本（如果是文本数据）
         QString textData = QString::fromUtf8(data);
-        ui->tcpLogDisplay->append("[接收] 文本: " + textData);
+        ui->tcpLogDisplay->append(QStringLiteral("[接收] 文本: ") + textData);
     }
 }
 
@@ -332,11 +332,11 @@ void Module3::handleTcpConnectedResult(const QString& instanceId, bool result, c
 {
     if (result) {
         m_tcpConnectionState = TcpConnected;
-        ui->tcpConnectButton->setText("已连接");
+        ui->tcpConnectButton->setText(QStringLiteral("已连接"));
         ui->tcpSendButton->setEnabled(true);
-        ui->tcpLogDisplay->append("连接服务器成功!");
+        ui->tcpLogDisplay->append(QStringLiteral("连接服务器成功!"));
         ui->tcpDisconnectButton->setEnabled(true);
-        ui->tcpDisconnectButton->setText("断开连接");
+        ui->tcpDisconnectButton->setText(QStringLiteral("断开连接"));
     }
     else {
         m_tcpConnectionState = TcpDisconnected;
@@ -371,13 +371,13 @@ void Module3::handleTcpConnectedResult(const QString& instanceId, bool result, c
                 }
             }
 
-            ui->tcpLogDisplay->append("连接错误: " + displayError);
+            ui->tcpLogDisplay->append(QStringLiteral("连接错误: ") + displayError);
         }
 
-        ui->tcpConnectButton->setText("连接服务器");
+        ui->tcpConnectButton->setText(QStringLiteral("连接服务器"));
         ui->tcpSendButton->setEnabled(false);
         ui->tcpDisconnectButton->setEnabled(false);
-        ui->tcpDisconnectButton->setText("断开连接");
+        ui->tcpDisconnectButton->setText(QStringLiteral("断开连接"));
     }
 
     ui->tcpConnectButton->setEnabled(true);

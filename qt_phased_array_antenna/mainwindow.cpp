@@ -13,7 +13,7 @@ MainWindow::MainWindow(QWidget* parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    setWindowTitle("通信模块管理系统");
+   
 }
 
 MainWindow::~MainWindow()
