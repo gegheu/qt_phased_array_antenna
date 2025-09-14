@@ -53,7 +53,7 @@
      <string>3</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="btnWindow5">
+   <widget class="QPushButton" name="module5Button">
     <property name="geometry">
      <rect>
       <x>530</x>

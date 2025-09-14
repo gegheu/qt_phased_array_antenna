@@ -1,10 +1,11 @@
-#include "communication_ui.h"
-#include <QtWidgets/QApplication>
+#include "mainwindow.h"
+#include <QApplication>
+#include <QTextCodec>
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
-    QApplication app(argc, argv);
-    communication window;
-    window.show();
-    return app.exec();
+    QApplication a(argc, argv);
+    MainWindow w;
+    w.show();
+    return a.exec();
 }

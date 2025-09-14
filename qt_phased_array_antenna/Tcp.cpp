@@ -1,20 +1,21 @@
 #include "Tcp.h"
 
-Tcp::Tcp(QObject* parent) : ICommunication(parent)
+Tcp::Tcp(const QString& instanceId, QObject* parent)
+    : ICommunication(instanceId, parent),
+    socket(new QTcpSocket(this)),
+    m_timeoutTimer(new QTimer(this))
 {
-    socket = new QTcpSocket(this);
-    m_timeoutTimer = new QTimer(this); // 创建超时定时器
-    m_timeoutTimer->setSingleShot(true); // 单次触发
+    m_timeoutTimer->setSingleShot(true);
     connect(m_timeoutTimer, &QTimer::timeout, this, &Tcp::handleTimeout);
     connect(socket, &QTcpSocket::readyRead, this, &ICommunication::readData);
     connect(socket, &QTcpSocket::connected, this, [this]() {
         m_timeoutTimer->stop();
-        emit connectStatus(true, "no error");
+        emit connectStatus(this->instanceId(), true, "no error");
         });
 
     connect(socket, &QTcpSocket::disconnected, this, [this]() {
         m_timeoutTimer->stop();
-        emit connectStatus(false, QStringLiteral("连接已断开"));
+        emit connectStatus(this->instanceId(), false, QStringLiteral("连接已断开"));
         });
 
     connect(socket, QOverload<QAbstractSocket::SocketError>::of(&QAbstractSocket::errorOccurred),
@@ -47,7 +48,7 @@ Tcp::Tcp(QObject* parent) : ICommunication(parent)
                 errorStr = QStringLiteral("未知错误: %1").arg(error);
                 break;
             }
-            emit connectStatus(false, errorStr);
+            emit connectStatus(this->instanceId(), false, errorStr);
         });
 }
 
@@ -75,7 +76,7 @@ void Tcp::doDisconnect()
     if (isConnecting()) {
         socket->abort();
 
-        emit connectStatus(false, QStringLiteral("手动断开"));
+        emit connectStatus(this->instanceId(), false, QStringLiteral("手动断开"));
     }
     else {
         socket->disconnectFromHost();
@@ -107,7 +108,7 @@ void Tcp::handleTimeout()
 {
     if (isConnecting()) {
         socket->abort(); // 中止连接
-        emit connectStatus(false, QStringLiteral("连接超时"));
+        emit connectStatus(this->instanceId(), false, QStringLiteral("连接超时"));
     }
 }
 
@@ -116,6 +117,6 @@ void Tcp::abortConnection()
     m_timeoutTimer->stop();
     if (isConnecting()) {
         socket->abort();
-        emit connectStatus(false, QStringLiteral("连接已取消"));
+        emit connectStatus(instanceId(), false, QStringLiteral("连接已取消"));
     }
 }

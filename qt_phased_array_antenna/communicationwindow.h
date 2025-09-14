@@ -1,59 +1,49 @@
-#pragma once
-#include <QtWidgets/QMainWindow>
-#include "ui_communication_module.h"
-#include <iostream>
-#include <QtSerialPort/QSerialPortInfo>
-#include <QtSerialPort/QSerialPort>
-#include <QTimer>
-#include <QSettings>
-#include <QTcpServer>
-#include <QTcpSocket>
+#ifndef COMMUNICATIONWINDOW_H
+#define COMMUNICATIONWINDOW_H
+
+#include <QMainWindow>
+#include "SerialConfigDialog.h"
+#include "TcpConfigDialog.h"
 #include "SerialPort.h"
 #include "Tcp.h"
 #include "CommManager.h"
 
-class SerialConfigDialog;
-class TcpConfigDialog;
+// 前置声明不同的UI类
+namespace Ui {
+    class CommunicationClass1;
+    class CommunicationClass2;
+    class CommunicationClass3;
+    class CommunicationClass4;
+    class CommunicationClass5;
+}
 
-class communication : public QMainWindow
+class CommunicationWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    communication(QWidget* parent = nullptr);
-    ~communication();
-    void initSerial();
-    void initNetwork();
-    /*enum QSerialPort::Parity getParity();
-    qint32 getBaud();
-    enum QSerialPort::StopBits getStopBits();
-    enum QSerialPort::DataBits getDataBits();
-    QString getName();*/
-    void appendLog(const QString& str, bool isSend);
-    //void isBaudRateExist();
-    //void serialPortClocked(bool flag);
-    //void saveINI();
-    QVariantList getSerialParaList();
-    QVariantList getTcpParaList();
+    explicit CommunicationWindow(int windowId, QWidget* parent = nullptr);
+    ~CommunicationWindow();
 
+    int windowId() const { return m_windowId; }
+
+signals:
+    void windowClosed(int windowId);
+
+protected:
+    void closeEvent(QCloseEvent* event) override;
 
 private slots:
-    void handleSerialDataReceived(const QByteArray& data);
-    void handleTcpDataReceived(const QByteArray& data);
+    void test(VFProtocol::VFModuleFrame data);
     void onSerialConfigClicked();
     void onTcpConfigClicked();
-    void test(VFProtocol::VFModuleFrame data);
-    //串口相关槽函数
     void handleOpenSerial();
     void handleClearLog();
     void handleClearTxData();
     void handleClearTxRx();
     void handleSendData();
     void handleRecvData(const QByteArray& data, bool hexDisplay);
-    //void handleLoadINI();
     void handleOpenSerialResult(bool result, const QString& errStr);
-
-    //TCP服务器相关的槽函数
     void onConnectClicked();
     void onSendClicked();
     void onDisconnectClicked();
@@ -61,15 +51,29 @@ private slots:
     void onConnectedResult(bool result, const QString& errorInfo);
     void handleTcpClearLog();
     void handleTcpClearTxData();
+    void handleSerialDataReceived(const QByteArray& data);
+    void handleTcpDataReceived(const QByteArray& data);
 
 private:
-    Ui::CommunicationClass* ui;
+    void initSerial();
+    void initNetwork();
+    void setupConnections();
+    QVariantList getSerialParaList();
+    QVariantList getTcpParaList();
+    void appendLog(const QString& str, bool isSend);
+
+    int m_windowId;
+
+    // 使用void指针存储UI，因为每个窗口的UI类不同
+    void* m_ui;
+
     ICommunication* m_serialPort = nullptr;
     ICommunication* m_tcp = nullptr;
     CommunicationManager* m_manager = nullptr;
     SerialConfigDialog* m_serialConfigDialog = nullptr;
     TcpConfigDialog* m_tcpConfigDialog = nullptr;
-    //配置参数存储
+
+    // 配置参数存储
     QString m_serialPortName;
     qint32 m_serialBaudRate;
     QSerialPort::DataBits m_serialDataBits;
@@ -80,8 +84,8 @@ private:
     QString m_tcpIp;
     int m_tcpPort;
     bool m_tcpHexDisplay;
-    //串口相关成员变量
-    //QTimer* m_timer = nullptr;
+
+    // 串口相关成员变量
     QSettings* m_settings = nullptr;
     qint32 m_tx_num;
     qint32 m_rx_num;
@@ -92,6 +96,6 @@ private:
         Connected
     };
     ConnectionState m_tcpConnectionState;
-
 };
 
+#endif // COMMUNICATIONWINDOW_H
