@@ -7,7 +7,7 @@
 #include <QTextCodec>
 
 Module3::Module3(QWidget* parent) :
-    QDialog(parent),
+    QWidget(parent),
     ui(new Ui::Module3),
     m_serialPort(nullptr),
     m_tcp(nullptr),
@@ -85,7 +85,7 @@ void Module3::on_serialConfigButton_clicked()
 // 串口开关按钮点击
 void Module3::on_serialSwitch_clicked()
 {
-    if (ui->serialSwitch->text() == "打开串口") {
+    if (ui->serialSwitch->text() == QStringLiteral("打开串口")) {
         m_serialPort->portConnect(getSerialParaList());
         ui->serialConfigButton->setEnabled(false);
     }
@@ -103,7 +103,7 @@ void Module3::handleOpenSerialResult(const QString& instanceId, bool result, con
         ui->serialSwitch->setText(QStringLiteral("关闭串口"));
     }
     else {
-        QMessageBox::warning(this, "警告", "打开串口失败: " + errStr);
+        QMessageBox::warning(this, QStringLiteral("警告"), QStringLiteral("打开串口失败") + errStr);
         ui->serialConfigButton->setEnabled(true);
         ui->serialSwitch->setText(QStringLiteral("打开串口"));
     }
@@ -118,7 +118,7 @@ void Module3::on_serialSendButton_clicked()
     QString data_buff = ui->serialSendDataDisplay->toPlainText();
 
     if (!m_serialPort->isConnected()) {
-        QMessageBox::information(this, "提示", "请先打开串口");
+        QMessageBox::information(this, QStringLiteral("提示"), QStringLiteral("请先打开串口"));
         return;
     }
 

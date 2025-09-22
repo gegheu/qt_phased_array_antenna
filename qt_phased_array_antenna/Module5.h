@@ -1,7 +1,7 @@
 #ifndef MODULE5_H
 #define MODULE5_H
 
-#include <QDialog>
+#include <QWidget>
 #include <QSerialPort>
 #include "iCommunication.h"
 #include "CommManager.h"
@@ -12,7 +12,7 @@ namespace Ui {
     class Module5;
 }
 
-class Module5 : public QDialog
+class Module5 : public QWidget
 {
     Q_OBJECT
 
@@ -89,4 +89,4 @@ private:
     void appendTcpLog(const QString& str, bool isSend);
 };
 
-#endif // MODULE1_H
+#endif // MODULE5_H

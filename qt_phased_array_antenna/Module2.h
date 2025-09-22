@@ -1,7 +1,7 @@
 #ifndef MODULE2_H
 #define MODULE2_H
 
-#include <QDialog>
+#include <QWidget>
 #include <QSerialPort>
 #include "iCommunication.h"
 #include "CommManager.h"
@@ -12,7 +12,7 @@ namespace Ui {
     class Module2;
 }
 
-class Module2 : public QDialog
+class Module2 : public QWidget
 {
     Q_OBJECT
 
