@@ -165,7 +165,7 @@
      <string>清除log</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="on_serialClearCountButton">
+   <widget class="QPushButton" name="serialClearCountButton">
     <property name="geometry">
      <rect>
       <x>250</x>

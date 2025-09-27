@@ -108,6 +108,7 @@
     <ClCompile Include="Module5.cpp" />
     <ClCompile Include="SerialConfigDialog.cpp" />
     <ClCompile Include="SerialPort.cpp" />
+    <ClCompile Include="SerialPortManager.cpp" />
     <ClCompile Include="Tcp.cpp" />
     <ClCompile Include="TcpConfigDialog.cpp" />
     <ClCompile Include="VFProtocol.cpp" />
@@ -136,6 +137,7 @@
     <QtMoc Include="iCommunication.h" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="SerialPortManager.h" />
     <QtMoc Include="SerialConfigDialog.h" />
     <QtMoc Include="TcpConfigDialog.h" />
     <QtMoc Include="CommManager.h" />

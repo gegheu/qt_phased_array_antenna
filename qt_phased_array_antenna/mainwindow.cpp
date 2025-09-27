@@ -1,5 +1,6 @@
 ﻿#include "MainWindow.h"
 #include "ui_mainwindow.h"
+#include "SerialPortManager.h"
 
 #include "Module1.h"
 #include "Module2.h"
@@ -17,6 +18,8 @@ MainWindow::MainWindow(QWidget* parent)
     , m_module5(nullptr)
 {
     ui->setupUi(this);
+
+    SerialPortManager::instance().startMonitoring(1000);
 
   
     m_module1 = qobject_cast<Module1*>(ui->tabWidget->widget(1));

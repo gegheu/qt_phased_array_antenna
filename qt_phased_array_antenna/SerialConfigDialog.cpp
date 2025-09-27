@@ -1,21 +1,26 @@
 #include "SerialConfigDialog.h"
 #include "ui_SeialCongigDialog.h"
+#include "SerialPortManager.h"
 #include <QMessageBox>
 #include <QCollator>
 #include <QSerialPortInfo>
 #include <QString> 
+#include <QShowEvent>
+#include <QDebug>
 
 SerialConfigDialog::SerialConfigDialog(QWidget* parent) :
     QDialog(parent),
     ui(new Ui::SerialConfigDialog), 
-    m_settings(nullptr)
+    m_settings(nullptr),
+    m_portManager(SerialPortManager::instance())
 {
     ui->setupUi(this);
 
+    connect(&m_portManager, &SerialPortManager::portsChanged,
+        this, &SerialConfigDialog::onPortsChanged);
+
     // 初始化定时器，每秒扫描一次串口设备
-    m_refreshTimer = new QTimer(this);
-    connect(m_refreshTimer, &QTimer::timeout, this, &SerialConfigDialog::refreshPorts);
-    m_refreshTimer->start(1000);
+    //m_refreshTimer = new QTimer(this);
 
     // 初始化控件
     refreshPorts();
@@ -59,49 +64,75 @@ SerialConfigDialog::~SerialConfigDialog()
     if (m_settings) {
         delete m_settings;
     }
+
 }
+
+void SerialConfigDialog::onPortsChanged(const QStringList& ports)
+{
+    // 更新端口列表
+    QString currentSelection = ui->serial_name->currentText();
+    ui->serial_name->clear();
+    ui->serial_name->addItems(ports);
+
+    // 尝试恢复之前的选择
+    if (!currentSelection.isEmpty()) {
+        int index = ui->serial_name->findText(currentSelection);
+        if (index >= 0) {
+            ui->serial_name->setCurrentIndex(index);
+        }
+    }
+
+    // 如果没有选中项且列表不为空，选择第一项
+    if (ui->serial_name->currentIndex() < 0 && ui->serial_name->count() > 0) {
+        ui->serial_name->setCurrentIndex(0);
+    }
+}
+
+
+void SerialConfigDialog::showEvent(QShowEvent* event)
+{
+    QDialog::showEvent(event);
+
+    // 刷新端口列表
+    refreshPorts();
+
+    // 确保中央管理器正在运行
+    m_portManager.startMonitoring(1000);
+}
+
+void SerialConfigDialog::closeEvent(QCloseEvent* event)
+{
+    
+    QDialog::closeEvent(event);
+}
+
 
 void SerialConfigDialog::refreshPorts()
 {
-    QStringList newPorts;
-    static QStringList lastPorts;
+    onPortsChanged(m_portManager.availablePorts());
+    
+}
 
-    for (const auto& port : QSerialPortInfo::availablePorts()) {
-        newPorts << QString(port.portName() + " " + port.description());
+
+//获取当前选择的完整端口信息
+QString SerialConfigDialog::getCurrentPortDisplayName() const
+{
+    return ui->serial_name->currentText();
+}
+
+//获取端口数量
+int SerialConfigDialog::getPortCount() const
+{
+    return ui->serial_name->count();
+}
+
+//获取指定索引的端口显示名称
+QString SerialConfigDialog::getPortDisplayName(int index) const
+{
+    if (index >= 0 && index < ui->serial_name->count()) {
+        return ui->serial_name->itemText(index);
     }
-
-    // 仅当端口变化时更新UI
-    if (newPorts != lastPorts) {
-        lastPorts = newPorts;
-        QString currentSelection = ui->serial_name->currentText();
-        ui->serial_name->clear();
-        ui->serial_name->addItems(lastPorts);
-
-        // 尝试恢复之前的选择
-        if (!currentSelection.isEmpty()) {
-            int index = ui->serial_name->findText(currentSelection);
-            if (index >= 0) {
-                ui->serial_name->setCurrentIndex(index);
-            }
-        }
-    }
-
-    // 检查端口是否断开
-    if (!m_lastUsedPort.isEmpty()) {
-        bool portFound = false;
-        for (const auto& port : QSerialPortInfo::availablePorts()) {
-            QString portInfo = QString(port.portName() + " " + port.description());
-            if (portInfo == m_lastUsedPort) {
-                portFound = true;
-                break;
-            }
-        }
-
-        if (!portFound) {
-            emit portDisconnected();
-            m_lastUsedPort.clear();
-        }
-    }
+    return QString();
 }
 
 QString SerialConfigDialog::portName() const
