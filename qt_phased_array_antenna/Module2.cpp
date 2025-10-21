@@ -7,11 +7,13 @@
 #include <QTextCodec>
 
 Module2::Module2(QWidget* parent) :
-    QDialog(parent),
+    QWidget(parent),
     ui(new Ui::Module2),
     m_serialPort(nullptr),
     m_tcp(nullptr),
     m_manager(nullptr),
+    m_serialConfigDialog(nullptr),
+    m_tcpConfigDialog(nullptr),
     m_serialBaudRate(9600),
     m_serialDataBits(QSerialPort::Data8),
     m_serialParity(QSerialPort::NoParity),
@@ -25,6 +27,9 @@ Module2::Module2(QWidget* parent) :
     m_tcpConnectionState(TcpDisconnected)
 {
     ui->setupUi(this);
+
+    m_serialConfigDialog = new SerialConfigDialog(this);
+    m_tcpConfigDialog = new TcpConfigDialog(this);
    
 
     initSerial();
@@ -67,27 +72,26 @@ void Module2::initTcp()
 // 串口配置按钮点击
 void Module2::on_serialConfigButton_clicked()
 {
-    SerialConfigDialog dialog(this);
-    dialog.setCurrentConfig(m_serialPortName, m_serialBaudRate,
+    m_serialConfigDialog->setCurrentConfig(m_serialPortName, m_serialBaudRate,
         m_serialDataBits, m_serialParity,
         m_serialStopBits, m_serialHexDisplay);
 
-    if (dialog.exec() == QDialog::Accepted) {
-        m_serialPortName = dialog.portName();
-        m_serialBaudRate = dialog.baudRate();
-        m_serialDataBits = dialog.dataBits();
-        m_serialParity = dialog.parity();
-        m_serialStopBits = dialog.stopBits();
-        m_serialHexDisplay = dialog.hexDisplay();
+    if (m_serialConfigDialog->exec() == QDialog::Accepted) {
+        m_serialPortName = m_serialConfigDialog->portName();
+        m_serialBaudRate = m_serialConfigDialog->baudRate();
+        m_serialDataBits = m_serialConfigDialog->dataBits();
+        m_serialParity = m_serialConfigDialog->parity();
+        m_serialStopBits = m_serialConfigDialog->stopBits();
+        m_serialHexDisplay = m_serialConfigDialog->hexDisplay();
     }
 }
 
 // 串口开关按钮点击
 void Module2::on_serialSwitch_clicked()
 {
-    if (ui->serialSwitch->text() == "打开串口") {
+    if (ui->serialSwitch->text() == QStringLiteral("打开串口")) {
         m_serialPort->portConnect(getSerialParaList());
-        ui->serialConfigButton->setEnabled(false);
+        //ui->serialConfigButton->setEnabled(false);
     }
     else {
         m_serialPort->disconnect();
@@ -103,7 +107,7 @@ void Module2::handleOpenSerialResult(const QString& instanceId, bool result, con
         ui->serialSwitch->setText(QStringLiteral("关闭串口"));
     }
     else {
-        QMessageBox::warning(this, "警告", "打开串口失败: " + errStr);
+        QMessageBox::warning(this, QStringLiteral("警告"), QStringLiteral("打开串口失败") + errStr);
         ui->serialConfigButton->setEnabled(true);
         ui->serialSwitch->setText(QStringLiteral("打开串口"));
     }
@@ -118,18 +122,31 @@ void Module2::on_serialSendButton_clicked()
     QString data_buff = ui->serialSendDataDisplay->toPlainText();
 
     if (!m_serialPort->isConnected()) {
-        QMessageBox::information(this, "提示", "请先打开串口");
+        QMessageBox::information(this, QStringLiteral("提示"), QStringLiteral("请先打开串口"));
         return;
     }
 
     if (m_serialHexDisplay) {
-        QStringList hexBytes = data_buff.split(' ', Qt::SkipEmptyParts);
-        for (auto byteStr : hexBytes) {
+        QString cleanData = data_buff.remove(' ').remove('\n').remove('\r').remove('\t');
+
+        //长度为奇数补零
+        if (cleanData.length() % 2 != 0) {
+            cleanData = "0" + cleanData;
+        }
+
+        //两个字符解析为一个字节
+        for (int i = 0; i < cleanData.length(); i += 2) {
+            QString byteStr = cleanData.mid(i, 2);
             bool ok;
             quint8 byte = byteStr.toUInt(&ok, 16);
             if (ok) {
                 write_buff.append(byte);
                 displayStr += QString("%1 ").arg(byte, 2, 16, QLatin1Char('0')).toUpper();
+            }
+            else {
+                QMessageBox::warning(this, QStringLiteral("格式错误"),
+                    QStringLiteral("无效的十六进制字符: ") + byteStr);
+                return;
             }
         }
     }
@@ -210,13 +227,12 @@ void Module2::on_serialClearCountButton_clicked()
 // TCP配置按钮点击
 void Module2::on_tcpConfigButton_clicked()
 {
-    TcpConfigDialog dialog(this);
-    dialog.setCurrentConfig(m_tcpIp, m_tcpPort, m_tcpHexDisplay);
+    m_tcpConfigDialog->setCurrentConfig(m_tcpIp, m_tcpPort, m_tcpHexDisplay);
 
-    if (dialog.exec() == QDialog::Accepted) {
-        m_tcpIp = dialog.ipAddress();
-        m_tcpPort = dialog.port();
-        m_tcpHexDisplay = dialog.hexDisplay();
+    if (m_tcpConfigDialog->exec() == QDialog::Accepted) {
+        m_tcpIp = m_tcpConfigDialog->ipAddress();
+        m_tcpPort = m_tcpConfigDialog->port();
+        m_tcpHexDisplay = m_tcpConfigDialog->hexDisplay();
     }
 }
 
@@ -231,12 +247,12 @@ void Module2::on_tcpConnectButton_clicked()
     if (!m_tcp->isConnected()) {
         // 验证输入
         if (m_tcpIp.isEmpty()) {
-            QMessageBox::warning(this, "输入错误", "请输入服务器IP地址");
+            QMessageBox::warning(this, QStringLiteral("输入错误"), QStringLiteral("请输入服务器IP地址"));
             return;
         }
 
         if (m_tcpPort < 1 || m_tcpPort > 65535) {
-            QMessageBox::warning(this, "端口错误", "端口号必须在1-65535之间");
+            QMessageBox::warning(this, QStringLiteral("端口错误"), QStringLiteral("端口号必须在1-65535之间"));
             return;
         }
 

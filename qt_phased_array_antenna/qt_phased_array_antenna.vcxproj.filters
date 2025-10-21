@@ -88,6 +88,9 @@
     <ClCompile Include="iCommunication.cpp">
       <Filter>Source Files\communication</Filter>
     </ClCompile>
+    <ClCompile Include="SerialPortManager.cpp">
+      <Filter>Source Files\communication</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="SerialPort.h">
@@ -134,6 +137,9 @@
     </QtMoc>
     <QtMoc Include="Module5.h">
       <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="SerialPortManager.h">
+      <Filter>Header Files\communication</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

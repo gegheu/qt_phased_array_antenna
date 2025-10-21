@@ -12,6 +12,8 @@ namespace Ui {
     class SerialConfigDialog;
 }
 
+class SerialPortManager;
+
 class SerialConfigDialog : public QDialog
 {
     Q_OBJECT
@@ -19,6 +21,9 @@ class SerialConfigDialog : public QDialog
 public:
     explicit SerialConfigDialog(QWidget* parent = nullptr);
     ~SerialConfigDialog();
+
+    void showEvent(QShowEvent* event);
+    void closeEvent(QCloseEvent* event);
 
     // 获取配置参数的方法
     QString portName() const;
@@ -38,18 +43,24 @@ public:
     // INI文件操作
     void loadINI();
     void saveINI();
+  
+    QString getCurrentPortDisplayName() const;
+    int getPortCount() const;
+    QString getPortDisplayName(int index) const;
 
 signals:
     void portDisconnected(); // 端口断开信号
+    
 
 private slots:
     void refreshPorts();
     void onAccepted();
-
+    void onPortsChanged(const QStringList& ports);
 private:
     // 使用完整命名空间限定
     Ui::SerialConfigDialog* ui;
-    QTimer* m_refreshTimer;
+    //QTimer* m_refreshTimer;
+    SerialPortManager& m_portManager;
     QSettings* m_settings;
     mutable QString m_lastUsedPort;
 };

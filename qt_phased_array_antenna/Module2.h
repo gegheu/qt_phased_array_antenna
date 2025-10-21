@@ -1,7 +1,7 @@
 #ifndef MODULE2_H
 #define MODULE2_H
 
-#include <QDialog>
+#include <QWidget>
 #include <QSerialPort>
 #include "iCommunication.h"
 #include "CommManager.h"
@@ -12,7 +12,7 @@ namespace Ui {
     class Module2;
 }
 
-class Module2 : public QDialog
+class Module2 : public QWidget
 {
     Q_OBJECT
 
@@ -55,6 +55,9 @@ private:
 
     // 通信管理器
     CommunicationManager* m_manager;
+    // 配置对话框成员变量
+    SerialConfigDialog* m_serialConfigDialog;
+    TcpConfigDialog* m_tcpConfigDialog;
 
     // 串口配置参数
     QString m_serialPortName;

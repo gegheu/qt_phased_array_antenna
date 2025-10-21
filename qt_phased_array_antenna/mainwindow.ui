@@ -6,78 +6,56 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>928</width>
-    <height>687</height>
+    <width>1365</width>
+    <height>827</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="module1Button">
+   <widget class="QTabWidget" name="tabWidget">
     <property name="geometry">
      <rect>
-      <x>80</x>
-      <y>110</y>
-      <width>93</width>
-      <height>28</height>
+      <x>10</x>
+      <y>0</y>
+      <width>1351</width>
+      <height>771</height>
      </rect>
     </property>
-    <property name="text">
-     <string>1</string>
+    <property name="currentIndex">
+     <number>5</number>
     </property>
-   </widget>
-   <widget class="QPushButton" name="module2Button">
-    <property name="geometry">
-     <rect>
-      <x>190</x>
-      <y>110</y>
-      <width>93</width>
-      <height>28</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>2</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="module3Button">
-    <property name="geometry">
-     <rect>
-      <x>300</x>
-      <y>110</y>
-      <width>93</width>
-      <height>28</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>3</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="module5Button">
-    <property name="geometry">
-     <rect>
-      <x>530</x>
-      <y>110</y>
-      <width>93</width>
-      <height>28</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>5</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="module4Button">
-    <property name="geometry">
-     <rect>
-      <x>420</x>
-      <y>110</y>
-      <width>93</width>
-      <height>28</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>4</string>
-    </property>
+    <widget class="QWidget" name="tab">
+     <attribute name="title">
+      <string>Tab 1</string>
+     </attribute>
+    </widget>
+    <widget class="Module1" name="tab_2">
+     <attribute name="title">
+      <string>Tab 2</string>
+     </attribute>
+    </widget>
+    <widget class="Module2" name="tab_3">
+     <attribute name="title">
+      <string>Tab 3</string>
+     </attribute>
+    </widget>
+    <widget class="Module3" name="tab_4">
+     <attribute name="title">
+      <string>Tab 4</string>
+     </attribute>
+    </widget>
+    <widget class="Module4" name="tab_5">
+     <attribute name="title">
+      <string>Tab 5</string>
+     </attribute>
+    </widget>
+    <widget class="Module5" name="tab_6">
+     <attribute name="title">
+      <string>Tab 6</string>
+     </attribute>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -85,13 +63,45 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>928</width>
+     <width>1365</width>
      <height>26</height>
     </rect>
    </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Module1</class>
+   <extends>QWidget</extends>
+   <header>Module1.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Module2</class>
+   <extends>QWidget</extends>
+   <header>Module2.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Module3</class>
+   <extends>QWidget</extends>
+   <header>Module3.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Module4</class>
+   <extends>QWidget</extends>
+   <header>Module4.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Module5</class>
+   <extends>QWidget</extends>
+   <header>Module5.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
