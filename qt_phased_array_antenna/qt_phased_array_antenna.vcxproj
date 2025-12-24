@@ -65,8 +65,16 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\CYK\Desktop\qt_phased_array_antenna\qt_phased_array_antenna\x64\Debug\qt\uic</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)3rdparty\quc\include;C:\Users\CYK\Desktop\qt_phased_array_antenna\qt_phased_array_antenna\x64\Debug\qt\uic</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(ProjectDir)3rdparty\quc\lib\$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>qucd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy "$(ProjectDir)3rdparty\quc\bin\$(Configuration)\*.dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
     <ClCompile>
@@ -111,6 +119,7 @@
     <ClCompile Include="SerialPortManager.cpp" />
     <ClCompile Include="Tcp.cpp" />
     <ClCompile Include="TcpConfigDialog.cpp" />
+    <ClCompile Include="module7.cpp" />
     <ClCompile Include="VFProtocol.cpp" />
     <QtRcc Include="qt_phased_array_antenna.qrc" />
     <ClCompile Include="mainwindow.cpp" />
@@ -123,6 +132,7 @@
     <QtUic Include="module3.ui" />
     <QtUic Include="module4.ui" />
     <QtUic Include="module5.ui" />
+    <QtUic Include="module7.ui" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="mainwindow.h" />
@@ -137,6 +147,7 @@
     <QtMoc Include="iCommunication.h" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="module7.h" />
     <QtMoc Include="SerialPortManager.h" />
     <QtMoc Include="SerialConfigDialog.h" />
     <QtMoc Include="TcpConfigDialog.h" />

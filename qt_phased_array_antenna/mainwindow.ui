@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>5</number>
+     <number>6</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -56,6 +56,11 @@
       <string>Tab 6</string>
      </attribute>
     </widget>
+    <widget class="Module7" name="tab_7">
+     <attribute name="title">
+      <string>页</string>
+     </attribute>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -64,7 +69,7 @@
      <x>0</x>
      <y>0</y>
      <width>1365</width>
-     <height>26</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>
@@ -99,6 +104,12 @@
    <class>Module5</class>
    <extends>QWidget</extends>
    <header>Module5.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Module7</class>
+   <extends>QWidget</extends>
+   <header location="global">module7.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
