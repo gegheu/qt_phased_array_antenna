@@ -91,6 +91,9 @@
     <ClCompile Include="SerialPortManager.cpp">
       <Filter>Source Files\communication</Filter>
     </ClCompile>
+    <ClCompile Include="module7.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="SerialPort.h">
@@ -141,6 +144,9 @@
     <QtMoc Include="SerialPortManager.h">
       <Filter>Header Files\communication</Filter>
     </QtMoc>
+    <QtMoc Include="module7.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="SeialCongigDialog.ui">
@@ -165,6 +171,9 @@
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="module5.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="module7.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>
