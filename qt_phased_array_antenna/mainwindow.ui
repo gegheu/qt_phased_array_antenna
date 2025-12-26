@@ -56,9 +56,14 @@
       <string>Tab 6</string>
      </attribute>
     </widget>
-    <widget class="Module7" name="tab_7">
+    <widget class="NaviUI" name="tab_7">
      <attribute name="title">
-      <string>页</string>
+      <string>导航</string>
+     </attribute>
+    </widget>
+    <widget class="powerCtrl" name="tab_8">
+     <attribute name="title">
+      <string>电源</string>
      </attribute>
     </widget>
    </widget>
@@ -107,9 +112,15 @@
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>Module7</class>
+   <class>powerCtrl</class>
    <extends>QWidget</extends>
-   <header location="global">module7.h</header>
+   <header>powerCtrl.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>NaviUI</class>
+   <extends>QWidget</extends>
+   <header location="global">NaviUI.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

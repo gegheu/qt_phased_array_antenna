@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Module7</class>
- <widget class="QWidget" name="Module7">
+ <class>NaviUI</class>
+ <widget class="QWidget" name="NaviUI">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -154,7 +154,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -264,7 +264,7 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>460</x>
@@ -374,7 +374,7 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>240</x>
@@ -565,7 +565,7 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>470</x>
@@ -619,7 +619,7 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>660</x>
@@ -673,7 +673,7 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>470</x>
@@ -695,7 +695,7 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>41</x>
@@ -878,7 +878,7 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>660</x>
@@ -987,22 +987,22 @@
  <customwidgets>
   <customwidget>
    <class>GaugeArc</class>
-   <extends></extends>
+   <extends>QWidget</extends>
    <header>gaugearc.h</header>
   </customwidget>
   <customwidget>
    <class>GaugeCompassPan</class>
-   <extends></extends>
+   <extends>QWidget</extends>
    <header>gaugecompasspan.h</header>
   </customwidget>
   <customwidget>
    <class>RulerDouble</class>
-   <extends></extends>
+   <extends>QWidget</extends>
    <header>rulerdouble.h</header>
   </customwidget>
   <customwidget>
    <class>RulerTemp</class>
-   <extends></extends>
+   <extends>QWidget</extends>
    <header>rulertemp.h</header>
   </customwidget>
  </customwidgets>

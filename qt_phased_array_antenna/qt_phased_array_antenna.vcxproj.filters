@@ -91,7 +91,10 @@
     <ClCompile Include="SerialPortManager.cpp">
       <Filter>Source Files\communication</Filter>
     </ClCompile>
-    <ClCompile Include="module7.cpp">
+    <ClCompile Include="NaviUI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="powerCtrl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -144,7 +147,10 @@
     <QtMoc Include="SerialPortManager.h">
       <Filter>Header Files\communication</Filter>
     </QtMoc>
-    <QtMoc Include="module7.h">
+    <QtMoc Include="NaviUI.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="powerCtrl.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
@@ -173,7 +179,10 @@
     <QtUic Include="module5.ui">
       <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="module7.ui">
+    <QtUic Include="navi.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="powerCtrl.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>
