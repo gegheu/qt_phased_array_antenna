@@ -1,0 +1,1011 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>NaviUI</class>
+ <widget class="QWidget" name="NaviUI">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1054</width>
+    <height>765</height>
+   </rect>
+  </property>
+  <property name="font">
+   <font>
+    <family>Agency FB</family>
+   </font>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QGroupBox" name="groupBox">
+   <property name="geometry">
+    <rect>
+     <x>820</x>
+     <y>330</y>
+     <width>201</width>
+     <height>111</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>串口设置</string>
+   </property>
+   <widget class="QPushButton" name="serialSwitch">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>70</y>
+      <width>161</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>打开串口</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="serialConfigButton">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>30</y>
+      <width>101</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>串口配置</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QGroupBox" name="groupBox_2">
+   <property name="geometry">
+    <rect>
+     <x>820</x>
+     <y>170</y>
+     <width>201</width>
+     <height>151</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>网口设置</string>
+   </property>
+   <widget class="QPushButton" name="tcpConnectButton">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>70</y>
+      <width>161</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>打开服务器</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="tcpDisconnectButton">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>110</y>
+      <width>161</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>关闭服务器</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="tcpConfigButton">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>30</y>
+      <width>93</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Tcp配置</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QGroupBox" name="groupBox_3">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>20</y>
+     <width>661</width>
+     <height>421</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>组合导航信息</string>
+   </property>
+   <widget class="GaugeCompassPan" name="gaugeCompassPan">
+    <property name="geometry">
+     <rect>
+      <x>240</x>
+      <y>250</y>
+      <width>170</width>
+      <height>170</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="GaugeArc" name="gaugeArc">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>260</y>
+      <width>150</width>
+      <height>150</height>
+     </rect>
+    </property>
+    <property name="endAngle">
+     <number>45</number>
+    </property>
+   </widget>
+   <widget class="RulerDouble" name="rulerDouble">
+    <property name="geometry">
+     <rect>
+      <x>510</x>
+      <y>250</y>
+      <width>81</width>
+      <height>161</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QWidget" name="layoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>30</y>
+      <width>184</width>
+      <height>213</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_3">
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_11">
+       <item>
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>   时间计数：</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_12">
+       <item>
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>X轴角速度：</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit_2"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_13">
+       <item>
+        <widget class="QLabel" name="label_3">
+         <property name="text">
+          <string>X轴加速度：</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit_3"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_14">
+       <item>
+        <widget class="QLabel" name="label_4">
+         <property name="text">
+          <string>X陀螺漂移：</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit_4"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_15">
+       <item>
+        <widget class="QLabel" name="label_5">
+         <property name="text">
+          <string>   东向速度：</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit_5"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_16">
+       <item>
+        <widget class="QLabel" name="label_6">
+         <property name="text">
+          <string>              经度：</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit_6"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_17">
+       <item>
+        <widget class="QLabel" name="label_7">
+         <property name="text">
+          <string>        横滚角：</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit_7"/>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="layoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>460</x>
+      <y>30</y>
+      <width>184</width>
+      <height>213</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_4">
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_31">
+       <item>
+        <widget class="QLabel" name="label_9">
+         <property name="text">
+          <string>   自检结果：</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit_19"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_30">
+       <item>
+        <widget class="QLabel" name="label_13">
+         <property name="text">
+          <string>Z轴角速度：</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit_20"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_29">
+       <item>
+        <widget class="QLabel" name="label_15">
+         <property name="text">
+          <string>Z轴角速度：</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit_18"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_28">
+       <item>
+        <widget class="QLabel" name="label_14">
+         <property name="text">
+          <string>Z轴角速度：</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit_17"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_27">
+       <item>
+        <widget class="QLabel" name="label_17">
+         <property name="text">
+          <string>  天向速度：</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit_16"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_26">
+       <item>
+        <widget class="QLabel" name="label_19">
+         <property name="text">
+          <string>              高度：</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit_21"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_25">
+       <item>
+        <widget class="QLabel" name="label_21">
+         <property name="text">
+          <string>        俯仰角：</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit_15"/>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="layoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>240</x>
+      <y>30</y>
+      <width>184</width>
+      <height>213</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_5">
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_18">
+       <item>
+        <widget class="QLabel" name="label_8">
+         <property name="text">
+          <string>   工作模式：</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit_11"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_19">
+       <item>
+        <widget class="QLabel" name="label_10">
+         <property name="text">
+          <string>Y轴角速度：</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit_12"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_20">
+       <item>
+        <widget class="QLabel" name="label_12">
+         <property name="text">
+          <string>Y轴角速度：</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit_14"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_21">
+       <item>
+        <widget class="QLabel" name="label_11">
+         <property name="text">
+          <string>Y轴角速度：</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit_13"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_22">
+       <item>
+        <widget class="QLabel" name="label_16">
+         <property name="text">
+          <string>  北向速度：</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit_10"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_23">
+       <item>
+        <widget class="QLabel" name="label_18">
+         <property name="text">
+          <string>              纬度：</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit_9"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_24">
+       <item>
+        <widget class="QLabel" name="label_20">
+         <property name="text">
+          <string>        航向角：</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit_8"/>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QGroupBox" name="groupBox_4">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>450</y>
+     <width>851</width>
+     <height>161</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>GPS信息</string>
+   </property>
+   <widget class="QWidget" name="layoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>30</y>
+      <width>172</width>
+      <height>120</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_5">
+       <item>
+        <widget class="QLabel" name="label_29">
+         <property name="text">
+          <string> POS OK：</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit_32"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_6">
+       <item>
+        <widget class="QLabel" name="label_30">
+         <property name="text">
+          <string>GPS北速：</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit_33"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_7">
+       <item>
+        <widget class="QLabel" name="label_31">
+         <property name="text">
+          <string>GPS纬度：</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit_35"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_8">
+       <item>
+        <widget class="QLabel" name="label_32">
+         <property name="text">
+          <string>   升沉：</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit_34"/>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="layoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>470</x>
+      <y>30</y>
+      <width>178</width>
+      <height>89</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_6">
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_9">
+       <item>
+        <widget class="QLabel" name="label_36">
+         <property name="text">
+          <string>自检结果：</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit_40"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_10">
+       <item>
+        <widget class="QLabel" name="label_37">
+         <property name="text">
+          <string> GPS天速：</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit_41"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_32">
+       <item>
+        <widget class="QLabel" name="label_38">
+         <property name="text">
+          <string> GPS高度：</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit_39"/>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="layoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>660</x>
+      <y>30</y>
+      <width>178</width>
+      <height>89</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_7">
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_33">
+       <item>
+        <widget class="QLabel" name="label_42">
+         <property name="text">
+          <string>  卫星数：</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit_44"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_34">
+       <item>
+        <widget class="QLabel" name="label_40">
+         <property name="text">
+          <string>定位精度：</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit_43"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_35">
+       <item>
+        <widget class="QLabel" name="label_41">
+         <property name="text">
+          <string>气压高度：</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit_42"/>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="layoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>470</x>
+      <y>120</y>
+      <width>371</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_36">
+     <item>
+      <widget class="QLabel" name="label_39">
+       <property name="text">
+        <string>UTC时间：</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lineEdit_38"/>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="layoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>41</x>
+      <y>31</y>
+      <width>178</width>
+      <height>120</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QLabel" name="label_22">
+         <property name="text">
+          <string>POS TYPE：</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit_22"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QLabel" name="label_23">
+         <property name="text">
+          <string> GPS东速：</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit_23"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <item>
+        <widget class="QLabel" name="label_24">
+         <property name="text">
+          <string> GPS经度：</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit_24"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <item>
+        <widget class="QLabel" name="label_25">
+         <property name="text">
+          <string> GPS航向：</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit_25"/>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QGroupBox" name="groupBox_5">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>620</y>
+     <width>851</width>
+     <height>121</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>DVL/轮速信息</string>
+   </property>
+   <widget class="QWidget" name="layoutWidget_2">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>40</y>
+      <width>178</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_8">
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_37">
+       <item>
+        <widget class="QLabel" name="label_26">
+         <property name="text">
+          <string>      Vx：</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit_26"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_38">
+       <item>
+        <widget class="QLabel" name="label_27">
+         <property name="text">
+          <string>水压深度：</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit_27"/>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="layoutWidget_3">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>40</y>
+      <width>172</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_9">
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_41">
+       <item>
+        <widget class="QLabel" name="label_34">
+         <property name="text">
+          <string>      Vy：</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit_36"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_42">
+       <item>
+        <widget class="QLabel" name="label_35">
+         <property name="text">
+          <string>打底高度：</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit_37"/>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="layoutWidget_4">
+    <property name="geometry">
+     <rect>
+      <x>470</x>
+      <y>40</y>
+      <width>171</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_40">
+     <item>
+      <widget class="QLabel" name="label_46">
+       <property name="text">
+        <string>  VEL OK：</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lineEdit_48"/>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="layoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>660</x>
+      <y>40</y>
+      <width>171</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_39">
+     <item>
+      <widget class="QLabel" name="label_45">
+       <property name="text">
+        <string>      Vz：</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lineEdit_47"/>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QGroupBox" name="groupBox_6">
+   <property name="geometry">
+    <rect>
+     <x>890</x>
+     <y>450</y>
+     <width>131</width>
+     <height>291</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>磁罗盘</string>
+   </property>
+   <widget class="QLineEdit" name="lineEdit_29">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>220</y>
+      <width>111</width>
+      <height>22</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="GaugeCompassPan" name="gaugeCompassPan_2">
+    <property name="geometry">
+     <rect>
+      <x>5</x>
+      <y>70</y>
+      <width>120</width>
+      <height>120</height>
+     </rect>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QGroupBox" name="groupBox_7">
+   <property name="geometry">
+    <rect>
+     <x>820</x>
+     <y>30</y>
+     <width>201</width>
+     <height>121</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>通信协议选择</string>
+   </property>
+   <widget class="QRadioButton" name="radioButton">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>40</y>
+      <width>91</width>
+      <height>18</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>标准协议</string>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="radioButton_2">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>70</y>
+      <width>91</width>
+      <height>18</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>用户协议</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="RulerTemp" name="rulerTemp">
+   <property name="geometry">
+    <rect>
+     <x>700</x>
+     <y>40</y>
+     <width>111</width>
+     <height>401</height>
+    </rect>
+   </property>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>GaugeArc</class>
+   <extends>QWidget</extends>
+   <header>gaugearc.h</header>
+  </customwidget>
+  <customwidget>
+   <class>GaugeCompassPan</class>
+   <extends>QWidget</extends>
+   <header>gaugecompasspan.h</header>
+  </customwidget>
+  <customwidget>
+   <class>RulerDouble</class>
+   <extends>QWidget</extends>
+   <header>rulerdouble.h</header>
+  </customwidget>
+  <customwidget>
+   <class>RulerTemp</class>
+   <extends>QWidget</extends>
+   <header>rulertemp.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
