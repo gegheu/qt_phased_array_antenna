@@ -105,6 +105,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AnteCtrl.cpp" />
     <ClCompile Include="AntennaProtocol.cpp" />
     <ClCompile Include="CommManager.cpp" />
     <ClCompile Include="iCommunication.cpp" />
@@ -115,6 +116,7 @@
     <ClCompile Include="Module4.cpp" />
     <ClCompile Include="Module5.cpp" />
     <ClCompile Include="powerCtrl.cpp" />
+    <ClCompile Include="PowerProtocol.cpp" />
     <ClCompile Include="SerialConfigDialog.cpp" />
     <ClCompile Include="SerialPort.cpp" />
     <ClCompile Include="SerialPortManager.cpp" />
@@ -125,6 +127,7 @@
     <QtRcc Include="qt_phased_array_antenna.qrc" />
     <ClCompile Include="mainwindow.cpp" />
     <ClCompile Include="main.cpp" />
+    <QtUic Include="AnteCtrl.ui" />
     <QtUic Include="mainwindow.ui" />
     <QtUic Include="powerCtrl.ui" />
     <QtUic Include="SeialCongigDialog.ui" />
@@ -162,6 +165,8 @@
     <QtMoc Include="Module4.h" />
     <QtMoc Include="Module5.h" />
     <QtMoc Include="powerCtrl.h" />
+    <QtMoc Include="AnteCtrl.h" />
+    <QtMoc Include="PowerProtocol.h" />
     <ClInclude Include="ProtocolFactory.h" />
     <QtMoc Include="VFProtocol.h" />
   </ItemGroup>

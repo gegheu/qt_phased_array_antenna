@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QTabWidget" name="tabWidget">
+   <widget class="QTabWidget" name="mainTabWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -64,6 +64,11 @@
     <widget class="powerCtrl" name="tab_8">
      <attribute name="title">
       <string>电源</string>
+     </attribute>
+    </widget>
+    <widget class="AnteCtrl" name="tab_9">
+     <attribute name="title">
+      <string>相控阵天线</string>
      </attribute>
     </widget>
    </widget>
@@ -120,7 +125,13 @@
   <customwidget>
    <class>NaviUI</class>
    <extends>QWidget</extends>
-   <header location="global">NaviUI.h</header>
+   <header>NaviUI.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>AnteCtrl</class>
+   <extends>QWidget</extends>
+   <header>AnteCtrl.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
