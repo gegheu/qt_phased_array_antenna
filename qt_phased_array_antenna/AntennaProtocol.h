@@ -3,7 +3,8 @@
 
 #define ANTE_FRAMEHEAD1 0xEB
 #define ANTE_FRAMEHEAD2 0x90
-#define ANTE_FRAMETAIL 0x146F
+#define ANTE_FRAMETAIL1 0x14
+#define ANTE_FRAMETAIL2 0x6F
 #define ANTE_CMD "ANTE_CMD"
 
 class AntennaProtocol : public IProtocol {
@@ -17,10 +18,11 @@ public:
         quint8 frameHead1 = ANTE_FRAMEHEAD1;
         quint8 frameHead2 = ANTE_FRAMEHEAD2;
         quint8 cmd;
-        quint8 frameLength;
+        quint16 frameLength;
         QByteArray data;
         qint8 check;
-        quint16 frameTail = ANTE_FRAMETAIL;
+        quint8 frameTail1 = ANTE_FRAMETAIL1;
+        quint8 frameTail2 = ANTE_FRAMETAIL2;
     };
 
 private:
