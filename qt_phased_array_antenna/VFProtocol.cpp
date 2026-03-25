@@ -1,36 +1,35 @@
-#include"VFProtocol.h"
+#include "VFProtocol.h"
 
 VFProtocol::VFProtocol(QObject* parent) : IProtocol(parent) {}
 
 QByteArray VFProtocol::buildCommand(const QByteArray& data, const QVariantMap& para)
 {
-	VFModuleFrame frameStr;
-	
-	frameStr.cmd = para[VF_CMD].toUInt();
-	frameStr.frameLength = data.size();
-	frameStr.data = data;
+    Q_UNUSED(para);
 
-	return revertFrame(frameStr);
-}
+    QByteArray packet;
+    packet.append(static_cast<quint8>(VAR_FREQ_FRAME_HEAD));
+    packet.append(data[0]);  // 命令号
+    packet.append(data[1]);  // 数据高字节
+    packet.append(data[2]);  // 数据低字节
+    packet.append(static_cast<quint8>(VAR_FREQ_FRAME_TAIL));
 
-QByteArray VFProtocol::revertFrame(const VFModuleFrame& data)
-{
-	QByteArray packet;
-	packet.append(data.frameHead);
-	packet.append(data.cmd);
-	packet.append(data.frameLength);
-	packet.append(data.data);
-
-	return packet;
+    return packet;
 }
 
 void VFProtocol::parseResponse(const QByteArray& data)
 {
-	quint8 offset = 0;
-	VFModuleFrame frameStr;
-	frameStr.frameHead = static_cast<quint8>(data[offset]);		offset += sizeof(frameStr.frameHead);
-	frameStr.cmd = static_cast<quint8>(data[offset]);			offset += sizeof(frameStr.cmd);
-	frameStr.frameLength = static_cast<quint8>(data[offset]);	offset += sizeof(frameStr.frameLength);
-	frameStr.data = data.mid(offset, frameStr.frameLength);
-	emit VFEvent(frameStr);
+    VarFreqResponse response;
+    response.isValid = false;
+
+    if (data.size() >= 3 &&
+        static_cast<quint8>(data[0]) == VAR_FREQ_FRAME_HEAD &&
+        static_cast<quint8>(data[2]) == VAR_FREQ_FRAME_TAIL) {
+
+        response.frameHead = static_cast<quint8>(data[0]);
+        response.cmd = static_cast<quint8>(data[1]);
+        response.frameTail = static_cast<quint8>(data[2]);
+        response.isValid = true;
+
+        emit varFreqResponse(response);
+    }
 }

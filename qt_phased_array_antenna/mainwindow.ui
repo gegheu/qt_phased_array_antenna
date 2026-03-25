@@ -23,37 +23,20 @@
       <height>771</height>
      </rect>
     </property>
+    <property name="layoutDirection">
+     <enum>Qt::LeftToRight</enum>
+    </property>
     <property name="currentIndex">
-     <number>6</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
       <string>Tab 1</string>
      </attribute>
     </widget>
-    <widget class="Module1" name="tab_2">
+    <widget class="variableFreq" name="tab_6">
      <attribute name="title">
-      <string>Tab 2</string>
-     </attribute>
-    </widget>
-    <widget class="Module2" name="tab_3">
-     <attribute name="title">
-      <string>Tab 3</string>
-     </attribute>
-    </widget>
-    <widget class="Module3" name="tab_4">
-     <attribute name="title">
-      <string>Tab 4</string>
-     </attribute>
-    </widget>
-    <widget class="Module4" name="tab_5">
-     <attribute name="title">
-      <string>Tab 5</string>
-     </attribute>
-    </widget>
-    <widget class="Module5" name="tab_6">
-     <attribute name="title">
-      <string>Tab 6</string>
+      <string>上下变频</string>
      </attribute>
     </widget>
     <widget class="NaviUI" name="tab_7">
@@ -87,36 +70,6 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Module1</class>
-   <extends>QWidget</extends>
-   <header>Module1.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>Module2</class>
-   <extends>QWidget</extends>
-   <header>Module2.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>Module3</class>
-   <extends>QWidget</extends>
-   <header>Module3.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>Module4</class>
-   <extends>QWidget</extends>
-   <header>Module4.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>Module5</class>
-   <extends>QWidget</extends>
-   <header>Module5.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
    <class>powerCtrl</class>
    <extends>QWidget</extends>
    <header>powerCtrl.h</header>
@@ -132,6 +85,12 @@
    <class>AnteCtrl</class>
    <extends>QWidget</extends>
    <header>AnteCtrl.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>variableFreq</class>
+   <extends>QWidget</extends>
+   <header>variableFreq.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

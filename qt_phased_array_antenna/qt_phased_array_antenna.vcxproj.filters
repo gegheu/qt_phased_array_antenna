@@ -70,19 +70,7 @@
     <ClCompile Include="TcpConfigDialog.cpp">
       <Filter>Source Files\communication</Filter>
     </ClCompile>
-    <ClCompile Include="Module1.cpp">
-      <Filter>Source Files\communication</Filter>
-    </ClCompile>
-    <ClCompile Include="Module2.cpp">
-      <Filter>Source Files\communication</Filter>
-    </ClCompile>
-    <ClCompile Include="Module3.cpp">
-      <Filter>Source Files\communication</Filter>
-    </ClCompile>
-    <ClCompile Include="Module4.cpp">
-      <Filter>Source Files\communication</Filter>
-    </ClCompile>
-    <ClCompile Include="Module5.cpp">
+    <ClCompile Include="variableFreq.cpp">
       <Filter>Source Files\communication</Filter>
     </ClCompile>
     <ClCompile Include="iCommunication.cpp">
@@ -135,19 +123,7 @@
     <QtMoc Include="SerialConfigDialog.h">
       <Filter>Header Files\communication</Filter>
     </QtMoc>
-    <QtMoc Include="Module1.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="Module2.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="Module3.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="Module4.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="Module5.h">
+    <QtMoc Include="variableFreq.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="SerialPortManager.h">
@@ -176,19 +152,7 @@
     <QtUic Include="mainwindow.ui">
       <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="module1.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="module2.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="module3.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="module4.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="module5.ui">
+    <QtUic Include="variableFreq.ui">
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="navi.ui">

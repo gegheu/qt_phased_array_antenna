@@ -1,57 +1,66 @@
 #pragma once
-#include"iProtocol.h"
+#include "iProtocol.h"
 
-#define VF_FRAMEHEAD 0x55
-#define VF_CMD "VF_CMD"
+#define VAR_FREQ_FRAME_HEAD 0x5A
+#define VAR_FREQ_FRAME_TAIL 0xA5
+
+// 频率范围
+#define RX_FREQ_MIN 17700
+#define RX_FREQ_MAX 21200
+#define TX_FREQ_MIN 28225
+#define TX_FREQ_MAX 30275
 
 class VFProtocol : public IProtocol {
     Q_OBJECT
 public:
-    VFProtocol(QObject* parent = nullptr);
-    QByteArray buildCommand(const QByteArray& data, const QVariantMap& para) override;
+    explicit VFProtocol(QObject* parent = nullptr);
+
+    QByteArray buildCommand(const QByteArray& data, const QVariantMap& para = {}) override;
     void parseResponse(const QByteArray& data) override;
 
-    struct VFModuleFrame {
-        quint8 frameHead = VF_FRAMEHEAD;
+    // 变频率协议结构体
+    struct VarFreqFrame {
+        quint8 frameHead = VAR_FREQ_FRAME_HEAD;
         quint8 cmd;
-        quint8 frameLength;
-        QByteArray data;
+        quint16 data;
+        quint8 frameTail = VAR_FREQ_FRAME_TAIL;
     };
 
-private:
-    enum VFCmdType {
-        SwitchCtrl = 0x01,
-        LOCtrl12 = 0x02,
-        LOCtrl11 = 0x03,
-        LOCtrl22 = 0x04,
-        LOCtrl21 = 0x05,
-        LOCtrl32 = 0x06,
-        LOCtrl31 = 0x07,
-        LOCtrl42 = 0x08,
-        LOCtrl41 = 0x09,
-        ATTCtrl1 = 0x0A,
-        ATTCtrl2 = 0x0B,
-        ATTCtrl3 = 0x0C,
-        ATTCtrl4 = 0x0D,
-    };
-    enum VFCmdTypeRes {
-        SwitchCtrlRes = 0x81,
-        LOCtrl12Res = 0x82,
-        LOCtrl11Res = 0x83,
-        LOCtrl22Res = 0x84,
-        LOCtrl21Res = 0x85,
-        LOCtrl32Res = 0x86,
-        LOCtrl31Res = 0x87,
-        LOCtrl42Res = 0x88,
-        LOCtrl41Res = 0x89,
-        ATTCtrl1Res = 0x8A,
-        ATTCtrl2Res = 0x8B,
-        ATTCtrl3Res = 0x8C,
-        ATTCtrl4Res = 0x8D,
+    // 响应结构体
+    struct VarFreqResponse {
+        quint8 frameHead;
+        quint8 cmd;
+        quint8 frameTail;
+        bool isValid;
     };
 
-    QByteArray revertFrame(const VFModuleFrame& packet);
+    // 命令号枚举
+    enum VarFreqCmd {
+        RxFreq = 0x01,
+        TxFreq = 0x02
+    };
+
+    // 辅助函数
+    static inline bool isValidRxFrequency(quint32 freqMHz) {
+        return (freqMHz >= RX_FREQ_MIN && freqMHz <= RX_FREQ_MAX);
+    }
+
+    static inline bool isValidTxFrequency(quint32 freqMHz) {
+        return (freqMHz >= TX_FREQ_MIN && freqMHz <= TX_FREQ_MAX);
+    }
+
+    static inline quint32 clampRxFrequency(quint32 freqMHz) {
+        if (freqMHz < RX_FREQ_MIN) return RX_FREQ_MIN;
+        if (freqMHz > RX_FREQ_MAX) return RX_FREQ_MAX;
+        return freqMHz;
+    }
+
+    static inline quint32 clampTxFrequency(quint32 freqMHz) {
+        if (freqMHz < TX_FREQ_MIN) return TX_FREQ_MIN;
+        if (freqMHz > TX_FREQ_MAX) return TX_FREQ_MAX;
+        return freqMHz;
+    }
 
 signals:
-    void VFEvent(const VFModuleFrame& packet);
+    void varFreqResponse(const VarFreqResponse& response);
 };
