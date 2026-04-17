@@ -109,7 +109,6 @@
     <ClCompile Include="AntennaProtocol.cpp" />
     <ClCompile Include="CommManager.cpp" />
     <ClCompile Include="iCommunication.cpp" />
-    <ClCompile Include="iProtocol.cpp" />
     <ClCompile Include="variableFreq.cpp" />
     <ClCompile Include="powerCtrl.cpp" />
     <ClCompile Include="PowerProtocol.cpp" />
@@ -157,6 +156,9 @@
     <QtMoc Include="PowerProtocol.h" />
     <ClInclude Include="ProtocolFactory.h" />
     <QtMoc Include="VFProtocol.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

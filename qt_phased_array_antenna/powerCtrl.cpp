@@ -1,5 +1,4 @@
 #include "powerCtrl.h"
-#include "SerialPort.h"
 #include <QMessageBox>
 #include <QDateTime>
 #include <QTextCodec>
@@ -18,118 +17,39 @@ powerCtrl::powerCtrl(QWidget* parent)
 {
     ui->setupUi(this);
 
-    // 初始化
-    initSerial();
-    initProtocol();
-
+    m_serialConfigDialog = new SerialConfigDialog(this);
     setWindowTitle(QStringLiteral("相控阵电源控制"));
 }
 
 powerCtrl::~powerCtrl()
 {
-    if (m_serialPort && m_serialPort->isConnected()) {
-        m_serialPort->disconnect();
-    }
+    // 不再主动 disconnect，因为生命周期由外部管理
     delete ui;
 }
 
-void powerCtrl::initSerial()
+// ==================== 资源注入 ====================
+
+void powerCtrl::setDevice(ICommunication* device)
 {
-    m_serialPort = new SerialPort("PowerCtrl", this);
-    m_serialConfigDialog = new SerialConfigDialog(this);
-
-    connect(m_serialPort, &ICommunication::dataReceived,
-        this, &powerCtrl::handleSerialDataReceived);
-    connect(m_serialPort, &ICommunication::connectStatus,
-        this, &powerCtrl::handleOpenSerialResult);
-}
-
-void powerCtrl::initProtocol()
-{
-    m_protocol = new PowerProtocol(this);
-    connect(m_protocol, &PowerProtocol::powerStatusReceived,
-        this, &powerCtrl::handlePowerStatus);
-}
-
-QVariantList powerCtrl::getSerialParaList()
-{
-    QVariantList params;
-    params.append(m_serialPortName);
-    params.append(m_serialBaudRate);
-    params.append(static_cast<int>(m_serialDataBits));
-    params.append(static_cast<int>(m_serialParity));
-    params.append(static_cast<int>(m_serialStopBits));
-    return params;
-}
-
-// ==================== 构建控制数据 ====================
-
-QByteArray powerCtrl::buildControlData(int channel, bool open)
-{
-    QByteArray data(6, 0x00);
-
-    // 所有通道默认设置为关闭值
-    for (int i = 0; i < 6; i++) {
-        data[i] = PowerProtocol::getChannelCloseValue(i);
-    }
-
-    // 如果是要开启，修改目标通道为开启值
-    if (open && channel >= 0 && channel < 6) {
-        data[channel] = PowerProtocol::getChannelOpenValue(channel);
-    }
-
-    return data;
-}
-
-QByteArray powerCtrl::buildControlDataAll(bool open)
-{
-    QByteArray data(6, 0x00);
-
-    for (int i = 0; i < 6; i++) {
-        if (open) {
-            data[i] = PowerProtocol::getChannelOpenValue(i);
-        }
-        else {
-            data[i] = PowerProtocol::getChannelCloseValue(i);
-        }
-    }
-
-    return data;
-}
-
-// ==================== UI更新 ====================
-
-void powerCtrl::updateUIDisplay(int channel, double voltage, double current)
-{
-    switch (channel) {
-    case CH_12V1:
-        ui->v_12v1->setText(QString::number(voltage, 'f', 2));
-        ui->a_12v1->setText(QString::number(current, 'f', 2));
-        break;
-    case CH_12V2:
-        ui->v_12v2->setText(QString::number(voltage, 'f', 2));
-        ui->a_12v2->setText(QString::number(current, 'f', 2));
-        break;
-    case CH_12V3:
-        ui->v_12v3->setText(QString::number(voltage, 'f', 2));
-        ui->a_12v3->setText(QString::number(current, 'f', 2));
-        break;
-    case CH_12V4:
-        ui->v_12v4->setText(QString::number(voltage, 'f', 2));
-        ui->a_12v4->setText(QString::number(current, 'f', 2));
-        break;
-    case CH_24V1:
-        // 24V1显示控件（根据实际UI添加）
-        break;
-    case CH_24V2:
-        // 24V2显示控件（根据实际UI添加）
-        break;
-    default:
-        break;
+    m_serialPort = device;
+    if (m_serialPort) {
+        // 连接串口打开/关闭的状态反馈信号
+        connect(m_serialPort, &ICommunication::connectStatus,
+            this, &powerCtrl::handleOpenSerialResult);
     }
 }
 
-// ==================== 串口控制 ====================
+void powerCtrl::setProtocol(PowerProtocol* proto)
+{
+    m_protocol = proto;
+    if (m_protocol) {
+        // 连接协议解析完成后的业务处理信号
+        connect(m_protocol, &PowerProtocol::powerStatusReceived,
+            this, &powerCtrl::handlePowerStatus);
+    }
+}
+
+// ==================== 串口控制逻辑 ====================
 
 void powerCtrl::on_set_uart_clicked()
 {
@@ -150,6 +70,8 @@ void powerCtrl::on_set_uart_clicked()
 
 void powerCtrl::on_open_uart_clicked()
 {
+    if (!m_serialPort) return;
+
     if (ui->open_uart->text() == QStringLiteral("打开串口")) {
         if (m_serialPortName.isEmpty()) {
             QMessageBox::warning(this, QStringLiteral("警告"), QStringLiteral("请先配置串口"));
@@ -178,12 +100,7 @@ void powerCtrl::handleOpenSerialResult(const QString& instanceId, bool result, c
     }
 }
 
-void powerCtrl::handleSerialDataReceived(const QString& instanceId, const QByteArray& data)
-{
-    if (m_protocol) {
-        m_protocol->parseResponse(data);
-    }
-}
+// ==================== 电源业务处理 ====================
 
 void powerCtrl::handlePowerStatus(const PowerProtocol::PowerStatusFrame& status)
 {
@@ -202,8 +119,55 @@ void powerCtrl::handlePowerStatus(const PowerProtocol::PowerStatusFrame& status)
     ui->power_temp->setText(QString::number(temp, 'f', 1));
 }
 
-// ==================== 12V通道控制 ====================
+void powerCtrl::updateUIDisplay(int channel, double voltage, double current)
+{
+    switch (channel) {
+    case CH_12V1:
+        ui->v_12v1->setText(QString::number(voltage, 'f', 2));
+        ui->a_12v1->setText(QString::number(current, 'f', 2));
+        break;
+    case CH_12V2:
+        ui->v_12v2->setText(QString::number(voltage, 'f', 2));
+        ui->a_12v2->setText(QString::number(current, 'f', 2));
+        break;
+    case CH_12V3:
+        ui->v_12v3->setText(QString::number(voltage, 'f', 2));
+        ui->a_12v3->setText(QString::number(current, 'f', 2));
+        break;
+    case CH_12V4:
+        ui->v_12v4->setText(QString::number(voltage, 'f', 2));
+        ui->a_12v4->setText(QString::number(current, 'f', 2));
+        break;
+    default:
+        break;
+    }
+}
 
+// ==================== 命令构建与发送 ====================
+
+QByteArray powerCtrl::buildControlData(int channel, bool open)
+{
+    QByteArray data(6, 0x00);
+    for (int i = 0; i < 6; i++) {
+        data[i] = PowerProtocol::getChannelCloseValue(i);
+    }
+    if (open && channel >= 0 && channel < 6) {
+        data[channel] = PowerProtocol::getChannelOpenValue(channel);
+    }
+    return data;
+}
+
+QByteArray powerCtrl::buildControlDataAll(bool open)
+{
+    QByteArray data(6, 0x00);
+    for (int i = 0; i < 6; i++) {
+        data[i] = open ? PowerProtocol::getChannelOpenValue(i) : PowerProtocol::getChannelCloseValue(i);
+    }
+    return data;
+}
+
+
+// ==================== 12V通道控制 ====================
 void powerCtrl::on_open12v1_clicked()
 {
     if (!m_serialPort || !m_serialPort->isConnected()) {
@@ -284,6 +248,7 @@ void powerCtrl::on_close12v4_clicked()
     m_serialPort->write(cmd);
 }
 
+
 // ==================== 24V通道控制 ====================
 
 void powerCtrl::on_open24v1_clicked()
@@ -346,4 +311,15 @@ void powerCtrl::on_closeall_clicked()
     }
     QByteArray cmd = m_protocol->buildCommand(buildControlDataAll(false));
     m_serialPort->write(cmd);
+}
+
+QVariantList powerCtrl::getSerialParaList()
+{
+    QVariantList params;
+    params.append(m_serialPortName);
+    params.append(m_serialBaudRate);
+    params.append(static_cast<int>(m_serialDataBits));
+    params.append(static_cast<int>(m_serialParity));
+    params.append(static_cast<int>(m_serialStopBits));
+    return params;
 }

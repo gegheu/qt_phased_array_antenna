@@ -1,5 +1,4 @@
 #pragma once
-
 #include <QWidget>
 #include <QSerialPort>
 #include "ui_variableFreq.h"
@@ -16,12 +15,15 @@ public:
     explicit variableFreq(QWidget* parent = nullptr);
     ~variableFreq();
 
+    // 资源注入接口：由 MainWindow 调用
+    void setDevice(ICommunication* device);
+    void setProtocol(VFProtocol* proto);
+
 private slots:
     // 串口控制
     void on_serialConfigButton_clicked();
     void on_serialSwitch_clicked();
     void handleOpenSerialResult(const QString& instanceId, bool result, const QString& errStr);
-    void handleSerialDataReceived(const QString& instanceId, const QByteArray& data);
 
     // 发送控制
     void on_serialSendButton_clicked();
@@ -30,14 +32,11 @@ private slots:
     void on_serialClearLogButton_clicked();
     void on_serialClearCountButton_clicked();
 
-    // 协议响应处理
+    // 协议响应处理：对应解析完成后的业务更新
     void handleVarFreqResponse(const VFProtocol::VarFreqResponse& response);
 
 private:
-    void initSerial();
-    void initProtocol();
     void initComboBox();
-
     void appendSerialLog(const QString& str, bool isSend);
     void updateSerialCounters(qint64 sent, qint64 received);
 
@@ -49,7 +48,7 @@ private:
 
     Ui::variableFreq* ui;
 
-    // 通信相关
+    // 通信相关（由外部注入）
     ICommunication* m_serialPort;
     VFProtocol* m_protocol;
     SerialConfigDialog* m_serialConfigDialog;

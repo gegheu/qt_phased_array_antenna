@@ -13,5 +13,7 @@ public:
 
 
 private:
+    //ICommunication* m_device = nullptr;
+    //AntennaProtocol* m_protocol = nullptr;
     Ui::NaviUI* ui;
 };

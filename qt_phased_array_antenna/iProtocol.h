@@ -4,6 +4,7 @@
 #include <QVariantMap>
 #include <numeric>
 
+//协议基类
 class IProtocol : public QObject {
     Q_OBJECT
 public:
