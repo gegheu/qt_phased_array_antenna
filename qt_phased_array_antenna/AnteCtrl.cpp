@@ -1,5 +1,4 @@
 #include "AnteCtrl.h"
-#include "SerialPort.h"
 #include <QMessageBox>
 #include <QDateTime>
 #include <QTextCodec>
@@ -29,112 +28,53 @@ AnteCtrl::AnteCtrl(QWidget* parent)
         "11", "12", "13", "14" });
     ui->send_ante_Button->setChecked(true);
 
-    // 设置日志控件
+    // 设置日志控件样式
     ui->ante_recv_log->setReadOnly(true);
-    ui->ante_recv_log->setLineWrapMode(QTextEdit::WidgetWidth);
     QFont logFont("Consolas", 9);
     ui->ante_recv_log->setFont(logFont);
 
-    // 初始化
-    initSerial();
-    initProtocol();
-
-    // 设置编码
+    m_serialConfigDialog = new SerialConfigDialog(this);
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
-
-    setWindowTitle(QStringLiteral("天线控制台 - RS422协议测试"));
 }
 
 AnteCtrl::~AnteCtrl()
 {
-    if (m_serialPort && m_serialPort->isConnected()) {
-        m_serialPort->disconnect();
-    }
     delete ui;
 }
 
-void AnteCtrl::initSerial()
+// ==================== 资源注入 ====================
+
+void AnteCtrl::setDevice(ICommunication* device)
 {
-    m_serialPort = new SerialPort("AnteCtrl_RS422", this);
-    m_serialConfigDialog = new SerialConfigDialog(this);
+    m_serialPort = device;
+    if (m_serialPort) {
+        // 连接状态反馈信号
+        connect(m_serialPort, &ICommunication::connectStatus,
+            this, &AnteCtrl::handleOpenSerialResult);
 
-    connect(m_serialPort, &ICommunication::dataReceived,
-        this, &AnteCtrl::handleSerialDataReceived);
-    connect(m_serialPort, &ICommunication::connectStatus,
-        this, &AnteCtrl::handleOpenSerialResult);
-}
-
-void AnteCtrl::initProtocol()
-{
-    m_protocol = new AntennaProtocol(this);
-    connect(m_protocol, &AntennaProtocol::AnteEvent,
-        this, &AnteCtrl::handleAntennaEvent);
-}
-
-// ==================== 串口控制 ====================
-
-void AnteCtrl::on_set_uart_clicked()
-{
-    if (m_serialConfigDialog) {
-        m_serialConfigDialog->setCurrentConfig(m_serialPortName, m_serialBaudRate,
-            m_serialDataBits, m_serialParity,
-            m_serialStopBits, true);
-
-        if (m_serialConfigDialog->exec() == QDialog::Accepted) {
-            m_serialPortName = m_serialConfigDialog->portName();
-            m_serialBaudRate = m_serialConfigDialog->baudRate();
-            m_serialDataBits = m_serialConfigDialog->dataBits();
-            m_serialParity = m_serialConfigDialog->parity();
-            m_serialStopBits = m_serialConfigDialog->stopBits();
-        }
+        // 原始数据日志连接：当串口收到数据时，自动打印 16 进制日志
+        connect(m_serialPort, &ICommunication::dataReceived, this, [this](const QString&, const QByteArray& data) {
+            appendLog(data.toHex(' ').toUpper(), false);
+            m_rxNum += data.size();
+            });
     }
 }
 
-void AnteCtrl::on_open_uart_clicked()
+void AnteCtrl::setProtocol(AntennaProtocol* proto)
 {
-    if (ui->open_uart->text() == QStringLiteral("打开串口")) {
-        if (m_serialPortName.isEmpty()) {
-            QMessageBox::warning(this, QStringLiteral("警告"), QStringLiteral("请先配置串口"));
-            return;
-        }
-        m_serialPort->portConnect(getSerialParaList());
-    }
-    else {
-        m_serialPort->disconnect();
-        ui->open_uart->setText(QStringLiteral("打开串口"));
-        ui->set_uart->setEnabled(true);
-    }
-}
-
-void AnteCtrl::handleOpenSerialResult(const QString& instanceId, bool result, const QString& errStr)
-{
-    if (result) {
-        ui->open_uart->setText(QStringLiteral("关闭串口"));
-        ui->set_uart->setEnabled(false);
-    }
-    else {
-        QMessageBox::warning(this, QStringLiteral("警告"), QStringLiteral("打开串口失败: ") + errStr);
-        ui->open_uart->setText(QStringLiteral("打开串口"));
-        ui->set_uart->setEnabled(true);
-    }
-}
-
-void AnteCtrl::handleSerialDataReceived(const QString& instanceId, const QByteArray& data)
-{
+    m_protocol = proto;
     if (m_protocol) {
-        m_protocol->parseResponse(data);
+        // 当管理器的协议解析完数据后，触发此处的 UI 更新
+        connect(m_protocol, &AntennaProtocol::AnteEvent,
+            this, &AnteCtrl::onDataUpdated);
     }
-
-    // 显示原始数据到接收日志区域
-    QString hexData = data.toHex(' ').toUpper();
-    appendLog(hexData, false);
-
-    m_rxNum += data.size();
 }
 
-void AnteCtrl::handleAntennaEvent(const AntennaProtocol::AnteModuleFrame& frame)
+// ==================== 数据显示 ====================
+
+void AnteCtrl::onDataUpdated(const AntennaProtocol::AnteModuleFrame& frame)
 {
-    // 更新当前接收到的指令类型显示
+    // 原 handleAntennaEvent 逻辑：根据指令码更新 UI 状态显示
     QString cmdType;
     switch (frame.cmd) {
     case 0x01: cmdType = QStringLiteral("射频通道开关控制"); break;
@@ -151,27 +91,51 @@ void AnteCtrl::handleAntennaEvent(const AntennaProtocol::AnteModuleFrame& frame)
     ui->ante_recv_type->setText(cmdType);
 }
 
-// ==================== 辅助函数 ====================
+// ==================== 串口控制 ====================
 
-quint8 AnteCtrl::getAntennaSelect()
+void AnteCtrl::on_set_uart_clicked()
 {
-    return ui->send_ante_Button->isChecked() ? 0x01 : 0x02;
+    if (m_serialConfigDialog) {
+        m_serialConfigDialog->setCurrentConfig(m_serialPortName, m_serialBaudRate,
+            m_serialDataBits, m_serialParity, m_serialStopBits, true);
+
+        if (m_serialConfigDialog->exec() == QDialog::Accepted) {
+            m_serialPortName = m_serialConfigDialog->portName();
+            m_serialBaudRate = m_serialConfigDialog->baudRate();
+            m_serialDataBits = m_serialConfigDialog->dataBits();
+            m_serialParity = m_serialConfigDialog->parity();
+            m_serialStopBits = m_serialConfigDialog->stopBits();
+        }
+    }
 }
 
-quint8 AnteCtrl::getSwitchAction()
+void AnteCtrl::on_open_uart_clicked()
 {
-    return 0x01;
+    if (!m_serialPort) return;
+
+    if (ui->open_uart->text() == QStringLiteral("打开串口")) {
+        if (m_serialPortName.isEmpty()) {
+            QMessageBox::warning(this, QStringLiteral("警告"), QStringLiteral("请先配置串口"));
+            return;
+        }
+        m_serialPort->portConnect(getSerialParaList()); // 通过注入的接口连接
+    }
+    else {
+        m_serialPort->disconnect(); // 通过基类接口断开
+        ui->open_uart->setText(QStringLiteral("打开串口"));
+        ui->set_uart->setEnabled(true);
+    }
 }
 
-QVariantList AnteCtrl::getSerialParaList()
+void AnteCtrl::handleOpenSerialResult(const QString& id, bool result, const QString& errStr)
 {
-    QVariantList params;
-    params.append(m_serialPortName);
-    params.append(m_serialBaudRate);
-    params.append(static_cast<int>(m_serialDataBits));
-    params.append(static_cast<int>(m_serialParity));
-    params.append(static_cast<int>(m_serialStopBits));
-    return params;
+    if (result) {
+        ui->open_uart->setText(QStringLiteral("关闭串口"));
+        ui->set_uart->setEnabled(false);
+    }
+    else {
+        QMessageBox::warning(this, QStringLiteral("警告"), QStringLiteral("打开串口失败: ") + errStr);
+    }
 }
 
 // ==================== 协议1: 射频通道开关控制指令 ====================
@@ -466,43 +430,30 @@ void AnteCtrl::on_open_uart_11_clicked()
     m_txNum += cmd.size();
 }
 
-// ==================== 日志功能 ====================
-
-void AnteCtrl::appendLog(const QString& str, bool isSend)
-{
-    QString timestamp = QDateTime::currentDateTime().toString("[yyyy-MM-dd HH:mm:ss]");
-
-    if (isSend) {
-        ui->ante_recv_log->setTextColor(Qt::blue);
-        ui->ante_recv_log->append(timestamp + " SEND: " + str);
-    }
-    else {
-        ui->ante_recv_log->setTextColor(Qt::darkCyan);
-        ui->ante_recv_log->append(timestamp + " RECV: " + str);
-    }
-    ui->ante_recv_log->setTextColor(Qt::black);
-
-    if (m_autoScroll) {
-        scrollToBottom();
-    }
-
-    QTextDocument* doc = ui->ante_recv_log->document();
-    if (doc->blockCount() > m_maxLogLines) {
-        QTextCursor cursor(doc);
-        cursor.movePosition(QTextCursor::Start);
-        cursor.movePosition(QTextCursor::NextBlock, QTextCursor::KeepAnchor);
-        cursor.removeSelectedText();
-    }
+QVariantList AnteCtrl::getSerialParaList() {
+    return { m_serialPortName, m_serialBaudRate, (int)m_serialDataBits, (int)m_serialParity, (int)m_serialStopBits };
 }
 
-void AnteCtrl::scrollToBottom()
-{
+void AnteCtrl::appendLog(const QString& str, bool isSend) {
+    QString timestamp = QDateTime::currentDateTime().toString("[yyyy-MM-dd HH:mm:ss]");
+    ui->ante_recv_log->setTextColor(isSend ? Qt::blue : Qt::darkCyan);
+    ui->ante_recv_log->append(timestamp + (isSend ? " SEND: " : " RECV: ") + str);
+    ui->ante_recv_log->setTextColor(Qt::black);
+    if (m_autoScroll) scrollToBottom();
+}
+
+void AnteCtrl::scrollToBottom() {
     QTextCursor cursor = ui->ante_recv_log->textCursor();
     cursor.movePosition(QTextCursor::End);
     ui->ante_recv_log->setTextCursor(cursor);
 }
 
-void AnteCtrl::on_ante_recv_type_textChanged(const QString& text)
+quint8 AnteCtrl::getAntennaSelect()
 {
-    Q_UNUSED(text);
+    return ui->send_ante_Button->isChecked() ? 0x01 : 0x02;
+}
+
+quint8 AnteCtrl::getSwitchAction()
+{
+    return 0x01;
 }

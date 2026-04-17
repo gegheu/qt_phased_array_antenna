@@ -1,5 +1,4 @@
 #pragma once
-
 #include <QWidget>
 #include <QSerialPort>
 #include "ui_powerCtrl.h"
@@ -16,14 +15,16 @@ public:
     explicit powerCtrl(QWidget* parent = nullptr);
     ~powerCtrl();
 
+    void setDevice(ICommunication* device);
+    void setProtocol(PowerProtocol* proto);
+
 private slots:
     // 串口控制
     void on_set_uart_clicked();           // 串口配置
     void on_open_uart_clicked();          // 打开/关闭串口
     void handleOpenSerialResult(const QString& instanceId, bool result, const QString& errStr);
-    void handleSerialDataReceived(const QString& instanceId, const QByteArray& data);
 
-    // 电源状态处理
+    // 电源状态处理：业务逻辑响应
     void handlePowerStatus(const PowerProtocol::PowerStatusFrame& status);
 
     // 电源通道控制 - 12V通道
@@ -47,8 +48,6 @@ private slots:
     void on_closeall_clicked();
 
 private:
-    void initSerial();
-    void initProtocol();
     QVariantList getSerialParaList();
     void updateUIDisplay(int channel, double voltage, double current);
 
@@ -58,7 +57,7 @@ private:
 
     Ui::powerCtrlClass* ui;
 
-    // 通信相关
+    // 通信相关（由外部注入）
     ICommunication* m_serialPort;
     PowerProtocol* m_protocol;
     SerialConfigDialog* m_serialConfigDialog;

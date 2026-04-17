@@ -4,6 +4,7 @@
 #include <QIODevice>
 #include <QUuid>
 
+//通信接口基类
 class ICommunication : public QObject {
     Q_OBJECT
 public:

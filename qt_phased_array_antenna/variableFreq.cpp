@@ -1,5 +1,4 @@
 ﻿#include "variableFreq.h"
-#include "SerialPort.h"
 #include <QMessageBox>
 #include <QDateTime>
 #include <QTextCodec>
@@ -22,8 +21,7 @@ variableFreq::variableFreq(QWidget* parent)
 
     m_serialConfigDialog = new SerialConfigDialog(this);
 
-    initSerial();
-    initProtocol();
+    // 初始化下拉框
     initComboBox();
 
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
@@ -32,27 +30,37 @@ variableFreq::variableFreq(QWidget* parent)
 
 variableFreq::~variableFreq()
 {
-    if (m_serialPort && m_serialPort->isConnected()) {
-        m_serialPort->disconnect();
-    }
+    // 不再 delete m_serialPort 或 m_protocol，生命周期由 Manager 管理
     delete ui;
 }
 
-void variableFreq::initSerial()
-{
-    m_serialPort = new SerialPort("VariableFreq_Serial", this);
+// ==================== 资源注入 ====================
 
-    connect(m_serialPort, &ICommunication::dataReceived,
-        this, &variableFreq::handleSerialDataReceived);
-    connect(m_serialPort, &ICommunication::connectStatus,
-        this, &variableFreq::handleOpenSerialResult);
+void variableFreq::setDevice(ICommunication* device)
+{
+    m_serialPort = device;
+    if (m_serialPort) {
+        // 连接状态信号
+        connect(m_serialPort, &ICommunication::connectStatus,
+            this, &variableFreq::handleOpenSerialResult);
+
+        // 原始数据日志连接：显示原始 16 进制日志
+        connect(m_serialPort, &ICommunication::dataReceived, this, [this](const QString&, const QByteArray& data) {
+            QString hexData = data.toHex(' ').toUpper();
+            appendSerialLog(hexData, false);
+            updateSerialCounters(0, data.size());
+            });
+    }
 }
 
-void variableFreq::initProtocol()
+void variableFreq::setProtocol(VFProtocol* proto)
 {
-    m_protocol = new VFProtocol(this);
-    connect(m_protocol, &VFProtocol::varFreqResponse,
-        this, &variableFreq::handleVarFreqResponse);
+    m_protocol = proto;
+    if (m_protocol) {
+        // 当管理器的协议解析完数据后，触发业务处理
+        connect(m_protocol, &VFProtocol::varFreqResponse,
+            this, &variableFreq::handleVarFreqResponse);
+    }
 }
 
 void variableFreq::initComboBox()
@@ -66,6 +74,8 @@ void variableFreq::initComboBox()
 
 QByteArray variableFreq::buildVarFreqCommand(quint8 cmd, quint32 freqMHz)
 {
+    if (!m_protocol) return QByteArray();
+
     QByteArray data;
     data.append(static_cast<char>(cmd));
 
@@ -92,6 +102,7 @@ bool variableFreq::getAndValidateFrequency(quint8 cmd, quint32& freqMHz)
         return false;
     }
 
+    // 这里保留了您源码中的 VFProtocol 静态校验逻辑
     quint32 clampedFreq = freqMHz;
     QString rangeStr;
 
@@ -136,6 +147,8 @@ void variableFreq::on_serialConfigButton_clicked()
 
 void variableFreq::on_serialSwitch_clicked()
 {
+    if (!m_serialPort) return;
+
     if (ui->serialSwitch->text() == QStringLiteral("打开串口")) {
         if (m_serialPortName.isEmpty()) {
             QMessageBox::warning(this, QStringLiteral("警告"), QStringLiteral("请先配置串口"));
@@ -165,16 +178,7 @@ void variableFreq::handleOpenSerialResult(const QString& instanceId, bool result
     }
 }
 
-void variableFreq::handleSerialDataReceived(const QString& instanceId, const QByteArray& data)
-{
-    if (m_protocol) {
-        m_protocol->parseResponse(data);
-    }
-
-    QString hexData = data.toHex(' ').toUpper();
-    appendSerialLog(hexData, false);
-    updateSerialCounters(0, data.size());
-}
+// ==================== 发送逻辑 ====================
 
 void variableFreq::on_serialSendButton_clicked()
 {
@@ -199,6 +203,8 @@ void variableFreq::on_serialSendButton_clicked()
     qint64 sent = m_serialPort->write(command);
     updateSerialCounters(sent, 0);
 }
+
+// ==================== 辅助与显示 ====================
 
 void variableFreq::appendSerialLog(const QString& str, bool isSend)
 {
@@ -237,8 +243,6 @@ void variableFreq::on_serialClearCountButton_clicked()
     ui->serialRxDisplay->setText("0");
 }
 
-// ==================== 协议响应处理 ====================
-
 void variableFreq::handleVarFreqResponse(const VFProtocol::VarFreqResponse& response)
 {
     if (response.isValid) {
@@ -256,8 +260,6 @@ void variableFreq::handleVarFreqResponse(const VFProtocol::VarFreqResponse& resp
         appendSerialLog(QStringLiteral("收到无效响应"), false);
     }
 }
-
-// ==================== 获取参数列表 ====================
 
 QVariantList variableFreq::getSerialParaList()
 {

@@ -52,9 +52,6 @@
     <ClCompile Include="SerialPort.cpp">
       <Filter>Source Files\communication</Filter>
     </ClCompile>
-    <ClCompile Include="iProtocol.cpp">
-      <Filter>Source Files\protocol</Filter>
-    </ClCompile>
     <ClCompile Include="VFProtocol.cpp">
       <Filter>Source Files\protocol</Filter>
     </ClCompile>
@@ -68,9 +65,6 @@
       <Filter>Source Files\communication</Filter>
     </ClCompile>
     <ClCompile Include="TcpConfigDialog.cpp">
-      <Filter>Source Files\communication</Filter>
-    </ClCompile>
-    <ClCompile Include="variableFreq.cpp">
       <Filter>Source Files\communication</Filter>
     </ClCompile>
     <ClCompile Include="iCommunication.cpp">
@@ -90,6 +84,9 @@
     </ClCompile>
     <ClCompile Include="PowerProtocol.cpp">
       <Filter>Source Files\protocol</Filter>
+    </ClCompile>
+    <ClCompile Include="variableFreq.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -169,5 +166,8 @@
     <ClInclude Include="ProtocolFactory.h">
       <Filter>Header Files\protocol</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
 </Project>

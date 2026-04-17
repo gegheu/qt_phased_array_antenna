@@ -1,6 +1,4 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
-
+#pragma once
 #include <QMainWindow>
 #include "variableFreq.h"
 #include "NaviUI.h"
@@ -8,16 +6,8 @@
 #include "AnteCtrl.h"
 
 QT_BEGIN_NAMESPACE
-namespace Ui {
-    class MainWindow;
-}
+namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
-
-// 前向声明
-class variableFreq;
-class NaviUI;
-class powerCtrl;
-class AnteCtrl;
 
 class MainWindow : public QMainWindow
 {
@@ -29,10 +19,13 @@ public:
 
 private:
     Ui::MainWindow* ui;
+
+    // 页签页面指针
     variableFreq* m_variableFreq;
     NaviUI* m_naviUI;
     powerCtrl* m_powerCtrl;
     AnteCtrl* m_anteCtrl;
-};
 
-#endif // MAINWINDOW_H
+    // 初始化通信系统的私有函数
+    void initCommunicationSystem();
+};
