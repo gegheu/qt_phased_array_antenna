@@ -1,7 +1,7 @@
-#pragma once
+﻿#pragma once
 
 #include <QWidget>
-#include "ui_navi.h"
+#include "ui_NaviReceiver.h"
 
 class NaviUI : public QWidget
 {
@@ -15,5 +15,5 @@ public:
 private:
     //ICommunication* m_device = nullptr;
     //AntennaProtocol* m_protocol = nullptr;
-    Ui::NaviUI* ui;
+    Ui::NaviReceiver* ui;
 };

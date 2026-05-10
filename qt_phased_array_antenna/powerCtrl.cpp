@@ -1,7 +1,8 @@
-#include "powerCtrl.h"
+ï»¿#include "powerCtrl.h"
 #include <QMessageBox>
 #include <QDateTime>
 #include <QTextCodec>
+#include "CommManager.h"
 
 powerCtrl::powerCtrl(QWidget* parent)
     : QWidget(parent)
@@ -18,22 +19,22 @@ powerCtrl::powerCtrl(QWidget* parent)
     ui->setupUi(this);
 
     m_serialConfigDialog = new SerialConfigDialog(this);
-    setWindowTitle(QStringLiteral("Ïà¿ØÕóµçÔ´¿ØÖÆ"));
+    setWindowTitle(QStringLiteral("ç›¸æ§é˜µç”µæºæ§åˆ¶"));
 }
 
 powerCtrl::~powerCtrl()
 {
-    // ²»ÔÙÖ÷¶¯ disconnect£¬ÒòÎªÉúÃüÖÜÆÚÓÉÍâ²¿¹ÜÀí
+    // ä¸å†ä¸»åŠ¨ disconnectï¼Œå› ä¸ºç”Ÿå‘½å‘¨æœŸç”±å¤–éƒ¨ç®¡ç†
     delete ui;
 }
 
-// ==================== ×ÊÔ´×¢Èë ====================
+// ==================== èµ„æºæ³¨å…¥ ====================
 
 void powerCtrl::setDevice(ICommunication* device)
 {
     m_serialPort = device;
     if (m_serialPort) {
-        // Á¬½Ó´®¿Ú´ò¿ª/¹Ø±ÕµÄ×´Ì¬·´À¡ĞÅºÅ
+        // è¿æ¥ä¸²å£æ‰“å¼€/å…³é—­çš„çŠ¶æ€åé¦ˆä¿¡å·
         connect(m_serialPort, &ICommunication::connectStatus,
             this, &powerCtrl::handleOpenSerialResult);
     }
@@ -43,15 +44,15 @@ void powerCtrl::setProtocol(PowerProtocol* proto)
 {
     m_protocol = proto;
     if (m_protocol) {
-        // Á¬½ÓĞ­Òé½âÎöÍê³ÉºóµÄÒµÎñ´¦ÀíĞÅºÅ
+        // è¿æ¥åè®®è§£æå®Œæˆåçš„ä¸šåŠ¡å¤„ç†ä¿¡å·
         connect(m_protocol, &PowerProtocol::powerStatusReceived,
             this, &powerCtrl::handlePowerStatus);
     }
 }
 
-// ==================== ´®¿Ú¿ØÖÆÂß¼­ ====================
+// ==================== ä¸²å£æ§åˆ¶é€»è¾‘ ====================
 
-void powerCtrl::on_set_uart_clicked()
+void powerCtrl::on_communicationSetup_clicked()
 {
     if (m_serialConfigDialog) {
         m_serialConfigDialog->setCurrentConfig(m_serialPortName, m_serialBaudRate,
@@ -68,50 +69,50 @@ void powerCtrl::on_set_uart_clicked()
     }
 }
 
-void powerCtrl::on_open_uart_clicked()
+void powerCtrl::on_openCommunication_clicked()
 {
     if (!m_serialPort) return;
 
-    if (ui->open_uart->text() == QStringLiteral("´ò¿ª´®¿Ú")) {
+    if (ui->openCommunication->text() == QStringLiteral("æ‰“å¼€ä¸²å£")) {
         if (m_serialPortName.isEmpty()) {
-            QMessageBox::warning(this, QStringLiteral("¾¯¸æ"), QStringLiteral("ÇëÏÈÅäÖÃ´®¿Ú"));
+            QMessageBox::warning(this, QStringLiteral("è­¦å‘Š"), QStringLiteral("è¯·å…ˆé…ç½®ä¸²å£"));
             return;
         }
         m_serialPort->portConnect(getSerialParaList());
     }
     else {
         m_serialPort->disconnect();
-        ui->open_uart->setText(QStringLiteral("´ò¿ª´®¿Ú"));
-        ui->set_uart->setEnabled(true);
+        ui->openCommunication->setText(QStringLiteral("æ‰“å¼€ä¸²å£"));
+        ui->communicationSetup->setEnabled(true);
     }
 }
 
 void powerCtrl::handleOpenSerialResult(const QString& instanceId, bool result, const QString& errStr)
 {
     if (result) {
-        ui->open_uart->setText(QStringLiteral("¹Ø±Õ´®¿Ú"));
-        ui->set_uart->setEnabled(false);
+        ui->openCommunication->setText(QStringLiteral("å…³é—­ä¸²å£"));
+        ui->communicationSetup->setEnabled(false);
     }
     else {
-        QMessageBox::warning(this, QStringLiteral("¾¯¸æ"),
-            QStringLiteral("´ò¿ª´®¿ÚÊ§°Ü: ") + errStr);
-        ui->open_uart->setText(QStringLiteral("´ò¿ª´®¿Ú"));
-        ui->set_uart->setEnabled(true);
+        QMessageBox::warning(this, QStringLiteral("è­¦å‘Š"),
+            QStringLiteral("æ‰“å¼€ä¸²å£å¤±è´¥: ") + errStr);
+        ui->openCommunication->setText(QStringLiteral("æ‰“å¼€ä¸²å£"));
+        ui->communicationSetup->setEnabled(true);
     }
 }
 
-// ==================== µçÔ´ÒµÎñ´¦Àí ====================
+// ==================== ç”µæºä¸šåŠ¡å¤„ç† ====================
 
 void powerCtrl::handlePowerStatus(const PowerProtocol::PowerStatusFrame& status)
 {
-    // ¸üĞÂ6¸öÍ¨µÀµÄÏÔÊ¾
+    // æ›´æ–°6ä¸ªé€šé“çš„æ˜¾ç¤º
     for (int i = 0; i < 6; i++) {
         double voltage = PowerProtocol::voltageToDouble(status.channels[i].voltage);
         double current = PowerProtocol::currentToDouble(status.channels[i].current);
         updateUIDisplay(i, voltage, current);
     }
 
-    // ¸üĞÂÊäÈë¹¦ÂÊºÍÎÂ¶È
+    // æ›´æ–°è¾“å…¥åŠŸç‡å’Œæ¸©åº¦
     double power = PowerProtocol::powerToDouble(status.inputPower);
     double temp = PowerProtocol::temperatureToDouble(status.temperature);
 
@@ -123,27 +124,27 @@ void powerCtrl::updateUIDisplay(int channel, double voltage, double current)
 {
     switch (channel) {
     case CH_12V1:
-        ui->v_12v1->setText(QString::number(voltage, 'f', 2));
-        ui->a_12v1->setText(QString::number(current, 'f', 2));
+        ui->antennaModuleVoltage->setText(QString::number(voltage, 'f', 2));
+        ui->antennaModuleCurrent->setText(QString::number(current, 'f', 2));
         break;
     case CH_12V2:
-        ui->v_12v2->setText(QString::number(voltage, 'f', 2));
-        ui->a_12v2->setText(QString::number(current, 'f', 2));
+        ui->vfoModuleVoltage->setText(QString::number(voltage, 'f', 2));
+        ui->vfoModuleCurrent->setText(QString::number(current, 'f', 2));
         break;
     case CH_12V3:
-        ui->v_12v3->setText(QString::number(voltage, 'f', 2));
-        ui->a_12v3->setText(QString::number(current, 'f', 2));
+        ui->mainModuleVoltage->setText(QString::number(voltage, 'f', 2));
+        ui->mainModuleCurrent->setText(QString::number(current, 'f', 2));
         break;
     case CH_12V4:
-        ui->v_12v4->setText(QString::number(voltage, 'f', 2));
-        ui->a_12v4->setText(QString::number(current, 'f', 2));
+        ui->thermalModuleVoltage->setText(QString::number(voltage, 'f', 2));
+        ui->thermalModuleCurrent->setText(QString::number(current, 'f', 2));
         break;
     default:
         break;
     }
 }
 
-// ==================== ÃüÁî¹¹½¨Óë·¢ËÍ ====================
+// ==================== å‘½ä»¤æ„å»ºä¸å‘é€ ====================
 
 QByteArray powerCtrl::buildControlData(int channel, bool open)
 {
@@ -167,150 +168,150 @@ QByteArray powerCtrl::buildControlDataAll(bool open)
 }
 
 
-// ==================== 12VÍ¨µÀ¿ØÖÆ ====================
-void powerCtrl::on_open12v1_clicked()
+// ==================== 12Vé€šé“æ§åˆ¶ ====================
+void powerCtrl::on_antennaModuleOpen_clicked()
 {
     if (!m_serialPort || !m_serialPort->isConnected()) {
-        QMessageBox::information(this, QStringLiteral("ÌáÊ¾"), QStringLiteral("ÇëÏÈ´ò¿ª´®¿Ú"));
+        QMessageBox::information(this, QStringLiteral("æç¤º"), QStringLiteral("è¯·å…ˆæ‰“å¼€ä¸²å£"));
         return;
     }
     QByteArray cmd = m_protocol->buildCommand(buildControlData(CH_12V1, true));
-    m_serialPort->write(cmd);
+    CommunicationManager::instance().sendFrame("Power", cmd);
 }
 
-void powerCtrl::on_close12v1_clicked()
+void powerCtrl::on_antennaModuleClose_clicked()
 {
     if (!m_serialPort || !m_serialPort->isConnected()) {
-        QMessageBox::information(this, QStringLiteral("ÌáÊ¾"), QStringLiteral("ÇëÏÈ´ò¿ª´®¿Ú"));
+        QMessageBox::information(this, QStringLiteral("æç¤º"), QStringLiteral("è¯·å…ˆæ‰“å¼€ä¸²å£"));
         return;
     }
     QByteArray cmd = m_protocol->buildCommand(buildControlData(CH_12V1, false));
-    m_serialPort->write(cmd);
+    CommunicationManager::instance().sendFrame("Power", cmd);
 }
 
-void powerCtrl::on_open12v2_clicked()
+void powerCtrl::on_vfoModuleOpen_clicked()
 {
     if (!m_serialPort || !m_serialPort->isConnected()) {
-        QMessageBox::information(this, QStringLiteral("ÌáÊ¾"), QStringLiteral("ÇëÏÈ´ò¿ª´®¿Ú"));
+        QMessageBox::information(this, QStringLiteral("æç¤º"), QStringLiteral("è¯·å…ˆæ‰“å¼€ä¸²å£"));
         return;
     }
     QByteArray cmd = m_protocol->buildCommand(buildControlData(CH_12V2, true));
-    m_serialPort->write(cmd);
+    CommunicationManager::instance().sendFrame("Power", cmd);
 }
 
-void powerCtrl::on_close12v2_clicked()
+void powerCtrl::on_vfoModuleClose_clicked()
 {
     if (!m_serialPort || !m_serialPort->isConnected()) {
-        QMessageBox::information(this, QStringLiteral("ÌáÊ¾"), QStringLiteral("ÇëÏÈ´ò¿ª´®¿Ú"));
+        QMessageBox::information(this, QStringLiteral("æç¤º"), QStringLiteral("è¯·å…ˆæ‰“å¼€ä¸²å£"));
         return;
     }
     QByteArray cmd = m_protocol->buildCommand(buildControlData(CH_12V2, false));
-    m_serialPort->write(cmd);
+    CommunicationManager::instance().sendFrame("Power", cmd);
 }
 
-void powerCtrl::on_open12v3_clicked()
+void powerCtrl::on_mainModuleOpen_clicked()
 {
     if (!m_serialPort || !m_serialPort->isConnected()) {
-        QMessageBox::information(this, QStringLiteral("ÌáÊ¾"), QStringLiteral("ÇëÏÈ´ò¿ª´®¿Ú"));
+        QMessageBox::information(this, QStringLiteral("æç¤º"), QStringLiteral("è¯·å…ˆæ‰“å¼€ä¸²å£"));
         return;
     }
     QByteArray cmd = m_protocol->buildCommand(buildControlData(CH_12V3, true));
-    m_serialPort->write(cmd);
+    CommunicationManager::instance().sendFrame("Power", cmd);
 }
 
-void powerCtrl::on_close12v3_clicked()
+void powerCtrl::on_mainModuleClose_clicked()
 {
     if (!m_serialPort || !m_serialPort->isConnected()) {
-        QMessageBox::information(this, QStringLiteral("ÌáÊ¾"), QStringLiteral("ÇëÏÈ´ò¿ª´®¿Ú"));
+        QMessageBox::information(this, QStringLiteral("æç¤º"), QStringLiteral("è¯·å…ˆæ‰“å¼€ä¸²å£"));
         return;
     }
     QByteArray cmd = m_protocol->buildCommand(buildControlData(CH_12V3, false));
-    m_serialPort->write(cmd);
+    CommunicationManager::instance().sendFrame("Power", cmd);
 }
 
-void powerCtrl::on_open12v4_clicked()
+void powerCtrl::on_thermalModuleOpen_clicked()
 {
     if (!m_serialPort || !m_serialPort->isConnected()) {
-        QMessageBox::information(this, QStringLiteral("ÌáÊ¾"), QStringLiteral("ÇëÏÈ´ò¿ª´®¿Ú"));
+        QMessageBox::information(this, QStringLiteral("æç¤º"), QStringLiteral("è¯·å…ˆæ‰“å¼€ä¸²å£"));
         return;
     }
     QByteArray cmd = m_protocol->buildCommand(buildControlData(CH_12V4, true));
-    m_serialPort->write(cmd);
+    CommunicationManager::instance().sendFrame("Power", cmd);
 }
 
-void powerCtrl::on_close12v4_clicked()
+void powerCtrl::on_thermalModuleClose_clicked()
 {
     if (!m_serialPort || !m_serialPort->isConnected()) {
-        QMessageBox::information(this, QStringLiteral("ÌáÊ¾"), QStringLiteral("ÇëÏÈ´ò¿ª´®¿Ú"));
+        QMessageBox::information(this, QStringLiteral("æç¤º"), QStringLiteral("è¯·å…ˆæ‰“å¼€ä¸²å£"));
         return;
     }
     QByteArray cmd = m_protocol->buildCommand(buildControlData(CH_12V4, false));
-    m_serialPort->write(cmd);
+    CommunicationManager::instance().sendFrame("Power", cmd);
 }
 
 
-// ==================== 24VÍ¨µÀ¿ØÖÆ ====================
+// ==================== 24Vé€šé“æ§åˆ¶ ====================
 
-void powerCtrl::on_open24v1_clicked()
+void powerCtrl::on_imuModuleOpen_clicked()
 {
     if (!m_serialPort || !m_serialPort->isConnected()) {
-        QMessageBox::information(this, QStringLiteral("ÌáÊ¾"), QStringLiteral("ÇëÏÈ´ò¿ª´®¿Ú"));
+        QMessageBox::information(this, QStringLiteral("æç¤º"), QStringLiteral("è¯·å…ˆæ‰“å¼€ä¸²å£"));
         return;
     }
     QByteArray cmd = m_protocol->buildCommand(buildControlData(CH_24V1, true));
-    m_serialPort->write(cmd);
+    CommunicationManager::instance().sendFrame("Power", cmd);
 }
 
-void powerCtrl::on_close24v1_clicked()
+void powerCtrl::on_imuModuleClose_clicked()
 {
     if (!m_serialPort || !m_serialPort->isConnected()) {
-        QMessageBox::information(this, QStringLiteral("ÌáÊ¾"), QStringLiteral("ÇëÏÈ´ò¿ª´®¿Ú"));
+        QMessageBox::information(this, QStringLiteral("æç¤º"), QStringLiteral("è¯·å…ˆæ‰“å¼€ä¸²å£"));
         return;
     }
     QByteArray cmd = m_protocol->buildCommand(buildControlData(CH_24V1, false));
-    m_serialPort->write(cmd);
+    CommunicationManager::instance().sendFrame("Power", cmd);
 }
 
-void powerCtrl::on_open24v2_clicked()
+void powerCtrl::on_trackerModuleOpen_clicked()
 {
     if (!m_serialPort || !m_serialPort->isConnected()) {
-        QMessageBox::information(this, QStringLiteral("ÌáÊ¾"), QStringLiteral("ÇëÏÈ´ò¿ª´®¿Ú"));
+        QMessageBox::information(this, QStringLiteral("æç¤º"), QStringLiteral("è¯·å…ˆæ‰“å¼€ä¸²å£"));
         return;
     }
     QByteArray cmd = m_protocol->buildCommand(buildControlData(CH_24V2, true));
-    m_serialPort->write(cmd);
+    CommunicationManager::instance().sendFrame("Power", cmd);
 }
 
-void powerCtrl::on_close24v2_clicked()
+void powerCtrl::on_trackerModuleClose_clicked()
 {
     if (!m_serialPort || !m_serialPort->isConnected()) {
-        QMessageBox::information(this, QStringLiteral("ÌáÊ¾"), QStringLiteral("ÇëÏÈ´ò¿ª´®¿Ú"));
+        QMessageBox::information(this, QStringLiteral("æç¤º"), QStringLiteral("è¯·å…ˆæ‰“å¼€ä¸²å£"));
         return;
     }
     QByteArray cmd = m_protocol->buildCommand(buildControlData(CH_24V2, false));
-    m_serialPort->write(cmd);
+    CommunicationManager::instance().sendFrame("Power", cmd);
 }
 
-// ==================== È«²¿¿ØÖÆ ====================
+// ==================== å…¨éƒ¨æ§åˆ¶ ====================
 
-void powerCtrl::on_openall_clicked()
+void powerCtrl::on_allOpenButton_clicked()
 {
     if (!m_serialPort || !m_serialPort->isConnected()) {
-        QMessageBox::information(this, QStringLiteral("ÌáÊ¾"), QStringLiteral("ÇëÏÈ´ò¿ª´®¿Ú"));
+        QMessageBox::information(this, QStringLiteral("æç¤º"), QStringLiteral("è¯·å…ˆæ‰“å¼€ä¸²å£"));
         return;
     }
     QByteArray cmd = m_protocol->buildCommand(buildControlDataAll(true));
-    m_serialPort->write(cmd);
+    CommunicationManager::instance().sendFrame("Power", cmd);
 }
 
-void powerCtrl::on_closeall_clicked()
+void powerCtrl::on_allCloseButton_clicked()
 {
     if (!m_serialPort || !m_serialPort->isConnected()) {
-        QMessageBox::information(this, QStringLiteral("ÌáÊ¾"), QStringLiteral("ÇëÏÈ´ò¿ª´®¿Ú"));
+        QMessageBox::information(this, QStringLiteral("æç¤º"), QStringLiteral("è¯·å…ˆæ‰“å¼€ä¸²å£"));
         return;
     }
     QByteArray cmd = m_protocol->buildCommand(buildControlDataAll(false));
-    m_serialPort->write(cmd);
+    CommunicationManager::instance().sendFrame("Power", cmd);
 }
 
 QVariantList powerCtrl::getSerialParaList()

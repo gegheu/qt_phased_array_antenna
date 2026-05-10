@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "iCommunication.h"
 #include <QTcpSocket>
 #include <QTimer> 

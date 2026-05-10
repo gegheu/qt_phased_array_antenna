@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <QDialog>
 #include <QSerialPort>
@@ -25,7 +25,7 @@ public:
     void showEvent(QShowEvent* event);
     void closeEvent(QCloseEvent* event);
 
-    // »ñÈ¡ÅäÖÃ²ÎÊıµÄ·½·¨
+    // è·å–é…ç½®å‚æ•°çš„æ–¹æ³•
     QString portName() const;
     int baudRate() const;
     QSerialPort::DataBits dataBits() const;
@@ -33,14 +33,14 @@ public:
     QSerialPort::StopBits stopBits() const;
     bool hexDisplay() const;
 
-    // ÉèÖÃµ±Ç°ÅäÖÃµÄ·½·¨
+    // è®¾ç½®å½“å‰é…ç½®çš„æ–¹æ³•
     void setCurrentConfig(const QString& port, int baud,
         QSerialPort::DataBits dataBits,
         QSerialPort::Parity parity,
         QSerialPort::StopBits stopBits,
         bool hexDisplay);
 
-    // INIÎÄ¼ş²Ù×÷
+    // INIæ–‡ä»¶æ“ä½œ
     void loadINI();
     void saveINI();
   
@@ -49,7 +49,7 @@ public:
     QString getPortDisplayName(int index) const;
 
 signals:
-    void portDisconnected(); // ¶Ë¿Ú¶Ï¿ªĞÅºÅ
+    void portDisconnected(); // ç«¯å£æ–­å¼€ä¿¡å·
     
 
 private slots:
@@ -57,7 +57,7 @@ private slots:
     void onAccepted();
     void onPortsChanged(const QStringList& ports);
 private:
-    // Ê¹ÓÃÍêÕûÃüÃû¿Õ¼äÏŞ¶¨
+    // ä½¿ç”¨å®Œæ•´å‘½åç©ºé—´é™å®š
     Ui::SerialConfigDialog* ui;
     //QTimer* m_refreshTimer;
     SerialPortManager& m_portManager;

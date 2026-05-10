@@ -1,4 +1,4 @@
-#include "TcpConfigDialog.h"
+ï»¿#include "TcpConfigDialog.h"
 #include "ui_TcpConfigDialog.h"
 
 TcpConfigDialog::TcpConfigDialog(QWidget* parent) :
@@ -7,7 +7,7 @@ TcpConfigDialog::TcpConfigDialog(QWidget* parent) :
 {
     ui->setupUi(this);
 
-    // ÉèÖÃÄ¬ÈÏÖµ
+    // è®¾ç½®é»˜è®¤å€¼
     ui->lineEditIP->setText("192.168.1.100");
     ui->lineEditPort->setText("8080");
     ui->tcp_hex_Button->setChecked(true);

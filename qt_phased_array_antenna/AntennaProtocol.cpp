@@ -1,4 +1,4 @@
-#include"AntennaProtocol.h"
+﻿#include"AntennaProtocol.h"
 
 AntennaProtocol::AntennaProtocol(QObject* parent) : IProtocol(parent) {}
 
@@ -44,7 +44,7 @@ void AntennaProtocol::parseResponse(const QByteArray& data)
 	frameStr.frameTail1 = static_cast<quint8>(data[offset]);					offset += sizeof(frameStr.frameTail1);
 	frameStr.frameTail2 = static_cast<quint8>(data[offset]);
 	if (frameStr.check != frameCheck(data.mid(2, frameStr.frameLength), CheckType::Sum)) {
-		//У���쳣
+		//校验异常
 	}
 	emit AnteEvent(frameStr);
 }

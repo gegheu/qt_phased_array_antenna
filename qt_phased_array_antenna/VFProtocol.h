@@ -1,10 +1,10 @@
-#pragma once
+ï»¿#pragma once
 #include "iProtocol.h"
 
 #define VAR_FREQ_FRAME_HEAD 0x5A
 #define VAR_FREQ_FRAME_TAIL 0xA5
 
-// ÆµÂÊ·¶Î§
+// é¢‘çŽ‡èŒƒå›´
 #define RX_FREQ_MIN 17700
 #define RX_FREQ_MAX 21200
 #define TX_FREQ_MIN 28225
@@ -18,7 +18,7 @@ public:
     QByteArray buildCommand(const QByteArray& data, const QVariantMap& para = {}) override;
     void parseResponse(const QByteArray& data) override;
 
-    // ±äÆµÂÊÐ­Òé½á¹¹Ìå
+    // å˜é¢‘çŽ‡åè®®ç»“æž„ä½“
     struct VarFreqFrame {
         quint8 frameHead = VAR_FREQ_FRAME_HEAD;
         quint8 cmd;
@@ -26,7 +26,7 @@ public:
         quint8 frameTail = VAR_FREQ_FRAME_TAIL;
     };
 
-    // ÏìÓ¦½á¹¹Ìå
+    // å“åº”ç»“æž„ä½“
     struct VarFreqResponse {
         quint8 frameHead;
         quint8 cmd;
@@ -34,13 +34,13 @@ public:
         bool isValid;
     };
 
-    // ÃüÁîºÅÃ¶¾Ù
+    // å‘½ä»¤å·æžšä¸¾
     enum VarFreqCmd {
         RxFreq = 0x01,
         TxFreq = 0x02
     };
 
-    // ¸¨Öúº¯Êý
+    // è¾…åŠ©å‡½æ•°
     static inline bool isValidRxFrequency(quint32 freqMHz) {
         return (freqMHz >= RX_FREQ_MIN && freqMHz <= RX_FREQ_MAX);
     }

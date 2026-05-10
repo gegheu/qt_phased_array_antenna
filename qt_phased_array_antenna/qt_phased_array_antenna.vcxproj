@@ -109,6 +109,7 @@
     <ClCompile Include="AntennaProtocol.cpp" />
     <ClCompile Include="CommManager.cpp" />
     <ClCompile Include="iCommunication.cpp" />
+    <ClCompile Include="NavigaProtocol.cpp" />
     <ClCompile Include="variableFreq.cpp" />
     <ClCompile Include="powerCtrl.cpp" />
     <ClCompile Include="PowerProtocol.cpp" />
@@ -128,7 +129,7 @@
     <QtUic Include="SeialCongigDialog.ui" />
     <QtUic Include="TcpConfigDialog.ui" />
     <QtUic Include="variableFreq.ui" />
-    <QtUic Include="navi.ui" />
+    <QtUic Include="NaviReceiver.ui" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="mainwindow.h" />
@@ -154,6 +155,7 @@
     <QtMoc Include="powerCtrl.h" />
     <QtMoc Include="AnteCtrl.h" />
     <QtMoc Include="PowerProtocol.h" />
+    <QtMoc Include="NavigaProtocol.h" />
     <ClInclude Include="ProtocolFactory.h" />
     <QtMoc Include="VFProtocol.h" />
   </ItemGroup>

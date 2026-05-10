@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <QWidget>
 #include <QSerialPort>
 #include "ui_variableFreq.h"
@@ -15,24 +15,24 @@ public:
     explicit variableFreq(QWidget* parent = nullptr);
     ~variableFreq();
 
-    // ×ÊÔ´×¢Èë½Ó¿Ú£ºÓÉ MainWindow µ÷ÓÃ
+    // èµ„æºæ³¨å…¥æ¥å£ï¼šç”± MainWindow è°ƒç”¨
     void setDevice(ICommunication* device);
     void setProtocol(VFProtocol* proto);
 
 private slots:
-    // ´®¿Ú¿ØÖÆ
+    // ä¸²å£æ§åˆ¶
     void on_serialConfigButton_clicked();
     void on_serialSwitch_clicked();
     void handleOpenSerialResult(const QString& instanceId, bool result, const QString& errStr);
 
-    // ·¢ËÍ¿ØÖÆ
+    // å‘é€æ§åˆ¶
     void on_serialSendButton_clicked();
 
-    // Çå¿Õ¿ØÖÆ
+    // æ¸…ç©ºæ§åˆ¶
     void on_serialClearLogButton_clicked();
     void on_serialClearCountButton_clicked();
 
-    // Ğ­ÒéÏìÓ¦´¦Àí£º¶ÔÓ¦½âÎöÍê³ÉºóµÄÒµÎñ¸üĞÂ
+    // åè®®å“åº”å¤„ç†ï¼šå¯¹åº”è§£æå®Œæˆåçš„ä¸šåŠ¡æ›´æ–°
     void handleVarFreqResponse(const VFProtocol::VarFreqResponse& response);
 
 private:
@@ -42,25 +42,25 @@ private:
 
     QVariantList getSerialParaList();
 
-    // ¹¹½¨±äÆµÂÊÃüÁî
+    // æ„å»ºå˜é¢‘ç‡å‘½ä»¤
     QByteArray buildVarFreqCommand(quint8 cmd, quint32 freqMHz);
     bool getAndValidateFrequency(quint8 cmd, quint32& freqMHz);
 
     Ui::variableFreq* ui;
 
-    // Í¨ĞÅÏà¹Ø£¨ÓÉÍâ²¿×¢Èë£©
+    // é€šä¿¡ç›¸å…³ï¼ˆç”±å¤–éƒ¨æ³¨å…¥ï¼‰
     ICommunication* m_serialPort;
     VFProtocol* m_protocol;
     SerialConfigDialog* m_serialConfigDialog;
 
-    // ´®¿ÚÅäÖÃ
+    // ä¸²å£é…ç½®
     QString m_serialPortName;
     qint32 m_serialBaudRate;
     QSerialPort::DataBits m_serialDataBits;
     QSerialPort::Parity m_serialParity;
     QSerialPort::StopBits m_serialStopBits;
 
-    // ¼ÆÊıÆ÷
+    // è®¡æ•°å™¨
     qint32 m_serialTxNum;
     qint32 m_serialRxNum;
 };
