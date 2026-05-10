@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include"iProtocol.h"
 
 #define ANTE_FRAMEHEAD1 0xEB

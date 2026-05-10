@@ -3,6 +3,7 @@
 #include <QDateTime>
 #include <QTextCodec>
 #include <QTextCursor>
+#include "CommManager.h"
 
 variableFreq::variableFreq(QWidget* parent)
     : QWidget(parent)
@@ -102,7 +103,6 @@ bool variableFreq::getAndValidateFrequency(quint8 cmd, quint32& freqMHz)
         return false;
     }
 
-    // 这里保留了您源码中的 VFProtocol 静态校验逻辑
     quint32 clampedFreq = freqMHz;
     QString rangeStr;
 
@@ -200,7 +200,7 @@ void variableFreq::on_serialSendButton_clicked()
     appendSerialLog(QStringLiteral("发送 [%1] 频率: %2 MHz").arg(cmdName).arg(freqMHz), true);
     appendSerialLog(QStringLiteral("原始数据: ") + command.toHex(' ').toUpper(), true);
 
-    qint64 sent = m_serialPort->write(command);
+    qint64 sent = CommunicationManager::instance().sendFrame("VF", command);
     updateSerialCounters(sent, 0);
 }
 

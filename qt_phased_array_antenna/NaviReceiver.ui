@@ -1,0 +1,720 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>NaviReceiver</class>
+ <widget class="QWidget" name="NaviReceiver">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>980</width>
+    <height>760</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Navi Receiver</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayoutMain">
+   <property name="leftMargin">
+    <number>8</number>
+   </property>
+   <property name="topMargin">
+    <number>8</number>
+   </property>
+   <property name="rightMargin">
+    <number>8</number>
+   </property>
+   <property name="bottomMargin">
+    <number>8</number>
+   </property>
+   <item>
+    <layout class="QGridLayout" name="gridLayoutMain" rowstretch="0,0,0" columnstretch="0,0,0">
+     <property name="spacing">
+      <number>10</number>
+     </property>
+     <item row="0" column="0">
+      <widget class="QGroupBox" name="groupNavigationStatus">
+       <property name="title">
+        <string>定位定向状态</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayoutNavigationStatus">
+        <property name="spacing">
+         <number>8</number>
+        </property>
+        <item row="0" column="0">
+         <widget class="QLabel" name="labelPositioning">
+          <property name="text">
+           <string>定位</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLabel" name="indicatorPositioning">
+          <property name="minimumSize">
+           <size>
+            <width>18</width>
+            <height>18</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>18</width>
+            <height>18</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: #808080; border-radius: 9px;</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QLabel" name="labelStatusIncomplete">
+          <property name="styleSheet">
+           <string notr="true">color: #808080;</string>
+          </property>
+          <property name="text">
+           <string>未完成</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="3">
+         <widget class="QLabel" name="labelPositionType">
+          <property name="text">
+           <string>类型</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="4">
+         <widget class="QLineEdit" name="editPositionType">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="labelOrientation">
+          <property name="text">
+           <string>定向</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLabel" name="indicatorOrientation">
+          <property name="minimumSize">
+           <size>
+            <width>18</width>
+            <height>18</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>18</width>
+            <height>18</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: #808080; border-radius: 9px;</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="QLabel" name="labelStatusComplete">
+          <property name="styleSheet">
+           <string notr="true">color: #4CAF50;</string>
+          </property>
+          <property name="text">
+           <string>完成</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="3">
+         <widget class="QLabel" name="labelSatelliteCount">
+          <property name="text">
+           <string>卫星数</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="4">
+         <widget class="QLineEdit" name="editSatelliteCount">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QGroupBox" name="groupAngularSpeed">
+       <property name="title">
+        <string>角速度</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayoutAngularSpeed">
+        <item row="0" column="0">
+         <widget class="QLabel" name="labelAngularX">
+          <property name="text">
+           <string>X角速度</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="editAngularX">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QLabel" name="labelAngularXUnit">
+          <property name="text">
+           <string>°/s</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="labelAngularY">
+          <property name="text">
+           <string>Y角速度</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLineEdit" name="editAngularY">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="QLabel" name="labelAngularYUnit">
+          <property name="text">
+           <string>°/s</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="labelAngularZ">
+          <property name="text">
+           <string>Z角速度</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QLineEdit" name="editAngularZ">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="2">
+         <widget class="QLabel" name="labelAngularZUnit">
+          <property name="text">
+           <string>°/s</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QGroupBox" name="groupAttitude">
+       <property name="title">
+        <string>姿态信息</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayoutAttitude">
+        <item row="0" column="0">
+         <widget class="QLabel" name="labelRoll">
+          <property name="text">
+           <string>滚动</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="editRoll">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QLabel" name="labelRollUnit">
+          <property name="text">
+           <string>°</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="labelYaw">
+          <property name="text">
+           <string>航向</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLineEdit" name="editYaw">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="QLabel" name="labelYawUnit">
+          <property name="text">
+           <string>°</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="labelPitch">
+          <property name="text">
+           <string>俯仰</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QLineEdit" name="editPitch">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="2">
+         <widget class="QLabel" name="labelPitchUnit">
+          <property name="text">
+           <string>°</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QGroupBox" name="groupAcceleration">
+       <property name="title">
+        <string>加速度</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayoutAcceleration">
+        <item row="0" column="0">
+         <widget class="QLabel" name="labelAccelX">
+          <property name="text">
+           <string>X加速度</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="editAccelX">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QLabel" name="labelAccelXUnit">
+          <property name="text">
+           <string>m/s²</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="labelAccelY">
+          <property name="text">
+           <string>Y加速度</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLineEdit" name="editAccelY">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="QLabel" name="labelAccelYUnit">
+          <property name="text">
+           <string>m/s²</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="labelAccelZ">
+          <property name="text">
+           <string>Z加速度</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QLineEdit" name="editAccelZ">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="2">
+         <widget class="QLabel" name="labelAccelZUnit">
+          <property name="text">
+           <string>m/s²</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QGroupBox" name="groupVelocity">
+       <property name="title">
+        <string>方向速</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayoutVelocity">
+        <item row="0" column="0">
+         <widget class="QLabel" name="labelSpeedNorth">
+          <property name="text">
+           <string>北速</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="editSpeedNorth">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QLabel" name="labelSpeedNorthUnit">
+          <property name="text">
+           <string>m/s</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="labelSpeedUp">
+          <property name="text">
+           <string>天速</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLineEdit" name="editSpeedUp">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="QLabel" name="labelSpeedUpUnit">
+          <property name="text">
+           <string>m/s</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="labelSpeedEast">
+          <property name="text">
+           <string>东速</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QLineEdit" name="editSpeedEast">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="2">
+         <widget class="QLabel" name="labelSpeedEastUnit">
+          <property name="text">
+           <string>m/s</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item row="1" column="2">
+      <widget class="QGroupBox" name="groupPosition">
+       <property name="title">
+        <string>位置信息</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayoutPosition">
+        <item row="0" column="0">
+         <widget class="QLabel" name="labelAltitude">
+          <property name="text">
+           <string>高度</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="editAltitude">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QLabel" name="labelAltitudeUnit">
+          <property name="text">
+           <string>m</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="labelLongitude">
+          <property name="text">
+           <string>经度</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLineEdit" name="editLongitude">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="QLabel" name="labelLongitudeUnit">
+          <property name="text">
+           <string>°</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="labelLatitude">
+          <property name="text">
+           <string>纬度</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QLineEdit" name="editLatitude">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="2">
+         <widget class="QLabel" name="labelLatitudeUnit">
+          <property name="text">
+           <string>°</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QGroupBox" name="groupTime">
+       <property name="title">
+        <string>时间信息</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayoutTime">
+        <item row="2" column="1">
+         <widget class="QLineEdit" name="editNavTimeMs">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="labelWeekMs">
+          <property name="text">
+           <string>周内毫秒</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="labelNavTime">
+          <property name="text">
+           <string>导航时间</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1" colspan="3">
+         <widget class="QLineEdit" name="editBeijingUtc">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QLineEdit" name="editWeekMs">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1" colspan="3">
+         <widget class="QLineEdit" name="editUtc">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="2">
+         <widget class="QLabel" name="labelNavTimeUnit">
+          <property name="text">
+           <string>ms</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="labelBeijingUtc">
+          <property name="text">
+           <string>北京UTC</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="2">
+         <widget class="QLabel" name="labelWeekMsUnit">
+          <property name="text">
+           <string>ms</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="labelUtc">
+          <property name="text">
+           <string>UTC</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QGroupBox" name="groupOtherInfo">
+       <property name="title">
+        <string>其他信息</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayoutOtherInfo">
+        <item row="0" column="0">
+         <widget class="QLabel" name="labelHeave">
+          <property name="text">
+           <string>升沉位移</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="editHeave">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QLabel" name="labelHeaveUnit">
+          <property name="text">
+           <string>mm</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="labelWorkMode">
+          <property name="text">
+           <string>工作模式</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1" colspan="2">
+         <widget class="QLineEdit" name="editWorkMode">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="labelSelfTest">
+          <property name="text">
+           <string>自检结果</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1" colspan="2">
+         <widget class="QLineEdit" name="editSelfTest">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="labelSystemTemp">
+          <property name="text">
+           <string>系统温度</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QLineEdit" name="editSystemTemp">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="2">
+         <widget class="QLabel" name="labelSystemTempUnit">
+          <property name="text">
+           <string>℃</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="labelPositionAccuracy">
+          <property name="text">
+           <string>定位精度</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QLineEdit" name="editPositionAccuracy">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="2">
+         <widget class="QLabel" name="labelPositionAccuracyUnit">
+          <property name="text">
+           <string>m</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item row="2" column="2">
+      <widget class="QGroupBox" name="groupCommunication">
+       <property name="title">
+        <string>通信设置</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayoutCommunication">
+        <item>
+         <widget class="QPushButton" name="set_uart">
+          <property name="text">
+           <string>串口设置</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="open_uart">
+          <property name="text">
+           <string>打开串口</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

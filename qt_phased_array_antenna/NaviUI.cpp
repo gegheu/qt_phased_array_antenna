@@ -1,14 +1,14 @@
-#include "NaviUI.h"
+﻿#include "NaviUI.h"
 
 
 NaviUI::NaviUI(QWidget* parent) :
     QWidget(parent),
-    ui(new Ui::NaviUI)
+    ui(new Ui::NaviReceiver)
 {
     ui->setupUi(this);
 }
 
 NaviUI::~NaviUI()
 {
-
+    delete ui;
 }

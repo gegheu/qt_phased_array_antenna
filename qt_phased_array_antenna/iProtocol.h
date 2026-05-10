@@ -1,10 +1,10 @@
-#pragma once
+ï»¿#pragma once
 #include <QObject>
 #include <QByteArray>
 #include <QVariantMap>
 #include <numeric>
 
-//Ğ­Òé»ùÀà
+//åè®®åŸºç±»
 class IProtocol : public QObject {
     Q_OBJECT
 public:

@@ -104,6 +104,7 @@ Thumbs.db
 *.zip
 
 # 文档
+state/
 *.chm
 *.pdf
 *.doc

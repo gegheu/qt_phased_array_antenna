@@ -1,4 +1,4 @@
-#include "VFProtocol.h"
+ï»¿#include "VFProtocol.h"
 
 VFProtocol::VFProtocol(QObject* parent) : IProtocol(parent) {}
 
@@ -8,9 +8,9 @@ QByteArray VFProtocol::buildCommand(const QByteArray& data, const QVariantMap& p
 
     QByteArray packet;
     packet.append(static_cast<quint8>(VAR_FREQ_FRAME_HEAD));
-    packet.append(data[0]);  // ÃüÁîºÅ
-    packet.append(data[1]);  // Êı¾İ¸ß×Ö½Ú
-    packet.append(data[2]);  // Êı¾İµÍ×Ö½Ú
+    packet.append(data[0]);  // å‘½ä»¤å·
+    packet.append(data[1]);  // æ•°æ®é«˜å­—èŠ‚
+    packet.append(data[2]);  // æ•°æ®ä½å­—èŠ‚
     packet.append(static_cast<quint8>(VAR_FREQ_FRAME_TAIL));
 
     return packet;

@@ -1,4 +1,4 @@
-#include "SerialPortManager.h"
+ï»¿#include "SerialPortManager.h"
 #include <QDebug>
 
 SerialPortManager* SerialPortManager::m_instance = nullptr;
@@ -58,7 +58,7 @@ void SerialPortManager::refreshPorts()
         return;
     }
 
-    // ÅÅĞò
+    // æ’åº
     newPorts.sort();
 
     if (newPorts != m_currentPorts) {

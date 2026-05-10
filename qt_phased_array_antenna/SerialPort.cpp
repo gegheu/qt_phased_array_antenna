@@ -1,4 +1,4 @@
-#include "SerialPort.h"
+﻿#include "SerialPort.h"
 
 SerialPort::SerialPort(const QString& instanceId, QObject* parent)
     : ICommunication(instanceId, parent), serial(new QSerialPort(this))
