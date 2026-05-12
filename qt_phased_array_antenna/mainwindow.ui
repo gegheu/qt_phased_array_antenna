@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
@@ -29,11 +29,9 @@
     <property name="currentIndex">
      <number>0</number>
     </property>
-    <widget class="QWidget" name="tab">
-     <attribute name="title">
-      <string>Tab 1</string>
-     </attribute>
-    </widget>
+    <widget class="HomePage" name="tab_1"><attribute name="title">
+      <string>主控</string>
+     </attribute></widget><widget class="LEOTrackPage" name="tab_leoTrack"><attribute name="title"><string>低轨对星</string></attribute></widget>
     <widget class="variableFreq" name="tab_6">
      <attribute name="title">
       <string>上下变频</string>
@@ -1448,7 +1446,7 @@
          </rect>
         </property>
         <property name="text">
-         <string/>
+         <string />
         </property>
         <property name="arrowType">
          <enum>Qt::UpArrow</enum>
@@ -2292,7 +2290,7 @@
         </rect>
        </property>
        <property name="toolTip">
-        <string/>
+        <string />
        </property>
        <property name="text">
         <string>+117.811323</string>
@@ -2327,7 +2325,7 @@
         </rect>
        </property>
        <property name="toolTip">
-        <string/>
+        <string />
        </property>
        <property name="text">
         <string>+59.518528</string>
@@ -2362,7 +2360,7 @@
         </rect>
        </property>
        <property name="toolTip">
-        <string/>
+        <string />
        </property>
        <property name="text">
         <string>+651961.563615</string>
@@ -2567,7 +2565,7 @@
        </rect>
       </property>
       <property name="title">
-       <string/>
+       <string />
       </property>
       <widget class="QLineEdit" name="label_roll_report_2">
        <property name="geometry">
@@ -2764,11 +2762,11 @@ background-color: rgb(255, 255, 255);</string>
         <bool>false</bool>
        </property>
        <property name="html">
-        <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+        <string>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;style type="text/css"&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'SimSun'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'SimSun'; font-size:9pt; font-weight:400; font-style:normal;"&gt;
+&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
       </widget>
       <widget class="QPushButton" name="pushButton_ctrllayer_refresh_2">
@@ -3598,7 +3596,7 @@ p, li { white-space: pre-wrap; }
         </rect>
        </property>
        <property name="title">
-        <string/>
+        <string />
        </property>
        <widget class="QLabel" name="label_247">
         <property name="geometry">
@@ -3659,7 +3657,7 @@ p, li { white-space: pre-wrap; }
         </rect>
        </property>
        <property name="title">
-        <string/>
+        <string />
        </property>
        <widget class="QLabel" name="label_248">
         <property name="geometry">
@@ -3750,7 +3748,7 @@ p, li { white-space: pre-wrap; }
          </rect>
         </property>
         <property name="toolTip">
-         <string/>
+         <string />
         </property>
         <property name="text">
          <string>--</string>
@@ -3864,7 +3862,7 @@ p, li { white-space: pre-wrap; }
          </rect>
         </property>
         <property name="toolTip">
-         <string/>
+         <string />
         </property>
         <property name="text">
          <string>--</string>
@@ -3900,7 +3898,7 @@ p, li { white-space: pre-wrap; }
         </rect>
        </property>
        <property name="title">
-        <string/>
+        <string />
        </property>
        <widget class="QLabel" name="label_254">
         <property name="geometry">
@@ -3967,7 +3965,7 @@ p, li { white-space: pre-wrap; }
        </rect>
       </property>
       <property name="title">
-       <string/>
+       <string />
       </property>
       <widget class="QPushButton" name="pushButton_progfile_read_2">
        <property name="geometry">
@@ -4004,11 +4002,11 @@ background-color: rgb(255, 255, 255);</string>
         <bool>false</bool>
        </property>
        <property name="html">
-        <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+        <string>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;style type="text/css"&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'SimSun'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'SimSun'; font-size:9pt; font-weight:400; font-style:normal;"&gt;
+&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
       </widget>
       <widget class="QPushButton" name="pushButton_textBrowser_clear_2">
@@ -4046,11 +4044,11 @@ background-color: rgb(255, 255, 255);</string>
         <bool>false</bool>
        </property>
        <property name="html">
-        <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+        <string>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;style type="text/css"&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'SimSun'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'SimSun'; font-size:9pt; font-weight:400; font-style:normal;"&gt;
+&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
       </widget>
       <widget class="QLineEdit" name="label_task_relative_time_2">
@@ -6111,7 +6109,7 @@ color: rgb(255, 255, 0);</string>
     </rect>
    </property>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QStatusBar" name="statusbar" />
  </widget>
  <customwidgets>
   <customwidget>
@@ -6138,7 +6136,10 @@ color: rgb(255, 255, 0);</string>
    <header>variableFreq.h</header>
    <container>1</container>
   </customwidget>
- </customwidgets>
- <resources/>
- <connections/>
+ <customwidget><class>HomePage</class><extends>QWidget</extends><header>HomePage.h</header><container>1</container></customwidget><customwidget><class>LEOTrackPage</class><extends>QWidget</extends><header>LEOTrackPage.h</header><container>1</container></customwidget></customwidgets>
+ <resources />
+ <connections />
 </ui>
+
+
+

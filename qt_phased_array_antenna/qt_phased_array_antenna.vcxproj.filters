@@ -76,6 +76,12 @@
     <ClCompile Include="NaviUI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="HomePage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LEOTrackPage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="powerCtrl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -132,6 +138,12 @@
     <QtMoc Include="NaviUI.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="HomePage.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="LEOTrackPage.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
     <QtMoc Include="powerCtrl.h">
       <Filter>Header Files</Filter>
     </QtMoc>
@@ -165,6 +177,12 @@
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="AnteCtrl.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="HomePage.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="LEOTrack.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>

@@ -17,10 +17,11 @@ MainWindow::MainWindow(QWidget* parent)
 
     // 1. 获取 UI 中定义的页签控件指针
     // 注意：索引值需与你在 Qt Designer 中排列的顺序严格一致
-    m_variableFreq = qobject_cast<variableFreq*>(ui->mainTabWidget->widget(1));
-    m_naviUI = qobject_cast<NaviUI*>(ui->mainTabWidget->widget(2));
-    m_powerCtrl = qobject_cast<powerCtrl*>(ui->mainTabWidget->widget(3));
-    m_anteCtrl = qobject_cast<AnteCtrl*>(ui->mainTabWidget->widget(4));
+    // 当前顺序：0主控(HomePage)、1低轨对星(LEOTrackPage)、2上下变频、3导航、4电源、5相控阵天线
+    m_variableFreq = qobject_cast<variableFreq*>(ui->mainTabWidget->widget(2));
+    m_naviUI = qobject_cast<NaviUI*>(ui->mainTabWidget->widget(3));
+    m_powerCtrl = qobject_cast<powerCtrl*>(ui->mainTabWidget->widget(4));
+    m_anteCtrl = qobject_cast<AnteCtrl*>(ui->mainTabWidget->widget(5));
 
     // 断言检查，确保 UI 提升（Promote）配置正确
     Q_ASSERT(m_variableFreq != nullptr);
