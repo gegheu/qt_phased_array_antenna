@@ -119,17 +119,21 @@
     <ClCompile Include="Tcp.cpp" />
     <ClCompile Include="TcpConfigDialog.cpp" />
     <ClCompile Include="NaviUI.cpp" />
+    <ClCompile Include="HomePage.cpp" />
+    <ClCompile Include="LEOTrackPage.cpp" />
     <ClCompile Include="VFProtocol.cpp" />
     <QtRcc Include="qt_phased_array_antenna.qrc" />
     <ClCompile Include="mainwindow.cpp" />
     <ClCompile Include="main.cpp" />
     <QtUic Include="AnteCtrl.ui" />
+    <QtUic Include="HomePage.ui" />
     <QtUic Include="mainwindow.ui" />
     <QtUic Include="powerCtrl.ui" />
     <QtUic Include="SeialCongigDialog.ui" />
     <QtUic Include="TcpConfigDialog.ui" />
     <QtUic Include="variableFreq.ui" />
     <QtUic Include="NaviReceiver.ui" />
+    <QtUic Include="LEOTrack.ui" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="mainwindow.h" />
@@ -145,6 +149,8 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="NaviUI.h" />
+    <QtMoc Include="HomePage.h" />
+    <QtMoc Include="LEOTrackPage.h" />
     <QtMoc Include="SerialPortManager.h" />
     <QtMoc Include="SerialConfigDialog.h" />
     <QtMoc Include="TcpConfigDialog.h" />

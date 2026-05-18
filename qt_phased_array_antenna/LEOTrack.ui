@@ -1,0 +1,603 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TaskTrajectoryDisplay</class>
+ <widget class="QWidget" name="TaskTrajectoryDisplay">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1189</width>
+    <height>844</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>任务轨迹显示界面</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayoutMain">
+   <property name="spacing">
+    <number>8</number>
+   </property>
+   <property name="leftMargin">
+    <number>8</number>
+   </property>
+   <property name="topMargin">
+    <number>8</number>
+   </property>
+   <property name="rightMargin">
+    <number>8</number>
+   </property>
+   <property name="bottomMargin">
+    <number>8</number>
+   </property>
+   <item>
+    <widget class="QFrame" name="frameTopControl">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QGridLayout" name="gridLayoutTopControl" columnstretch="0,0,0,0,0,0">
+      <property name="spacing">
+       <number>6</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="labelFileLoad">
+        <property name="text">
+         <string>文件加载</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="editFilePath"/>
+      </item>
+      <item row="0" column="2">
+       <widget class="QPushButton" name="btnBrowseFile">
+        <property name="text">
+         <string>浏览</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="3">
+       <widget class="QPushButton" name="btnClearFile">
+        <property name="text">
+         <string>清除</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="4">
+       <widget class="QLabel" name="labelCountdown">
+        <property name="text">
+         <string>倒计时</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="5">
+       <widget class="QLineEdit" name="editCountdown">
+        <property name="minimumSize">
+         <size>
+          <width>90</width>
+          <height>0</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="labelBeijingTime">
+        <property name="text">
+         <string>北京时间</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="editBeijingTime"/>
+      </item>
+      <item row="1" column="2">
+       <widget class="QPushButton" name="btnRealtime">
+        <property name="text">
+         <string>实时</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="3">
+       <widget class="QPushButton" name="btnPreset">
+        <property name="text">
+         <string>预制</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="4" colspan="2">
+       <spacer name="horizontalSpacerTop">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayoutInfoRow">
+     <property name="spacing">
+      <number>8</number>
+     </property>
+     <item>
+      <widget class="QGroupBox" name="groupTimeInfo">
+       <property name="title">
+        <string>时间信息</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayoutTimeInfo" columnstretch="0,0">
+        <item row="0" column="0">
+         <widget class="QLabel" name="labelStartBeijingTime">
+          <property name="text">
+           <string>开始北京时间</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="editStartBeijingTime"/>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="labelEndBeijingTime">
+          <property name="text">
+           <string>结束北京时间</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLineEdit" name="editEndBeijingTime"/>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="labelTimeInterval">
+          <property name="text">
+           <string>时间间隔</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QLineEdit" name="editTimeInterval"/>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="groupSatelliteInfo">
+       <property name="title">
+        <string>卫星信息</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayoutSatelliteInfo" columnstretch="0,0,0,0">
+        <item row="0" column="0">
+         <widget class="QLabel" name="labelSatelliteName">
+          <property name="text">
+           <string>卫星名称</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1" colspan="3">
+         <widget class="QLineEdit" name="editSatelliteName"/>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="labelPitchRange">
+          <property name="text">
+           <string>俯仰范围</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLineEdit" name="editPitchRangeMin"/>
+        </item>
+        <item row="1" column="2">
+         <widget class="QLabel" name="labelPitchRangeTo">
+          <property name="text">
+           <string>~</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="3">
+         <widget class="QLineEdit" name="editPitchRangeMax"/>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="labelAzimuthRange">
+          <property name="text">
+           <string>方位范围</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QLineEdit" name="editAzimuthRangeMin"/>
+        </item>
+        <item row="2" column="2">
+         <widget class="QLabel" name="labelAzimuthRangeTo">
+          <property name="text">
+           <string>~</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="3">
+         <widget class="QLineEdit" name="editAzimuthRangeMax"/>
+        </item>
+       </layout>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupDirectionStatus">
+     <property name="title">
+      <string>方向状态</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayoutDirectionStatus">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayoutStatusGroups">
+        <property name="spacing">
+         <number>16</number>
+        </property>
+        <item>
+         <widget class="QGroupBox" name="groupStartStatus">
+          <property name="title">
+           <string>开始状态</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayoutStartStatus">
+           <item row="0" column="0">
+            <widget class="QLabel" name="labelStartPitch">
+             <property name="text">
+              <string>俯仰角：</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="editStartPitch"/>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="labelStartAzimuth">
+             <property name="text">
+              <string>方位角：</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QLineEdit" name="editStartAzimuth"/>
+           </item>
+           <item row="2" column="0" colspan="2">
+            <widget class="QLabel" name="labelStartStateText">
+             <property name="text">
+              <string>开始</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="groupProcessStatus">
+          <property name="title">
+           <string>过程状态</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayoutProcessStatus">
+           <item row="0" column="0">
+            <widget class="QLabel" name="labelProcessPitch">
+             <property name="text">
+              <string>俯仰角：</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="editProcessPitch"/>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="labelProcessAzimuth">
+             <property name="text">
+              <string>方位角：</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QLineEdit" name="editProcessAzimuth"/>
+           </item>
+           <item row="2" column="0" colspan="2">
+            <widget class="QLabel" name="labelProcessStateText">
+             <property name="text">
+              <string>过程</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="groupEndStatus">
+          <property name="title">
+           <string>结束状态</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayoutEndStatus">
+           <item row="0" column="0">
+            <widget class="QLabel" name="labelEndPitch">
+             <property name="text">
+              <string>俯仰角：</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="editEndPitch"/>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="labelEndAzimuth">
+             <property name="text">
+              <string>方位角：</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QLineEdit" name="editEndAzimuth"/>
+           </item>
+           <item row="2" column="0" colspan="2">
+            <widget class="QLabel" name="labelEndStateText">
+             <property name="text">
+              <string>结束</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QFrame" name="directionDiagramArea">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>150</height>
+         </size>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Box</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Plain</enum>
+        </property>
+        <layout class="QGridLayout" name="gridLayoutDirectionArea" rowstretch="0,0,0" columnstretch="0,0,0">
+         <item row="1" column="1">
+          <widget class="QLabel" name="labelDirectionHint">
+           <property name="text">
+            <string>方向占位</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QLabel" name="labelArrowClockwise">
+           <property name="font">
+            <font>
+             <pointsize>50</pointsize>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color: black;</string>
+           </property>
+           <property name="text">
+            <string>↻</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="labelArrowCounterClockwise">
+           <property name="font">
+            <font>
+             <pointsize>50</pointsize>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color: black;</string>
+           </property>
+           <property name="text">
+            <string>↺</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QLabel" name="labelArrowSouth">
+           <property name="font">
+            <font>
+             <pointsize>50</pointsize>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color: black;</string>
+           </property>
+           <property name="text">
+            <string>↓</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="labelArrowWest">
+           <property name="font">
+            <font>
+             <pointsize>50</pointsize>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color: black;</string>
+           </property>
+           <property name="text">
+            <string>←</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLabel" name="labelArrowNorth">
+           <property name="font">
+            <font>
+             <pointsize>50</pointsize>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color: black;</string>
+           </property>
+           <property name="text">
+            <string>↑</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QLabel" name="labelArrowEast">
+           <property name="font">
+            <font>
+             <pointsize>50</pointsize>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color: black;</string>
+           </property>
+           <property name="text">
+            <string>→</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayoutBottom">
+     <property name="spacing">
+      <number>8</number>
+     </property>
+     <item>
+      <widget class="QGroupBox" name="groupSendSource">
+       <property name="title">
+        <string>发送源码</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayoutSendSource">
+        <item>
+         <widget class="QTextBrowser" name="textBrowserSendSource">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>180</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="groupRecvSource">
+       <property name="title">
+        <string>接收源码</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayoutRecvSource">
+        <item>
+         <widget class="QTextBrowser" name="textBrowserRecvSource">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>180</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="groupCommunication">
+       <property name="title">
+        <string>通信设置</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayoutCommunication">
+        <item>
+         <spacer name="verticalSpacerCommTop">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnSerialConfig">
+          <property name="text">
+           <string>串口设置</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnOpenSerial">
+          <property name="text">
+           <string>打开串口</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="verticalSpacerCommBottom">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

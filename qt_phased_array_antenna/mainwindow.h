@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <QMainWindow>
 #include "variableFreq.h"
+#include "LEOTrackPage.h"
 #include "NaviUI.h"
 #include "powerCtrl.h"
 #include "AnteCtrl.h"
@@ -22,6 +23,7 @@ private:
 
     // 页签页面指针
     variableFreq* m_variableFreq;
+    LEOTrackPage* m_leoTrackPage;
     NaviUI* m_naviUI;
     powerCtrl* m_powerCtrl;
     AnteCtrl* m_anteCtrl;
