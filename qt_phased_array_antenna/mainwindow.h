@@ -5,6 +5,7 @@
 #include "NaviUI.h"
 #include "powerCtrl.h"
 #include "AnteCtrl.h"
+#include "WaveControl.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -27,6 +28,7 @@ private:
     NaviUI* m_naviUI;
     powerCtrl* m_powerCtrl;
     AnteCtrl* m_anteCtrl;
+    WaveControl* m_waveControl;
 
     // 初始化通信系统的私有函数
     void initCommunicationSystem();

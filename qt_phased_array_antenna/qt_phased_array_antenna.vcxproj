@@ -121,6 +121,7 @@
     <ClCompile Include="NaviUI.cpp" />
     <ClCompile Include="HomePage.cpp" />
     <ClCompile Include="LEOTrackPage.cpp" />
+    <ClCompile Include="WaveControl.cpp" />
     <ClCompile Include="VFProtocol.cpp" />
     <QtRcc Include="qt_phased_array_antenna.qrc" />
     <ClCompile Include="mainwindow.cpp" />
@@ -134,6 +135,7 @@
     <QtUic Include="variableFreq.ui" />
     <QtUic Include="NaviReceiver.ui" />
     <QtUic Include="LEOTrack.ui" />
+    <QtUic Include="WaveControl.ui" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="mainwindow.h" />
@@ -151,6 +153,7 @@
     <QtMoc Include="NaviUI.h" />
     <QtMoc Include="HomePage.h" />
     <QtMoc Include="LEOTrackPage.h" />
+    <QtMoc Include="WaveControl.h" />
     <QtMoc Include="SerialPortManager.h" />
     <QtMoc Include="SerialConfigDialog.h" />
     <QtMoc Include="TcpConfigDialog.h" />
