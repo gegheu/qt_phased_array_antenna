@@ -82,6 +82,9 @@
     <ClCompile Include="LEOTrackPage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="WaveControl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="powerCtrl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -144,6 +147,9 @@
     <QtMoc Include="LEOTrackPage.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="WaveControl.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
     <QtMoc Include="powerCtrl.h">
       <Filter>Header Files</Filter>
     </QtMoc>
@@ -183,6 +189,9 @@
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="LEOTrack.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="WaveControl.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>

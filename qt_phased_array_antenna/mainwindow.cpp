@@ -13,17 +13,19 @@ MainWindow::MainWindow(QWidget* parent)
     , m_naviUI(nullptr)
     , m_powerCtrl(nullptr)
     , m_anteCtrl(nullptr)
+    , m_waveControl(nullptr)
 {
     ui->setupUi(this);
 
     // 1. 获取 UI 中定义的页签控件指针
     // 注意：索引值需与你在 Qt Designer 中排列的顺序严格一致
-    // 当前顺序：0主控(HomePage)、1低轨对星(LEOTrackPage)、2上下变频、3导航、4电源、5相控阵天线
+    // 当前顺序：0主控(HomePage)、1低轨对星(LEOTrackPage)、2上下变频、3导航、4电源、5相控阵天线、6波控控制
     m_leoTrackPage = qobject_cast<LEOTrackPage*>(ui->mainTabWidget->widget(1));
     m_variableFreq = qobject_cast<variableFreq*>(ui->mainTabWidget->widget(2));
     m_naviUI = qobject_cast<NaviUI*>(ui->mainTabWidget->widget(3));
     m_powerCtrl = qobject_cast<powerCtrl*>(ui->mainTabWidget->widget(4));
     m_anteCtrl = qobject_cast<AnteCtrl*>(ui->mainTabWidget->widget(5));
+    m_waveControl = qobject_cast<WaveControl*>(ui->mainTabWidget->widget(6));
 
     // 断言检查，确保 UI 提升（Promote）配置正确
     Q_ASSERT(m_leoTrackPage != nullptr);
@@ -31,6 +33,7 @@ MainWindow::MainWindow(QWidget* parent)
     Q_ASSERT(m_naviUI != nullptr);
     Q_ASSERT(m_powerCtrl != nullptr);
     Q_ASSERT(m_anteCtrl != nullptr);
+    Q_ASSERT(m_waveControl != nullptr);
 
     // 2. 初始化通信系统
     initCommunicationSystem();
@@ -48,6 +51,7 @@ void MainWindow::initCommunicationSystem()
     SerialPort* naviSerial = new SerialPort("NAVI_PORT", this);
     SerialPort* powerSerial = new SerialPort("POWER_PORT", this);
     SerialPort* anteSerial = new SerialPort("ANTE_PORT", this);
+    SerialPort* waveSerial = new SerialPort("WAVE_PORT", this);
 
     // 4. 将硬件设备注册到管理器资源池中
     // 这样管理器就能统一监听这些串口的 dataReceived 信号
@@ -56,6 +60,7 @@ void MainWindow::initCommunicationSystem()
     mgr.addDevice("Navi", naviSerial);
     mgr.addDevice("Power", powerSerial);
     mgr.addDevice("Ante", anteSerial);
+    mgr.addDevice("Wave", waveSerial);
 
     // 5. 将资源注入到页签页面（Dependency Injection）
     // 让页面持有串口指针以控制参数，持有协议指针以订阅解析后的数据
@@ -82,6 +87,10 @@ void MainWindow::initCommunicationSystem()
     if (m_anteCtrl) {
         m_anteCtrl->setDevice(anteSerial);
         m_anteCtrl->setProtocol(mgr.getAntennaProtocol());
+    }
+
+    if (m_waveControl) {
+        m_waveControl->setDevice(waveSerial);
     }
 }
 
