@@ -78,6 +78,11 @@
                 <string>波控控制</string>
               </attribute>
             </widget>
+            <widget class="HighOrbitStarTrackingWidget" name="tabHighOrbitStarTracking">
+              <attribute name="title">
+                <string>高轨对星</string>
+              </attribute>
+            </widget>
             <property name="sizePolicy">
               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                 <horstretch>0</horstretch>
@@ -141,6 +146,12 @@
       <class>WaveControl</class>
       <extends>QWidget</extends>
       <header>WaveControl.h</header>
+      <container>1</container>
+    </customwidget>
+    <customwidget>
+      <class>HighOrbitStarTrackingWidget</class>
+      <extends>QWidget</extends>
+      <header>HighOrbitStarTrackingWidget.h</header>
       <container>1</container>
     </customwidget>
   </customwidgets>

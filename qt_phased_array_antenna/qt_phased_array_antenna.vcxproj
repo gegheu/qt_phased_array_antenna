@@ -120,6 +120,7 @@
     <ClCompile Include="TcpConfigDialog.cpp" />
     <ClCompile Include="NaviUI.cpp" />
     <ClCompile Include="HomePage.cpp" />
+    <ClCompile Include="HighOrbitStarTrackingWidget.cpp" />
     <ClCompile Include="LEOTrackPage.cpp" />
     <ClCompile Include="WaveControl.cpp" />
     <ClCompile Include="VFProtocol.cpp" />
@@ -128,6 +129,7 @@
     <ClCompile Include="main.cpp" />
     <QtUic Include="AnteCtrl.ui" />
     <QtUic Include="HomePage.ui" />
+    <QtUic Include="HighOrbitStarTracking.ui" />
     <QtUic Include="mainwindow.ui" />
     <QtUic Include="powerCtrl.ui" />
     <QtUic Include="SeialCongigDialog.ui" />
@@ -152,6 +154,7 @@
   <ItemGroup>
     <QtMoc Include="NaviUI.h" />
     <QtMoc Include="HomePage.h" />
+    <QtMoc Include="HighOrbitStarTrackingWidget.h" />
     <QtMoc Include="LEOTrackPage.h" />
     <QtMoc Include="WaveControl.h" />
     <QtMoc Include="SerialPortManager.h" />
