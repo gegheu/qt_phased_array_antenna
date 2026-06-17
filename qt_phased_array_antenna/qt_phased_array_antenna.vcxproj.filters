@@ -82,6 +82,9 @@
     <ClCompile Include="HighOrbitStarTrackingWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SatelliteSignalReceiverWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="LEOTrackPage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -150,6 +153,9 @@
     <QtMoc Include="HighOrbitStarTrackingWidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <ClInclude Include="SatelliteSignalReceiverWidget.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <QtMoc Include="LEOTrackPage.h">
       <Filter>Header Files</Filter>
     </QtMoc>
@@ -195,6 +201,9 @@
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="HighOrbitStarTracking.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="SatelliteSignalReceiver.ui">
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="LEOTrack.ui">
