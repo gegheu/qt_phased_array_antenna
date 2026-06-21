@@ -83,6 +83,11 @@
                 <string>高轨对星</string>
               </attribute>
             </widget>
+            <widget class="SatelliteSignalReceiverWidget" name="tabSatelliteSignalReceiver">
+              <attribute name="title">
+                <string>卫星信号接收机</string>
+              </attribute>
+            </widget>
             <property name="sizePolicy">
               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                 <horstretch>0</horstretch>
@@ -152,6 +157,12 @@
       <class>HighOrbitStarTrackingWidget</class>
       <extends>QWidget</extends>
       <header>HighOrbitStarTrackingWidget.h</header>
+      <container>1</container>
+    </customwidget>
+    <customwidget>
+      <class>SatelliteSignalReceiverWidget</class>
+      <extends>QWidget</extends>
+      <header>SatelliteSignalReceiverWidget.h</header>
       <container>1</container>
     </customwidget>
   </customwidgets>

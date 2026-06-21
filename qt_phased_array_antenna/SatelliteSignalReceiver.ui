@@ -1,0 +1,905 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SatelliteSignalReceiverWidget</class>
+ <widget class="QWidget" name="SatelliteSignalReceiverWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>920</width>
+    <height>560</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>卫星信号接收机</string>
+  </property>
+  <property name="font">
+   <font>
+    <pointsize>10</pointsize>
+   </font>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget { color: #000000; }</string>
+  </property>
+  <layout class="QVBoxLayout" name="layout_page_satellite_signal_receiver">
+   <property name="spacing">
+    <number>10</number>
+   </property>
+   <property name="leftMargin">
+    <number>10</number>
+   </property>
+   <property name="topMargin">
+    <number>10</number>
+   </property>
+   <property name="rightMargin">
+    <number>10</number>
+   </property>
+   <property name="bottomMargin">
+    <number>10</number>
+   </property>
+   <item>
+    <layout class="QHBoxLayout" name="layout_top_controls" stretch="1,1,1">
+     <property name="spacing">
+      <number>10</number>
+     </property>
+     <item>
+      <widget class="QGroupBox" name="gb_work_mode">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="title">
+        <string>工作模式</string>
+       </property>
+       <layout class="QHBoxLayout" name="layout_work_mode">
+        <property name="spacing">
+         <number>8</number>
+        </property>
+        <property name="leftMargin">
+         <number>10</number>
+        </property>
+        <property name="topMargin">
+         <number>8</number>
+        </property>
+        <property name="rightMargin">
+         <number>10</number>
+        </property>
+        <property name="bottomMargin">
+         <number>8</number>
+        </property>
+        <item>
+         <layout class="QVBoxLayout" name="layout_work_mode_radios">
+          <item>
+           <widget class="QRadioButton" name="rb_work_detect">
+            <property name="text">
+             <string>检波</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="rb_work_beacon">
+            <property name="text">
+             <string>信标</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="layout_work_mode_buttons">
+          <item>
+           <widget class="QPushButton" name="btn_work_set">
+            <property name="minimumSize">
+             <size>
+              <width>72</width>
+              <height>28</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>设置</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btn_work_query">
+            <property name="minimumSize">
+             <size>
+              <width>72</width>
+              <height>28</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>查询</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="gb_voltage_mapping">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="title">
+        <string>电压映射</string>
+       </property>
+       <layout class="QHBoxLayout" name="layout_voltage_mapping">
+        <property name="spacing">
+         <number>8</number>
+        </property>
+        <property name="leftMargin">
+         <number>10</number>
+        </property>
+        <property name="topMargin">
+         <number>8</number>
+        </property>
+        <property name="rightMargin">
+         <number>10</number>
+        </property>
+        <property name="bottomMargin">
+         <number>8</number>
+        </property>
+        <item>
+         <layout class="QVBoxLayout" name="layout_voltage_radios">
+          <item>
+           <widget class="QRadioButton" name="rb_voltage_on">
+            <property name="text">
+             <string>开启</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="rb_voltage_off">
+            <property name="text">
+             <string>关闭</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="layout_voltage_buttons">
+          <item>
+           <widget class="QPushButton" name="btn_voltage_set">
+            <property name="minimumSize">
+             <size>
+              <width>72</width>
+              <height>28</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>设置</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btn_voltage_query">
+            <property name="minimumSize">
+             <size>
+              <width>72</width>
+              <height>28</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>查询</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="gb_report_period">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="title">
+        <string>周期上报</string>
+       </property>
+       <layout class="QGridLayout" name="layout_report_period">
+        <property name="spacing">
+         <number>8</number>
+        </property>
+        <property name="leftMargin">
+         <number>10</number>
+        </property>
+        <property name="topMargin">
+         <number>8</number>
+        </property>
+        <property name="rightMargin">
+         <number>10</number>
+        </property>
+        <property name="bottomMargin">
+         <number>8</number>
+        </property>
+        <item row="0" column="0">
+         <widget class="QLineEdit" name="le_report_period">
+          <property name="minimumSize">
+           <size>
+            <width>100</width>
+            <height>28</height>
+           </size>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QPushButton" name="btn_report_set">
+          <property name="minimumSize">
+           <size>
+            <width>72</width>
+            <height>28</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>设置</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLineEdit" name="le_report_query_period">
+          <property name="minimumSize">
+           <size>
+            <width>100</width>
+            <height>28</height>
+           </size>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QPushButton" name="btn_report_query">
+          <property name="minimumSize">
+           <size>
+            <width>72</width>
+            <height>28</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>查询</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QFrame" name="frame_beacon_mode">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Plain</enum>
+     </property>
+     <layout class="QVBoxLayout" name="layout_beacon_mode">
+      <property name="spacing">
+       <number>8</number>
+      </property>
+      <property name="leftMargin">
+       <number>12</number>
+      </property>
+      <property name="topMargin">
+       <number>10</number>
+      </property>
+      <property name="rightMargin">
+       <number>12</number>
+      </property>
+      <property name="bottomMargin">
+       <number>8</number>
+      </property>
+      <item>
+       <layout class="QHBoxLayout" name="layout_beacon_columns">
+        <property name="spacing">
+         <number>12</number>
+        </property>
+        <item>
+         <widget class="QGroupBox" name="gb_beacon_set_info">
+          <property name="title">
+           <string>设置信息</string>
+          </property>
+          <layout class="QGridLayout" name="grid_beacon_set">
+           <property name="horizontalSpacing">
+            <number>10</number>
+           </property>
+           <property name="verticalSpacing">
+            <number>8</number>
+           </property>
+           <item row="0" column="0">
+            <widget class="QLabel" name="lbl_beacon_set_freq">
+             <property name="text">
+              <string>频率</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="le_beacon_set_freq">
+             <property name="minimumSize">
+              <size>
+               <width>120</width>
+               <height>28</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="2">
+            <widget class="QLabel" name="lbl_beacon_set_capture_range">
+             <property name="text">
+              <string>捕获范围</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="3">
+            <widget class="QLineEdit" name="le_beacon_set_capture_range">
+             <property name="minimumSize">
+              <size>
+               <width>120</width>
+               <height>28</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="lbl_beacon_set_refresh_period">
+             <property name="text">
+              <string>状态刷新周期</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QLineEdit" name="le_beacon_set_refresh_period">
+             <property name="minimumSize">
+              <size>
+               <width>120</width>
+               <height>28</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="2" colspan="2">
+            <layout class="QHBoxLayout" name="layout_beacon_set_button">
+             <item>
+              <spacer name="spacer_beacon_set_button">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btn_beacon_set">
+               <property name="minimumSize">
+                <size>
+                 <width>72</width>
+                 <height>28</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>设置</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="gb_beacon_query_info">
+          <property name="title">
+           <string>查询信息</string>
+          </property>
+          <layout class="QGridLayout" name="grid_beacon_query">
+           <property name="horizontalSpacing">
+            <number>10</number>
+           </property>
+           <property name="verticalSpacing">
+            <number>8</number>
+           </property>
+           <item row="0" column="0">
+            <widget class="QLabel" name="lbl_beacon_query_freq">
+             <property name="text">
+              <string>频率</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="le_beacon_query_freq">
+             <property name="minimumSize">
+              <size>
+               <width>120</width>
+               <height>28</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="2">
+            <widget class="QLabel" name="lbl_beacon_query_capture_range">
+             <property name="text">
+              <string>捕获范围</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="3">
+            <widget class="QLineEdit" name="le_beacon_query_capture_range">
+             <property name="minimumSize">
+              <size>
+               <width>120</width>
+               <height>28</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="lbl_beacon_query_refresh_period">
+             <property name="text">
+              <string>状态刷新周期</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QLineEdit" name="le_beacon_query_refresh_period">
+             <property name="minimumSize">
+              <size>
+               <width>120</width>
+               <height>28</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="2" colspan="2">
+            <layout class="QHBoxLayout" name="layout_beacon_query_button">
+             <item>
+              <spacer name="spacer_beacon_query_button">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btn_beacon_query">
+               <property name="minimumSize">
+                <size>
+                 <width>72</width>
+                 <height>28</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>查询</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QLabel" name="lbl_beacon_mode_title">
+        <property name="text">
+         <string>信标模式</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="frame_detect_mode">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Plain</enum>
+     </property>
+     <layout class="QVBoxLayout" name="layout_detect_mode">
+      <property name="spacing">
+       <number>8</number>
+      </property>
+      <property name="leftMargin">
+       <number>12</number>
+      </property>
+      <property name="topMargin">
+       <number>10</number>
+      </property>
+      <property name="rightMargin">
+       <number>12</number>
+      </property>
+      <property name="bottomMargin">
+       <number>8</number>
+      </property>
+      <item>
+       <layout class="QHBoxLayout" name="layout_detect_columns">
+        <property name="spacing">
+         <number>12</number>
+        </property>
+        <item>
+         <widget class="QGroupBox" name="gb_detect_set_info">
+          <property name="title">
+           <string>设置信息</string>
+          </property>
+          <layout class="QGridLayout" name="grid_detect_set">
+           <property name="horizontalSpacing">
+            <number>10</number>
+           </property>
+           <property name="verticalSpacing">
+            <number>8</number>
+           </property>
+           <item row="0" column="0">
+            <widget class="QLabel" name="lbl_detect_set_carrier_freq">
+             <property name="text">
+              <string>载波频率</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="le_detect_set_carrier_freq">
+             <property name="minimumSize">
+              <size>
+               <width>120</width>
+               <height>28</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="2">
+            <widget class="QLabel" name="lbl_detect_set_symbol_rate">
+             <property name="text">
+              <string>符号速率</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="3">
+            <widget class="QLineEdit" name="le_detect_set_symbol_rate">
+             <property name="minimumSize">
+              <size>
+               <width>120</width>
+               <height>28</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="lbl_detect_set_search_range">
+             <property name="text">
+              <string>搜索范围</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QLineEdit" name="le_detect_set_search_range">
+             <property name="minimumSize">
+              <size>
+               <width>120</width>
+               <height>28</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="2">
+            <widget class="QLabel" name="lbl_detect_set_rolloff">
+             <property name="text">
+              <string>滚降系数</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="3">
+            <widget class="QLineEdit" name="le_detect_set_rolloff">
+             <property name="minimumSize">
+              <size>
+               <width>120</width>
+               <height>28</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="lbl_detect_set_refresh_period">
+             <property name="text">
+              <string>状态刷新周期</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QLineEdit" name="le_detect_set_refresh_period">
+             <property name="minimumSize">
+              <size>
+               <width>120</width>
+               <height>28</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="2" colspan="2">
+            <layout class="QHBoxLayout" name="layout_detect_set_button">
+             <item>
+              <spacer name="spacer_detect_set_button">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btn_detect_set">
+               <property name="minimumSize">
+                <size>
+                 <width>72</width>
+                 <height>28</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>设置</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="gb_detect_query_info">
+          <property name="title">
+           <string>查询信息</string>
+          </property>
+          <layout class="QGridLayout" name="grid_detect_query">
+           <property name="horizontalSpacing">
+            <number>10</number>
+           </property>
+           <property name="verticalSpacing">
+            <number>8</number>
+           </property>
+           <item row="0" column="0">
+            <widget class="QLabel" name="lbl_detect_query_carrier_freq">
+             <property name="text">
+              <string>载波频率</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="le_detect_query_carrier_freq">
+             <property name="minimumSize">
+              <size>
+               <width>120</width>
+               <height>28</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="2">
+            <widget class="QLabel" name="lbl_detect_query_symbol_rate">
+             <property name="text">
+              <string>符号速率</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="3">
+            <widget class="QLineEdit" name="le_detect_query_symbol_rate">
+             <property name="minimumSize">
+              <size>
+               <width>120</width>
+               <height>28</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="lbl_detect_query_search_range">
+             <property name="text">
+              <string>搜索范围</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QLineEdit" name="le_detect_query_search_range">
+             <property name="minimumSize">
+              <size>
+               <width>120</width>
+               <height>28</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="2">
+            <widget class="QLabel" name="lbl_detect_query_rolloff">
+             <property name="text">
+              <string>滚降系数</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="3">
+            <widget class="QLineEdit" name="le_detect_query_rolloff">
+             <property name="minimumSize">
+              <size>
+               <width>120</width>
+               <height>28</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="lbl_detect_query_refresh_period">
+             <property name="text">
+              <string>状态刷新周期</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QLineEdit" name="le_detect_query_refresh_period">
+             <property name="minimumSize">
+              <size>
+               <width>120</width>
+               <height>28</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="2" colspan="2">
+            <layout class="QHBoxLayout" name="layout_detect_query_button">
+             <item>
+              <spacer name="spacer_detect_query_button">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btn_detect_query">
+               <property name="minimumSize">
+                <size>
+                 <width>72</width>
+                 <height>28</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>查询</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QLabel" name="lbl_detect_mode_title">
+        <property name="text">
+         <string>检波模式</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="spacer_page_bottom">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Expanding</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>10</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
