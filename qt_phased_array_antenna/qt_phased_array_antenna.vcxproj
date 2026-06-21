@@ -65,16 +65,12 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(ProjectDir)3rdparty\quc\include;C:\Users\CYK\Desktop\qt_phased_array_antenna\qt_phased_array_antenna\x64\Debug\qt\uic</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\CYK\Desktop\qt_phased_array_antenna\qt_phased_array_antenna\x64\Debug\qt\uic</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(ProjectDir)3rdparty\quc\lib\$(Configuration)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>qucd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
-    <PostBuildEvent>
-      <Command>copy "$(ProjectDir)3rdparty\quc\bin\$(Configuration)\*.dll" "$(OutDir)"</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
     <ClCompile>
